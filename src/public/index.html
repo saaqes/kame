@@ -1059,6 +1059,8 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 <script>
 // ════════════════════════════════════════
 //  STATE
+function getImg(p){var imgs=Array.isArray(p.images)?p.images:(()=>{try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
+
 // ════════════════════════════════════════
 let TOKEN = localStorage.getItem('kame_token');
 let USER  = JSON.parse(localStorage.getItem('kame_user') || 'null');
@@ -1930,7 +1932,7 @@ async function admProducts(el) {
   el.innerHTML = `<div class="sub-hdr"><h2 class="adm-title">🍽️ Empanadas</h2><button class="btn btn-p btn-sm" onclick="admNewProduct(1)">+ Nueva Empanada</button></div>
   <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Img</th><th>Nombre</th><th>Precio</th><th>Desc.</th><th>Activo</th><th>Acciones</th></tr></thead>
   <tbody>${prods.map(p=>`<tr>
-    <td><img src="${(Array.isArray(p.images)?p.images:(()=>{try{return JSON.parse(p.images||'[]');}catch{return[];}})()))[0]||''}" class="tthumb" onerror="this.src='https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=80'"/></td>
+    <td><img src="${getImg(p)}" class="tthumb" onerror="this.src='https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=80'"/></td>
     <td><strong>${p.name}</strong><br/><small style="color:var(--muted)">${p.dragon_ball_ref||''}</small></td>
     <td>${fmt(p.price)}</td><td>${p.discount_percent||0}%</td>
     <td style="color:${p.is_active?'var(--ok)':'var(--err)'}">${p.is_active?'✓':'✗'}</td>
@@ -1949,7 +1951,7 @@ async function admAdiciones(el) {
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:4px">
   ${prods.map(p => `
     <div class="co-card" style="display:flex;gap:14px;align-items:center;border-left:4px solid ${p.is_active?'var(--ok)':'var(--err)'}">
-      <img src="${(Array.isArray(p.images)?p.images:(()=>{try{return JSON.parse(p.images||'[]');}catch{return[];}})()))[0]||''}"
+      <img src="${getImg(p)}"
         style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0"
         onerror="this.src='https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=80'"/>
       <div style="flex:1;min-width:0">
