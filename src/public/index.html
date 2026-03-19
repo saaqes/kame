@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--p:#FF6B00;--s:#FFD700;--a:#CC0000;--dark:#0A0A0F;--dark2:#13131E;--dark3:#1C1C2E;--sur:#22223A;--txt:#F0E6D3;--muted:#9B8F7A;--ok:#00E676;--err:#FF1744;--glow:0 0 20px rgba(255,107,0,.6);--r:12px;}
@@ -869,43 +868,68 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div id="co-step2" style="display:none">
       <div style="max-width:600px;margin:0 auto">
         <div class="co-card">
-
-          <!-- Cabecera -->
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
-            <div style="width:52px;height:52px;border-radius:50%;background:rgba(255,107,0,.15);border:2px solid var(--p);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0">📱</div>
+            <div id="pay-method-icon" style="width:52px;height:52px;border-radius:50%;background:rgba(255,107,0,.15);border:2px solid var(--p);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0">📱</div>
             <div>
-              <h2 style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:2px;line-height:1">Pagar con Nequi</h2>
+              <h2 id="pay-method-title" style="font-family:'Bangers',cursive;font-size:1.8rem;letter-spacing:2px;line-height:1">Pagar</h2>
               <p style="color:var(--muted);font-size:.82rem">Orden: <strong id="pay-order-num" style="color:var(--s);font-family:'Rajdhani',sans-serif;font-weight:700"></strong></p>
             </div>
           </div>
 
-          <!-- Info Nequi -->
+          <!-- Nequi info -->
           <div id="pay-details"></div>
 
+          <!-- Wompi widget (se inyecta dinámicamente) -->
+          <div id="pay-wompi-wrap" style="display:none">
+            <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:20px;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+                <span style="font-size:1.8rem">💳</span>
+                <div>
+                  <div style="font-weight:700;font-size:.95rem">Pago seguro con Wompi</div>
+                  <div style="font-size:.75rem;color:var(--muted)">Tarjeta débito/crédito · PSE · Nequi · Daviplata</div>
+                </div>
+              </div>
+              <!-- ════════════════════════════════════════════════
+                   WOMPI WIDGET — Configurar en Admin > Config
+                   
+                   Para activar Wompi:
+                   1. Crea cuenta en https://comercios.wompi.co
+                   2. Ve a Developers > API Keys
+                   3. Copia tu "Llave pública" (pub_...)
+                   4. En Admin > Config > Pasarela de Pago
+                      pega la llave pública
+                   
+                   El widget se carga automáticamente aquí.
+                   Compatible con: móvil, tablet, PC.
+                   ════════════════════════════════════════════════ -->
+              <div id="wompi-btn-container" style="min-height:60px;display:flex;align-items:center;justify-content:center">
+                <div class="spinner"></div>
+              </div>
+              <p style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:10px">
+                🔒 Pago 100% seguro · Cifrado SSL · Procesado por Wompi
+              </p>
+            </div>
+          </div>
+
           <!-- Divisor -->
-          <div style="display:flex;align-items:center;gap:12px;margin:24px 0">
+          <div id="pay-proof-divider" style="display:flex;align-items:center;gap:12px;margin:24px 0">
             <div style="flex:1;height:1px;background:rgba(255,107,0,.2)"></div>
-            <span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--muted);font-size:.82rem;white-space:nowrap">PASO 2 — ADJUNTA TU COMPROBANTE</span>
+            <span style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--muted);font-size:.82rem;white-space:nowrap">ADJUNTA TU COMPROBANTE</span>
             <div style="flex:1;height:1px;background:rgba(255,107,0,.2)"></div>
           </div>
 
           <!-- Upload comprobante -->
-          <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:20px">
+          <div id="pay-proof-section" style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:20px">
             <p style="font-size:.88rem;color:var(--muted);margin-bottom:14px;line-height:1.5">
-              Después de transferir, adjunta aquí la <strong style="color:var(--txt)">captura de pantalla</strong> o <strong style="color:var(--txt)">foto del comprobante</strong> para que podamos verificar tu pago.
+              Después de transferir, adjunta la <strong style="color:var(--txt)">captura de pantalla</strong> o <strong style="color:var(--txt)">foto del comprobante</strong>.
             </p>
-
-            <!-- Área de selección de archivo -->
             <label class="up-lbl" id="proof-lbl" style="margin-bottom:14px">
               <input type="file" id="proof-file" accept="image/*,application/pdf" onchange="onProofSelect()" style="display:none"/>
               <span id="proof-lbl-text">📸 Seleccionar captura / foto</span>
             </label>
-
-            <!-- Preview de imagen seleccionada -->
             <div id="proof-preview" style="display:none;margin-bottom:14px">
               <img id="proof-preview-img" src="" alt="Comprobante" style="max-width:100%;max-height:200px;object-fit:contain;border-radius:8px;border:1px solid rgba(255,107,0,.3);display:block;margin:0 auto"/>
             </div>
-
             <button class="btn btn-p" id="proof-btn" disabled onclick="sendProof()" style="width:100%;justify-content:center;font-size:1rem">
               📤 Enviar Comprobante
             </button>
@@ -913,7 +937,6 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
               Tu pedido pasará a <strong>Verificando Pago</strong> y lo confirmaremos en breve
             </p>
           </div>
-
         </div>
       </div>
     </div>
@@ -1052,7 +1075,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="footer-brand"><h3>Empanadas <span>Kame</span></h3><p>El sabor legendario del Templo Kame. Cada empanada es un Kame Hame Ha de sabor.</p></div>
     <div class="footer-col"><h4>Menú</h4><a onclick="showPage('products')">Todos los Productos</a><a onclick="showPage('combos')">Combos</a><a onclick="showPage('clients')">Clientes Felices</a><a onclick="showPage('contact')">Contacto</a></div>
     <div class="footer-col"><h4>Cuenta</h4><a onclick="showPage('login')">Iniciar Sesión</a><a onclick="showPage('register')">Registrarse</a><a onclick="showPage('profile')">Mi Perfil</a></div>
-    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 6219962</p><p>📧 saqesadsosena@gmail.com</p><p>🕐 Lunes y jueves: 1:00 - 5:00</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 300 123 4567</p><p>📧 kame@empanadas.com</p><p>🕐 Lun–Sáb 8am–8pm</p></div>
   </div>
   <div class="power-bar"></div>
   <div class="footer-bottom"><p id="footer-year">© 2024 Empanadas Kame · El sabor que supera los límites ⚡</p></div>
@@ -1080,7 +1103,7 @@ async function loadDrinks() {
     DRINKS = adds.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:a.price}));
   } catch(e) { DRINKS = []; }
 }
-const METHODS = [{id:'cash',icon:'💵',label:'Efectivo',desc:'Paga al recibir'},{id:'nequi',icon:'📱',label:'Nequi',desc:'Transfiere por Nequi'}];
+const METHODS = [{id:'cash',icon:'💵',label:'Efectivo',desc:'Paga al recibir'},{id:'nequi',icon:'📱',label:'Nequi',desc:'Transfiere por Nequi'},{id:'wompi',icon:'💳',label:'Tarjeta / PSE',desc:'Wompi — pago en línea seguro'}];
 const STATUS_MAP = {pending:{l:'Pendiente',c:'#FFD740'},payment_review:{l:'Verificando Pago',c:'#FF6B00'},confirmed:{l:'Confirmado',c:'#00E676'},preparing:{l:'Preparando',c:'#FF8C00'},delivered:{l:'Entregado',c:'#00E676'},cancelled:{l:'Cancelado',c:'#FF1744'}};
 
 // ════════════════════════════════════════
@@ -1649,9 +1672,133 @@ async function placeOrder() {
   } catch(e) { alert('Error: ' + e.message); }
   btn.disabled = false; btn.textContent = '✓ Confirmar Pedido';
 }
+
+// ════════════════════════════════════════════════════════
+//  WOMPI — Pasarela de Pago
+//  Docs: https://docs.wompi.co/docs/colombia/widget-cobro
+//
+//  CONFIGURACIÓN:
+//  1. Ve a Admin > Config > Pasarela de Pago
+//  2. Pega tu llave pública de Wompi (pub_...)
+//  3. El widget se activa automáticamente
+//
+//  En PRODUCCIÓN cambia 'sandbox' por 'production'
+//  en la URL del script de Wompi abajo.
+// ════════════════════════════════════════════════════════
+async function loadWompiWidget() {
+  const container = document.getElementById('wompi-btn-container');
+  if (!container) return;
+
+  try {
+    // Obtener llave pública desde config del admin
+    const cfg = await api('GET','/admin/site-config').catch(()=>({}));
+    const pubKey = cfg.wompi_public_key || '';
+
+    if (!pubKey || pubKey.startsWith('// ')) {
+      container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">'
+        +'<span style="font-size:2rem;display:block;margin-bottom:8px">⚙️</span>'
+        +'<p style="font-size:.85rem">Pasarela Wompi no configurada.<br/>El admin debe agregar la llave pública en Configuración.</p>'
+        +'</div>';
+      // Mostrar comprobante como alternativa
+      document.getElementById('pay-proof-divider').style.display = '';
+      document.getElementById('pay-proof-section').style.display = '';
+      return;
+    }
+
+    const total = cartTotal() || coLastTotal || 0;
+    const totalCentavos = Math.round(total * 100); // Wompi usa centavos
+
+    // Cargar script de Wompi si no está cargado
+    if (!window.WidgetCheckout) {
+      await new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        // Para producción: cambiar sandbox por production
+        s.src = 'https://checkout.wompi.co/widget.js';
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
+
+    container.innerHTML = '';
+
+    // Crear el widget de Wompi
+    // Referencia única por orden
+    var ref = 'KAME-' + coOrderId + '-' + Date.now();
+
+    var checkout = new WidgetCheckout({
+      currency:           'COP',
+      amountInCents:      totalCentavos,
+      reference:          ref,
+      publicKey:          pubKey,
+      // Redirect después del pago
+      redirectUrl:        window.location.origin + '/#pago-completado',
+      // Callbacks
+    });
+
+    // Botón personalizado estilo Kame
+    var btn = document.createElement('button');
+    btn.className = 'btn btn-p btn-lg';
+    btn.style.cssText = 'width:100%;justify-content:center;font-size:1rem';
+    btn.textContent = '💳 Pagar ' + fmt(total) + ' — Seguro con Wompi';
+    btn.addEventListener('click', function() {
+      btn.disabled = true;
+      btn.textContent = '⏳ Abriendo pasarela...';
+      checkout.open(function(result) {
+        var t = result.transaction;
+        if (t && (t.status === 'APPROVED' || t.status === 'PENDING')) {
+          // Pago aprobado/pendiente — vaciar carrito y confirmar
+          CART = []; saveCart();
+          document.getElementById('conf-order-num').textContent = coOrderNum;
+          document.getElementById('conf-status').innerHTML =
+            '<span class="badge badge-s" style="margin-bottom:10px;display:inline-block">'
+            +(t.status==='APPROVED'?'✅ Pago Aprobado':'⏳ Pago en Proceso')+'</span>'
+            +'<p style="color:var(--muted);font-size:.88rem;line-height:1.5">Transacción: <strong style="color:var(--txt)">'+t.id+'</strong></p>';
+          showCoStep(3);
+        } else {
+          btn.disabled = false;
+          btn.textContent = '💳 Intentar de nuevo — ' + fmt(total);
+          if (t) alert('El pago no fue aprobado. Estado: ' + t.status);
+        }
+      });
+    });
+
+    container.appendChild(btn);
+
+  } catch(e) {
+    container.innerHTML = '<div style="color:var(--err);font-size:.85rem;text-align:center;padding:16px">⚠️ No se pudo cargar la pasarela de pago.<br/>Intenta con Nequi o efectivo.</div>';
+    // Mostrar comprobante como alternativa
+    document.getElementById('pay-proof-divider').style.display = '';
+    document.getElementById('pay-proof-section').style.display = '';
+    console.error('Wompi error:', e);
+  }
+}
+
 async function loadPayInfo() {
   const el = document.getElementById('pay-details');
   el.innerHTML = '<div class="spinner"></div>';
+
+  // Actualizar cabecera según método
+  const icons = {nequi:'📱', wompi:'💳'};
+  const titles = {nequi:'Pagar con Nequi', wompi:'Pago con Tarjeta / PSE'};
+  const iconEl  = document.getElementById('pay-method-icon');
+  const titleEl = document.getElementById('pay-method-title');
+  if (iconEl)  iconEl.textContent  = icons[coMethod]  || '💳';
+  if (titleEl) titleEl.textContent = titles[coMethod] || 'Pagar';
+
+  if (coMethod === 'wompi') {
+    el.innerHTML = '';
+    document.getElementById('pay-wompi-wrap').style.display  = '';
+    document.getElementById('pay-proof-divider').style.display = 'none';
+    document.getElementById('pay-proof-section').style.display = 'none';
+    await loadWompiWidget();
+    return;
+  }
+
+  // Nequi (flujo original)
+  document.getElementById('pay-wompi-wrap').style.display  = 'none';
+  document.getElementById('pay-proof-divider').style.display = '';
+  document.getElementById('pay-proof-section').style.display = '';
 
   try {
     const n = await api('GET','/payment/nequi');
@@ -1932,6 +2079,7 @@ async function uploadBanner(inp) {
 // ════════════════════════════════════════
 const ADM_TABS = [
   {id:'dashboard',l:'📊 Dashboard'},
+  {id:'ganancias',l:'💰 Ganancias'},
   {id:'products',l:'🍽️ Productos'},
   {id:'adiciones',l:'🥤 Adiciones'},
   {id:'combos',l:'🎁 Combos'},
@@ -1965,9 +2113,202 @@ async function admRender() {
     else if (adminTab==='guerreros') await admGuerreros(el);
     else if (adminTab==='users') await admUsers(el);
     else if (adminTab==='coupons') await admCoupons(el);
+    else if (adminTab==='ganancias') await admGanancias(el);
     else if (adminTab==='siteconfig') await admSiteConfig(el);
   } catch(e) { el.innerHTML = `<p style="color:var(--err)">Error: ${e.message}</p>`; }
 }
+
+// ════════════════════════════════════════════════════════
+//  GANANCIAS DEL DÍA
+// ════════════════════════════════════════════════════════
+var _ganancias = JSON.parse(localStorage.getItem('kame_ganancias')||'[]');
+var _ganFilter = 'all'; // all | bueno | regular | malo
+
+function saveGanancias() { localStorage.setItem('kame_ganancias', JSON.stringify(_ganancias)); }
+
+function ganTotal(g) {
+  return g.items ? g.items.reduce(function(s,i){ return s+(i.cantidad*(i.precio||0)); }, 0) : (g.total||0);
+}
+
+function ganLevel(total) {
+  if (total >= 100000) return {l:'bueno',  icon:'🔥', label:'Buen día',    color:'var(--ok)'};
+  if (total >= 40000)  return {l:'regular',icon:'😐', label:'Día regular', color:'var(--s)'};
+  return                      {l:'malo',   icon:'📉', label:'Día bajo',    color:'var(--err)'};
+}
+
+async function admGanancias(el) {
+  el.innerHTML = '<div class="spinner" style="padding:40px"></div>';
+
+  // Resumen general
+  var totalGeneral = _ganancias.reduce(function(s,g){ return s+ganTotal(g); }, 0);
+  var mejorDia = _ganancias.reduce(function(best,g){ return ganTotal(g)>ganTotal(best)?g:best; }, _ganancias[0]||{total:0});
+  var hoy = new Date().toISOString().slice(0,10);
+  var ganHoy = _ganancias.filter(function(g){ return g.fecha===hoy; });
+  var totalHoy = ganHoy.reduce(function(s,g){ return s+ganTotal(g); }, 0);
+
+  // Filtrar lista
+  var lista = _ganFilter==='all' ? _ganancias : _ganancias.filter(function(g){ return ganLevel(ganTotal(g)).l===_ganFilter; });
+  lista = lista.slice().sort(function(a,b){ return new Date(b.fecha+' '+(b.hora||'00:00'))-new Date(a.fecha+' '+(a.hora||'00:00')); });
+
+  // Construir HTML
+  var statsHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px">'
+    +'<div class="stat"><span class="stat-ico">💰</span><div><span class="stat-num">'+fmt(totalGeneral)+'</span><span class="stat-lbl">Total Acumulado</span></div></div>'
+    +'<div class="stat"><span class="stat-ico">📅</span><div><span class="stat-num">'+fmt(totalHoy)+'</span><span class="stat-lbl">Hoy</span></div></div>'
+    +'<div class="stat"><span class="stat-ico">🏆</span><div><span class="stat-num">'+(mejorDia&&mejorDia.fecha?mejorDia.fecha:'—')+'</span><span class="stat-lbl">Mejor Día</span></div></div>'
+    +'<div class="stat"><span class="stat-ico">📋</span><div><span class="stat-num">'+_ganancias.length+'</span><span class="stat-lbl">Registros</span></div></div>'
+    +'</div>';
+
+  var filtersHtml = '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px">'
+    +[{id:'all',l:'Todos'},{id:'bueno',l:'🔥 Buenos'},{id:'regular',l:'😐 Regulares'},{id:'malo',l:'📉 Bajos'}].map(function(f){
+      var act=_ganFilter===f.id;
+      return '<button class="gan-filter" data-f="'+f.id+'" style="padding:7px 13px;border:1px solid '+(act?'rgba(255,107,0,.5)':'rgba(255,255,255,.1)')+';background:'+(act?'rgba(255,107,0,.18)':'rgba(255,255,255,.04)')+';color:var(--txt);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">'+f.l+'</button>';
+    }).join('')
+    +'</div>';
+
+  function renderItem(g, idx) {
+    var tot = ganTotal(g);
+    var lv  = ganLevel(tot);
+    var itmH = (g.items||[]).map(function(it){
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.82rem;gap:8px">'
+        +'<span>'+it.objeto+' <span style="color:var(--muted)">x'+it.cantidad+'</span></span>'
+        +'<span style="color:var(--s);font-weight:700">'+fmt(it.cantidad*(it.precio||0))+'</span></div>';
+    }).join('');
+    return '<div class="co-card" style="border-left:3px solid '+lv.color+';margin-bottom:12px">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">'
+        +'<div style="display:flex;align-items:center;gap:10px">'
+          +'<span style="font-size:1.8rem">'+lv.icon+'</span>'
+          +'<div><div style="font-weight:700;font-size:.95rem">'+g.fecha+(g.hora?' · '+g.hora:'')+'</div>'
+          +'<div style="font-size:.72rem;color:var(--muted)">'+lv.label+' · '+(g.tipo_cuenta||'—')+'</div></div>'
+        +'</div>'
+        +'<div style="display:flex;align-items:center;gap:10px">'
+          +'<span style="font-size:1.4rem;font-weight:700;color:var(--s)">'+fmt(tot)+'</span>'
+          +'<button class="gan-del" data-idx="'+idx+'" style="background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center">🗑️</button>'
+        +'</div>'
+      +'</div>'
+      +(itmH?'<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:8px">'+itmH+'</div>':'')
+      +(g.notas?'<div style="font-size:.78rem;color:var(--muted);border-top:1px solid rgba(255,255,255,.06);padding-top:6px;margin-top:6px">📝 '+g.notas+'</div>':'')
+    +'</div>';
+  }
+
+  var listaHtml = lista.length
+    ? lista.map(function(g){ return renderItem(g, _ganancias.indexOf(g)); }).join('')
+    : '<div style="text-align:center;padding:40px;color:var(--muted)"><span style="font-size:2.5rem;display:block;margin-bottom:10px">📭</span>Sin registros en esta categoría</div>';
+
+  el.innerHTML = '<h2 class="adm-title">💰 Ganancias del Día</h2>'
+    +statsHtml
+    +'<div style="display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start">'
+    // Lista izquierda
+    +'<div>'
+    +filtersHtml
+    +'<div id="gan-lista">'+listaHtml+'</div>'
+    +'</div>'
+    // Formulario derecha
+    +'<div style="position:sticky;top:78px">'
+    +'<div class="co-card" id="gan-form-card">'
+    +'<h3 style="font-weight:700;color:var(--s);margin-bottom:16px;font-size:1rem">➕ Nuevo Registro</h3>'
+    +'<div class="fc"><label>📅 Fecha *</label><input type="date" class="fi" id="gan-fecha" value="'+hoy+'"/></div>'
+    +'<div class="fc"><label>🕐 Hora</label><input type="time" class="fi" id="gan-hora"/></div>'
+    +'<div class="fc"><label>💳 Tipo de cuenta *</label>'
+    +'<select class="fi" id="gan-cuenta">'
+    +'<option value="Efectivo">💵 Efectivo</option>'
+    +'<option value="Nequi">📱 Nequi</option>'
+    +'<option value="Daviplata">📲 Daviplata</option>'
+    +'<option value="Transferencia">🏦 Transferencia</option>'
+    +'<option value="Mixto">🔀 Mixto</option>'
+    +'</select></div>'
+    // Items dinámicos
+    +'<div style="font-size:.78rem;color:var(--s);font-weight:700;margin-bottom:8px">🛒 Objetos vendidos</div>'
+    +'<div id="gan-items-wrap" style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px">'
+    +'<div class="gan-item-row" style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;align-items:center">'
+    +'<input class="fi gan-obj" placeholder="Objeto (ej: Empanada)" style="font-size:.82rem"/>'
+    +'<input class="fi gan-cant" type="number" min="1" placeholder="Cant." style="font-size:.82rem"/>'
+    +'<input class="fi gan-precio" type="number" min="0" placeholder="$ c/u" style="font-size:.82rem"/>'
+    +'<button type="button" class="gan-del-row" style="background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">✕</button>'
+    +'</div></div>'
+    +'<button type="button" id="gan-add-row" class="btn btn-o btn-sm" style="width:100%;justify-content:center;margin-bottom:12px">+ Agregar objeto</button>'
+    +'<div class="fc"><label>📝 Notas adicionales</label><textarea class="fi" id="gan-notas" rows="2" placeholder="Observaciones del día..."></textarea></div>'
+    +'<div style="background:var(--dark3);border-radius:8px;padding:10px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">'
+    +'<span style="font-size:.82rem;color:var(--muted)">Total calculado:</span>'
+    +'<span id="gan-total-preview" style="font-weight:700;color:var(--s);font-size:1.1rem">$0</span>'
+    +'</div>'
+    +'<button type="button" id="gan-save-btn" class="btn btn-p" style="width:100%;justify-content:center">💾 Guardar Registro</button>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+
+  // Event listeners del formulario
+  function updatePreview() {
+    var rows=document.querySelectorAll('.gan-item-row');
+    var t=0;
+    rows.forEach(function(row){
+      var c=+(row.querySelector('.gan-cant').value||0);
+      var p=+(row.querySelector('.gan-precio').value||0);
+      t+=c*p;
+    });
+    var prev=document.getElementById('gan-total-preview');
+    if(prev) prev.textContent=fmt(t);
+  }
+
+  document.getElementById('gan-add-row').addEventListener('click', function(){
+    var wrap=document.getElementById('gan-items-wrap');
+    var div=document.createElement('div');
+    div.className='gan-item-row';
+    div.style.cssText='display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;align-items:center';
+    div.innerHTML='<input class="fi gan-obj" placeholder="Objeto" style="font-size:.82rem"/>'
+      +'<input class="fi gan-cant" type="number" min="1" placeholder="Cant." style="font-size:.82rem"/>'
+      +'<input class="fi gan-precio" type="number" min="0" placeholder="$ c/u" style="font-size:.82rem"/>'
+      +'<button type="button" class="gan-del-row" style="background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem">✕</button>';
+    wrap.appendChild(div);
+    div.querySelectorAll('input').forEach(function(i){i.addEventListener('input',updatePreview);});
+    div.querySelector('.gan-del-row').addEventListener('click',function(){div.remove();updatePreview();});
+  });
+
+  // inputs del primer row
+  document.querySelectorAll('.gan-item-row input').forEach(function(i){i.addEventListener('input',updatePreview);});
+  document.querySelector('.gan-del-row').addEventListener('click',function(){
+    if(document.querySelectorAll('.gan-item-row').length>1) this.closest('.gan-item-row').remove(); updatePreview();
+  });
+
+  document.getElementById('gan-save-btn').addEventListener('click', function(){
+    var fecha=document.getElementById('gan-fecha').value;
+    var hora=document.getElementById('gan-hora').value;
+    var cuenta=document.getElementById('gan-cuenta').value;
+    var notas=document.getElementById('gan-notas').value.trim();
+    if(!fecha||!cuenta){alert('Fecha y tipo de cuenta son obligatorios');return;}
+    var items=[];
+    document.querySelectorAll('.gan-item-row').forEach(function(row){
+      var obj=row.querySelector('.gan-obj').value.trim();
+      var cant=+(row.querySelector('.gan-cant').value||0);
+      var precio=+(row.querySelector('.gan-precio').value||0);
+      if(obj&&cant>0) items.push({objeto:obj,cantidad:cant,precio:precio});
+    });
+    if(!items.length){alert('Agrega al menos un objeto vendido');return;}
+    var totalCalc=items.reduce(function(s,i){return s+i.cantidad*i.precio;},0);
+    _ganancias.push({fecha:fecha,hora:hora,tipo_cuenta:cuenta,items:items,total:totalCalc,notas:notas,ts:Date.now()});
+    saveGanancias();
+    admTab('ganancias');
+  });
+
+  // Filtros
+  document.querySelectorAll('.gan-filter').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      _ganFilter=this.dataset.f;
+      admTab('ganancias');
+    });
+  });
+
+  // Eliminar registro
+  document.querySelectorAll('.gan-del').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var idx=+this.dataset.idx;
+      if(!confirm('¿Eliminar este registro?')) return;
+      _ganancias.splice(idx,1);
+      saveGanancias();
+      admTab('ganancias');
+    });
+  });
+}
+
 async function admDashboard(el) {
   const d = await api('GET','/admin/dashboard');
   el.innerHTML = `<h2 class="adm-title">📊 Dashboard</h2>
@@ -2686,6 +3027,21 @@ async function admSiteConfig(el) {
       <div class="fc"><label>Nombre</label><input type="text" class="fi" id="cfg-nname" value="${cfg.nequi_name||''}"/></div>
       <div class="fc"><label>Teléfono</label><input type="text" class="fi" id="cfg-nphone" value="${cfg.nequi_phone||''}"/></div>
     </div>
+    <div class="co-card" style="grid-column:1/-1">
+      <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--s);margin-bottom:6px">💳 Pasarela de Pago — Wompi</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px;line-height:1.6">
+        Wompi permite cobrar con tarjeta débito/crédito, PSE, Nequi y Daviplata directamente en el sitio.<br/>
+        Pasos: 1) Regístrate en <a href="https://comercios.wompi.co" target="_blank" style="color:var(--p)">comercios.wompi.co</a> · 
+        2) Ve a <strong>Developers → API Keys</strong> · 3) Copia tu <strong>Llave pública</strong> (empieza con <code style="color:var(--s)">pub_...</code>)
+      </p>
+      <div class="fc"><label>🔑 Llave Pública Wompi (pub_...)</label>
+        <input type="text" class="fi" id="cfg-wompi-key" value="${cfg.wompi_public_key||''}" placeholder="pub_prod_XXXXXXXX o pub_test_XXXXXXXX"/>
+        <small style="color:var(--muted);font-size:.72rem;margin-top:4px">Usa <code>pub_test_...</code> para pruebas y <code>pub_prod_...</code> para producción</small>
+      </div>
+      <div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.15);border-radius:9px;padding:12px;font-size:.8rem;color:var(--ok)">
+        ✅ Compatible con: móvil, tablet, PC · Tarjeta débito/crédito · PSE · Nequi · Daviplata
+      </div>
+    </div>
   </div>
   <div style="text-align:right;margin-top:22px"><button class="btn btn-p btn-lg" id="cfg-save-btn" onclick="admSaveConfig()">💾 Guardar Todo</button></div>`;
   document.getElementById('cfg-pc').addEventListener('input', e => { document.getElementById('cfg-pct').value = e.target.value; });
@@ -2702,7 +3058,8 @@ async function admSaveConfig() {
     secondary_color: document.getElementById('cfg-sct').value,
     accent_color: document.getElementById('cfg-act').value,
     nequi_name: document.getElementById('cfg-nname').value,
-    nequi_phone: document.getElementById('cfg-nphone').value
+    nequi_phone: document.getElementById('cfg-nphone').value,
+    wompi_public_key: document.getElementById('cfg-wompi-key')?.value||''
   };
   await api('PUT','/admin/site-config',cfg);
   const r = document.documentElement;
