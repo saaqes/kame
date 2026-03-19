@@ -10,15 +10,17 @@ async function ensureAdmin() {
   try {
     const db = require('./config/db');
 
-    // Auto-migrate: agregar columnas nuevas si no existen
+    // Auto-migrate: agregar columnas nuevas si no existen (sintaxis PostgreSQL)
     const migrations = [
       "ALTER TABLE users ADD COLUMN IF NOT EXISTS ambiente_numero VARCHAR(50)",
       "ALTER TABLE users ADD COLUMN IF NOT EXISTS nombre_completo_real VARCHAR(200)",
       "ALTER TABLE users ADD COLUMN IF NOT EXISTS celular VARCHAR(20)",
       `CREATE TABLE IF NOT EXISTS order_messages (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        order_id INT NOT NULL, sender_role ENUM('admin','client') DEFAULT 'admin',
-        message TEXT NOT NULL, is_read BOOLEAN DEFAULT FALSE,
+        id SERIAL PRIMARY KEY,
+        order_id INT NOT NULL,
+        sender_role VARCHAR(10) DEFAULT 'admin' CHECK (sender_role IN ('admin','client')),
+        message TEXT NOT NULL,
+        is_read BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(order_id) REFERENCES orders(id)
       )`
@@ -27,21 +29,23 @@ async function ensureAdmin() {
       try { await db.query(sql); } catch(e) { /* columna ya existe */ }
     }
 
-    const [rows] = await db.query('SELECT id FROM users WHERE email=?', ['admin@kame.com']);
+    // ✅ CORREGIDO: sintaxis PostgreSQL ($1) en vez de MySQL (?)
+    const result = await db.query('SELECT id FROM users WHERE email=$1', ['admin@kame.com']);
+    const rows = result.rows;
     const hash = await bcrypt.hash('admin123', 10);
+
     if (!rows.length) {
       await db.query(
-        'INSERT INTO users(full_name,username,email,password,role) VALUES(?,?,?,?,?)',
+        'INSERT INTO users(full_name,username,email,password,role) VALUES($1,$2,$3,$4,$5)',
         ['Maestro Roshi', 'admin', 'admin@kame.com', hash, 'admin']
       );
       console.log('✅ Admin creado: admin@kame.com / admin123');
     } else {
-      await db.query('UPDATE users SET password=? WHERE email=?', [hash, 'admin@kame.com']);
+      await db.query('UPDATE users SET password=$1 WHERE email=$2', [hash, 'admin@kame.com']);
       console.log('✅ Admin listo: admin@kame.com / admin123');
     }
   } catch(e) {
-    console.error('⚠️  No se pudo conectar a MySQL:', e.message);
-    console.error('   Verifica DB_PASSWORD en .env y que MySQL esté corriendo');
+    console.error('⚠️  Error en ensureAdmin:', e.message);
   }
 }
 
@@ -74,7 +78,5 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
   console.log(`🔥 Servidor corriendo en puerto ${PORT}`);
-  if (typeof ensureAdmin === "function") {
-    await ensureAdmin();
-  }
+  await ensureAdmin();
 });
