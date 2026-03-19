@@ -973,6 +973,11 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
         <h3 style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;margin:24px 0 16px;color:var(--s)">📋 Datos de Entrega <span style="font-size:.9rem;color:var(--p);font-family:'Rajdhani',sans-serif;font-weight:700;">(Solo visible para el admin)</span></h3>
         <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:20px;margin-bottom:20px">
           <div class="fc"><label>🏠 Número de Ambiente / Apartamento</label><input type="text" class="fi" id="ef-ambiente" placeholder="Ej: Apto 301, Casa 5, Local 2B"/></div>
+          <div class="fc"><label>📍 Ubicación exacta de entrega</label>
+            <textarea class="fi" id="ef-ubicacion" rows="2" placeholder="Ej: Torre B piso 4, puerta azul frente al ascensor..."></textarea>
+            <button type="button" class="btn btn-o btn-sm" style="margin-top:8px;width:fit-content" onclick="getUserLocation()">📡 Usar mi ubicación GPS</button>
+            <small style="color:var(--muted);font-size:.72rem;margin-top:4px;display:block">Tu ubicación GPS se guardará como coordenadas para facilitar la entrega</small>
+          </div>
           <div class="fc"><label>👤 Nombre Completo Real</label><input type="text" class="fi" id="ef-nombre-real" placeholder="Como aparece en tu documento de identidad"/></div>
           <div class="fc" style="margin-bottom:0"><label>📱 Celular de Contacto</label><input type="tel" class="fi" id="ef-celular" placeholder="Número para coordinación de entrega"/></div>
         </div>
@@ -1059,7 +1064,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 <script>
 // ════════════════════════════════════════
 //  STATE
-function getImg(p){var imgs=Array.isArray(p.images)?p.images:(()=>{try{return JSON.parse(p.images||'[]');}catch(e){return[];}})()||[];return imgs[0]||'';}
+function getImg(p){var imgs=Array.isArray(p.images)?p.images:(function(){try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
 
 // ════════════════════════════════════════
 let TOKEN = localStorage.getItem('kame_token');
@@ -1070,7 +1075,6 @@ let pmProduct = null, pmQtyVal = 1, pmDrink = '';
 let coStep = 1, coMethod = 'cash', coOrderId = 0, coOrderNum = '', coLastTotal = 0;
 let profileTab = 'orders';
 let adminTab = 'dashboard';
-let ordersFilter = 'all';
 let DRINKS = []; // se carga dinámicamente desde /api/products?category=2
 async function loadDrinks() {
   if (DRINKS.length) return;
@@ -1116,6 +1120,51 @@ function showPage(page) {
 // ════════════════════════════════════════
 //  NAVBAR
 // ════════════════════════════════════════
+// ── EVENT DELEGATION admin ───────────────────────────────────────────────────
+document.addEventListener('change', function(ev) {
+  var t = ev.target;
+  if (t.classList.contains('adm-sel-order')||t.classList.contains('adm-sel-pay')) {
+    // Resaltar botón guardar
+    var oid = t.dataset.oid;
+    var btn = document.querySelector('.adm-btn-save-status[data-oid="'+oid+'"]');
+    if (btn) { btn.style.background='linear-gradient(135deg,var(--s),#FFA500)'; btn.style.color='var(--dark)'; }
+  }
+});
+document.addEventListener('click', function(ev) {
+  var t = ev.target;
+  // Guardar estado
+  if (t.classList.contains('adm-btn-save-status')) {
+    var oid = t.dataset.oid;
+    var selOrd = document.querySelector('.adm-sel-order[data-oid="'+oid+'"]');
+    var selPay = document.querySelector('.adm-sel-pay[data-oid="'+oid+'"]');
+    if (selOrd && selPay) {
+      t.textContent = '⏳ Guardando...'; t.disabled = true;
+      api('PUT','/orders/'+oid+'/status',{status:selOrd.value,payment_status:selPay.value})
+        .then(function(){ t.textContent='✅ Guardado!'; t.style.background='var(--ok)'; t.style.color='#fff';
+          setTimeout(function(){ t.textContent='💾 Guardar'; t.style.background=''; t.style.color=''; t.disabled=false;
+            // actualizar data attrs
+            selOrd.dataset.pay = selPay.value;
+            selPay.dataset.st  = selOrd.value;
+          }, 2000);
+        })
+        .catch(function(e){ alert('Error: '+e.message); t.textContent='💾 Guardar'; t.disabled=false; });
+    }
+  }
+  // Tabs filtro pedidos
+  if (t.classList.contains('orders-tab-btn')) {
+    if (typeof ordersFilter !== 'undefined') ordersFilter = t.dataset.filter;
+    document.querySelectorAll('.orders-tab-btn').forEach(function(b){
+      b.style.background='rgba(255,255,255,.04)'; b.style.borderColor='rgba(255,255,255,.1)';
+    });
+    t.style.background='rgba(255,107,0,.18)'; t.style.borderColor='rgba(255,107,0,.5)';
+    if (window.renderOrdersFiltered) window.renderOrdersFiltered();
+  }
+  if (t.classList.contains('adm-btn-chat')) admToggleChat(t.dataset.oid);
+  if (t.classList.contains('adm-btn-send')) admSendMsg(t.dataset.oid);
+});
+document.addEventListener('keydown', function(ev) {
+  if (ev.key==='Enter' && ev.target.classList.contains('adm-chat-inp')) admSendMsg(ev.target.dataset.oid);
+});
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
@@ -1621,11 +1670,13 @@ async function loadPayInfo() {
         </div>
 
         <!-- Datos de transferencia -->
-        <div style="padding:18px 20px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center">
-          <div style="text-align:center;flex-shrink:0">
-            <img id="nequi-qr-img" src="" style="width:140px;height:140px;border-radius:10px;background:#fff;padding:8px;border:2px solid rgba(255,107,0,.3);display:block;margin:0 auto"/>
-            <div style="font-size:.7rem;color:var(--muted);margin-top:6px;font-weight:700">📷 Escanear QR</div>
-          </div>
+        <div style="padding:18px 20px;display:grid;grid-template-columns:${n.nequi_qr ? 'auto 1fr' : '1fr'};gap:20px;align-items:center">
+
+          ${n.nequi_qr ? `
+          <div style="text-align:center">
+            <img src="${n.nequi_qr}" style="width:130px;height:130px;object-fit:contain;border-radius:10px;background:#fff;padding:8px;border:2px solid rgba(255,107,0,.3);display:block"/>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:6px;font-family:'Rajdhani',sans-serif;font-weight:700">Escanear QR</div>
+          </div>` : ''}
 
           <div style="display:flex;flex-direction:column;gap:10px">
             <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px">
@@ -1645,14 +1696,6 @@ async function loadPayInfo() {
           </div>
         </div>
       </div>`;
-    // Setear QR dinámicamente luego de inyectar HTML
-    setTimeout(()=>{
-      const qrImg = document.getElementById('nequi-qr-img');
-      if (qrImg) {
-        const qrData = (n.nequi_phone||'') + ' | ' + fmt(total) + ' | Ref: ' + coOrderNum;
-        qrImg.src = n.nequi_qr || ('https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=' + encodeURIComponent(qrData));
-      }
-    }, 50);
   } catch(e) {
     el.innerHTML = `<div style="padding:16px;background:rgba(255,23,68,.1);border-radius:8px;color:var(--err);font-size:.88rem">⚠️ No se pudo cargar la info de Nequi. Contacta al administrador.</div>`;
   }
@@ -1743,6 +1786,7 @@ async function loadProfile() {
     document.getElementById('ef-phone').value = u.phone||'';
     document.getElementById('ef-bio').value = u.bio||'';
     document.getElementById('ef-ambiente').value = u.ambiente_numero||'';
+    document.getElementById('ef-ubicacion').value = u.ubicacion_entrega||'';
     document.getElementById('ef-nombre-real').value = u.nombre_completo_real||'';
     document.getElementById('ef-celular').value = u.celular||'';
     document.getElementById('ef-email-show').textContent = u.email||'';
@@ -1848,6 +1892,30 @@ function setProfileTab(tab) {
   document.getElementById('tab-orders').style.display = tab==='orders' ? '' : 'none';
   document.getElementById('tab-edit').style.display = tab==='edit' ? '' : 'none';
 }
+function getUserLocation() {
+  if (!navigator.geolocation) { alert('Tu navegador no soporta geolocalización'); return; }
+  const btn = event.target;
+  btn.textContent = '⏳ Obteniendo ubicación...';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      const maps = 'https://maps.google.com/?q=' + lat + ',' + lng;
+      const curr = document.getElementById('ef-ubicacion').value;
+      const gpsLine = 'GPS: ' + lat + ', ' + lng + ' (' + maps + ')';
+      document.getElementById('ef-ubicacion').value = curr ? curr + '\n' + gpsLine : gpsLine;
+      btn.textContent = '✅ Ubicación guardada';
+      setTimeout(function(){ btn.textContent='📡 Usar mi ubicación GPS'; btn.disabled=false; }, 2000);
+    },
+    function(err) {
+      alert('No se pudo obtener ubicación: ' + err.message);
+      btn.textContent = '📡 Usar mi ubicación GPS';
+      btn.disabled = false;
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
 async function saveProfile() {
   const btn = document.getElementById('save-profile-btn');
   btn.disabled = true; btn.textContent = '⏳ Guardando...';
@@ -1858,6 +1926,7 @@ async function saveProfile() {
       phone: document.getElementById('ef-phone').value,
       bio: document.getElementById('ef-bio').value,
       ambiente_numero: document.getElementById('ef-ambiente').value,
+      ubicacion_entrega: document.getElementById('ef-ubicacion').value,
       nombre_completo_real: document.getElementById('ef-nombre-real').value,
       celular: document.getElementById('ef-celular').value
     });
@@ -2126,145 +2195,162 @@ async function admSaveCombo(id) {
 }
 async function admOrders(el) {
   el.innerHTML = '<div class="spinner" style="padding:60px"></div>';
-  const orders = await api('GET','/orders');
-
-  // mapa global de comprobantes para onclick seguro
+  // showArchived es estado global
+  if (typeof window._ordArchived === 'undefined') window._ordArchived = false;
+  const endpoint = window._ordArchived ? '/orders?archived=1' : '/orders';
+  const orders = await api('GET', endpoint);
   window._proofUrls = window._proofUrls || {};
-  orders.forEach(o => { if (o.payment_proof) window._proofUrls[o.id] = o.payment_proof; });
+  orders.forEach(function(o){ if(o.payment_proof) window._proofUrls[o.id] = o.payment_proof; });
 
-  const stLbl  = {pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado'};
-  const stClr  = {pending:'#FFD740',payment_review:'#FF6B00',confirmed:'#00E676',preparing:'#FF8C00',delivered:'#00E676',cancelled:'#FF1744'};
-  const payLbl = {pending:'⏳ Pendiente',processing:'🔄 Procesando',approved:'✅ Aprobado',rejected:'❌ Rechazado'};
+  var stLbl  = {pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado'};
+  var stClr  = {pending:'#FFD740',payment_review:'#FF6B00',confirmed:'#00E676',preparing:'#FF8C00',delivered:'#00E676',cancelled:'#FF1744'};
+  var payLbl = {pending:'⏳ Pendiente',processing:'🔄 Procesando',approved:'✅ Aprobado',rejected:'❌ Rechazado'};
 
-  // contadores
-  const cnt = {all: orders.length};
-  orders.forEach(o => { cnt[o.status] = (cnt[o.status]||0) + 1; });
-  const pendPay = cnt.payment_review || 0;
+  var cnt = {all: orders.length};
+  orders.forEach(function(o){ cnt[o.status] = (cnt[o.status]||0)+1; });
+  var pendPay = cnt.payment_review || 0;
 
   function buildCard(o) {
-    const sc = stClr[o.status] || '#aaa';
-
-    // items
-    let itemsH = '';
-    (o.items||[]).forEach(it => {
-      let ex = '';
-      try { const e = JSON.parse(it.extras||'{}'); if (e.drink) ex = ' <span style="color:var(--p);font-size:.72rem">+' + e.drink + '</span>'; } catch(err) {}
+    var sc = stClr[o.status] || '#aaa';
+    var itemsH = '';
+    (o.items||[]).forEach(function(it){
+      var ex = '';
+      try { var e=JSON.parse(it.extras||'{}'); if(e.drink) ex=' <span style="color:var(--p);font-size:.72rem">+'+e.drink+'</span>'; } catch(err){}
       itemsH += '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--dark3);border-radius:7px;font-size:.83rem;gap:8px">'
-        + '<span>' + (it.combo_name ? '🎁' : '🥟') + ' ' + (it.product_name||it.combo_name||'—') + ' <span style="color:var(--muted)">x' + it.quantity + '</span>' + ex + '</span>'
-        + '<span style="font-weight:700;color:var(--s);white-space:nowrap">' + fmt(it.unit_price * it.quantity) + '</span>'
-        + '</div>';
+        +'<span>'+(it.combo_name?'🎁':'🥟')+' '+(it.product_name||it.combo_name||'—')+' <span style="color:var(--muted)">x'+it.quantity+'</span>'+ex+'</span>'
+        +'<span style="font-weight:700;color:var(--s);white-space:nowrap">'+fmt(it.unit_price*it.quantity)+'</span></div>';
     });
-    if (!itemsH) itemsH = '<p style="color:var(--muted);font-size:.78rem;padding:4px 0">Sin items registrados</p>';
+    if (!itemsH) itemsH = '<p style="color:var(--muted);font-size:.78rem;padding:4px 0">Sin items</p>';
 
-    // comprobante
-    let proofH = '';
+    var proofH = '';
     if (o.payment_proof) {
       proofH = '<div style="margin-bottom:13px">'
-        + '<div style="font-size:.7rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">📎 Comprobante de Pago</div>'
-        + '<div style="display:flex;align-items:center;gap:12px">'
-        + '<img src="' + o.payment_proof + '" style="width:100px;height:72px;object-fit:cover;border-radius:9px;border:2px solid rgba(255,107,0,.4);cursor:pointer;flex-shrink:0" onclick="admViewProof(window._proofUrls[' + o.id + '])"/>'
-        + '<div style="display:flex;flex-direction:column;gap:7px">'
-        + '<button class="btn btn-p btn-sm" onclick="admViewProof(window._proofUrls[' + o.id + '])">🔍 Ver comprobante</button>'
-        + '<a href="' + o.payment_proof + '" target="_blank" class="btn btn-o btn-sm">📥 Descargar</a>'
-        + '</div></div></div>';
+        +'<div style="font-size:.7rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">📎 Comprobante de Pago</div>'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<img src="'+o.payment_proof+'" style="width:100px;height:72px;object-fit:cover;border-radius:9px;border:2px solid rgba(255,107,0,.4);cursor:pointer;flex-shrink:0" onclick="admViewProof(window._proofUrls['+o.id+'])"/>'
+        +'<div style="display:flex;flex-direction:column;gap:7px">'
+        +'<button class="btn btn-p btn-sm" onclick="admViewProof(window._proofUrls['+o.id+'])">🔍 Ver comprobante</button>'
+        +'<a href="'+o.payment_proof+'" target="_blank" class="btn btn-o btn-sm">📥 Descargar</a>'
+        +'</div></div></div>';
     }
 
-    // opciones select
-    const stOpts  = ['pending','payment_review','confirmed','preparing','delivered','cancelled']
-      .map(s => '<option value="' + s + '"' + (s===o.status?' selected':'') + '>' + stLbl[s] + '</option>').join('');
-    const payOpts = ['pending','processing','approved','rejected']
-      .map(s => '<option value="' + s + '"' + (s===o.payment_status?' selected':'') + '>' + payLbl[s] + '</option>').join('');
+    var stOpts = ['pending','payment_review','confirmed','preparing','delivered','cancelled']
+      .map(function(s){ return '<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+stLbl[s]+'</option>'; }).join('');
+    var payOpts = ['pending','processing','approved','rejected']
+      .map(function(s){ return '<option value="'+s+'"'+(s===o.payment_status?' selected':'')+'>'+payLbl[s]+'</option>'; }).join('');
 
-    return '<div class="co-card" style="border-left:4px solid ' + sc + '">'
-      // cabecera
-      + '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
-        + '<div>'
-          + '<span style="font-weight:700;font-size:1.1rem;color:var(--s);letter-spacing:1px">' + (o.order_number||'') + '</span>'
-          + '<span style="display:block;font-size:.7rem;color:var(--muted)">' + new Date(o.created_at).toLocaleString('es-CO') + '</span>'
-          + '<span style="display:block;font-size:.75rem;margin-top:2px">💳 ' + (o.payment_method||'').toUpperCase() + '</span>'
-        + '</div>'
-        + '<div style="text-align:right">'
-          + '<span style="border:1px solid ' + sc + ';color:' + sc + ';padding:3px 10px;border-radius:20px;font-weight:700;font-size:.75rem;display:inline-block">' + (stLbl[o.status]||o.status) + '</span>'
-          + '<div style="font-size:1.5rem;font-weight:700;color:var(--s);margin-top:4px">' + fmt(o.total) + '</div>'
-        + '</div>'
-      + '</div>'
+    var archiveBtn = window._ordArchived
+      ? '<button class="btn btn-sm" style="padding:5px 10px;font-size:.75rem;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--ok);border-radius:8px;cursor:pointer" onclick="admRestoreOrder('+o.id+')">♻️ Restaurar</button>'
+      : '<button class="btn btn-sm" style="padding:5px 10px;font-size:.75rem;background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.3);color:var(--err);border-radius:8px;cursor:pointer" onclick="admArchiveOrder('+o.id+')">🗄️ Archivar</button>';
+    var deleteBtn = window._ordArchived
+      ? '<button class="btn btn-sm" style="padding:5px 10px;font-size:.75rem;background:rgba(255,23,68,.15);border:1px solid rgba(255,23,68,.5);color:var(--err);border-radius:8px;cursor:pointer" onclick="admDeleteOrder('+o.id+')">🗑️ Eliminar</button>'
+      : '';
+
+    return '<div class="co-card" style="border-left:4px solid '+sc+'">'
+      +'<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
+        +'<div>'
+          +'<span style="font-weight:700;font-size:1.1rem;color:var(--s);letter-spacing:1px">'+(o.order_number||'')+'</span>'
+          +'<span style="display:block;font-size:.7rem;color:var(--muted)">'+new Date(o.created_at).toLocaleString('es-CO')+'</span>'
+          +'<span style="display:block;font-size:.75rem;margin-top:2px">💳 '+(o.payment_method||'').toUpperCase()+'</span>'
+        +'</div>'
+        +'<div style="text-align:right">'
+          +'<span style="border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:700;font-size:.75rem;display:inline-block">'+(stLbl[o.status]||o.status)+'</span>'
+          +'<div style="font-size:1.5rem;font-weight:700;color:var(--s);margin-top:4px">'+fmt(o.total)+'</div>'
+        +'</div>'
+      +'</div>'
       // cliente
-      + '<div style="background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.12);border-radius:9px;padding:10px 13px;margin-bottom:12px">'
-        + '<div style="display:flex;flex-wrap:wrap;gap:18px">'
-          + '<div><span style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Cliente</span>'
-            + '<div style="font-weight:700;font-size:.9rem">' + (o.full_name||'—') + '</div>'
-            + '<div style="font-size:.75rem;color:var(--muted)">' + (o.email||'') + '</div>'
-          + '</div>'
-          + (o.delivery_address ? '<div><span style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Dirección</span><div style="font-size:.82rem">' + o.delivery_address + '</div></div>' : '')
-          + (o.notes ? '<div><span style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Notas</span><div style="font-size:.82rem;color:var(--muted)">' + o.notes + '</div></div>' : '')
-        + '</div>'
-      + '</div>'
+      +'<div style="background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.12);border-radius:9px;padding:10px 13px;margin-bottom:12px">'
+        +'<div style="display:flex;flex-wrap:wrap;gap:18px">'
+          +'<div><span style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Cliente</span>'
+            +'<div style="font-weight:700;font-size:.9rem">'+(o.full_name||'—')+'</div>'
+            +'<div style="font-size:.75rem;color:var(--muted)">'+(o.email||'')+'</div></div>'
+          +(o.delivery_address?'<div><span style="font-size:.68rem;color:var(--p);font-weight:700;text-transform:uppercase">Dirección</span><div style="font-size:.82rem">'+o.delivery_address+'</div></div>':'')
+          +(o.notes?'<div><span style="font-size:.68rem;color:var(--p);font-weight:700;text-transform:uppercase">Notas</span><div style="font-size:.82rem;color:var(--muted)">'+o.notes+'</div></div>':'')
+        +'</div>'
+      +'</div>'
       // items
-      + '<div style="margin-bottom:12px">'
-        + '<div style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🛒 Productos pedidos</div>'
-        + '<div style="display:flex;flex-direction:column;gap:5px">' + itemsH + '</div>'
-      + '</div>'
-      // comprobante
-      + proofH
-      // estados
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">'
-        + '<div><label style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Estado Pedido</label>'
-          + '<select class="sel-s adm-sel-order" data-oid="' + o.id + '" data-pay="' + o.payment_status + '" style="width:100%;margin-top:4px">' + stOpts + '</select>'
-        + '</div>'
-        + '<div><label style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">Pago · ' + (o.payment_method||'') + '</label>'
-          + '<select class="sel-s adm-sel-pay" data-oid="' + o.id + '" data-st="' + o.status + '" style="width:100%;margin-top:4px">' + payOpts + '</select>'
-        + '</div>'
-      + '</div>'
-      // chat
-      + '<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
-        + '<button class="btn btn-o btn-sm adm-btn-chat" data-oid="' + o.id + '">💬 Mensaje al cliente</button>'
-        + '<div id="adm-chat-' + o.id + '" style="display:none;margin-top:10px">'
-          + '<div id="adm-msgs-' + o.id + '" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
-          + '<div style="display:flex;gap:8px">'
-            + '<input type="text" class="fi adm-chat-inp" id="adm-msginp-' + o.id + '" data-oid="' + o.id + '" placeholder="Mensaje al cliente..." style="flex:1;font-size:.85rem"/>'
-            + '<button class="btn btn-p btn-sm adm-btn-send" data-oid="' + o.id + '">Enviar ✉️</button>'
-          + '</div>'
-        + '</div>'
-      + '</div>'
-    + '</div>';
+      +'<div style="margin-bottom:12px">'
+        +'<div style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🛒 Productos pedidos</div>'
+        +'<div style="display:flex;flex-direction:column;gap:5px">'+itemsH+'</div>'
+      +'</div>'
+      +proofH
+      // estados + guardar
+      +'<div style="background:var(--dark3);border-radius:10px;padding:12px;margin-bottom:12px">'
+        +'<div style="font-size:.68rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:9px">🔄 Actualizar Estado</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">'
+          +'<div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px">Pedido</label>'
+            +'<select class="sel-s adm-sel-order" data-oid="'+o.id+'" data-pay="'+o.payment_status+'" style="width:100%">'+stOpts+'</select></div>'
+          +'<div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:4px">Pago · '+(o.payment_method||'')+'</label>'
+            +'<select class="sel-s adm-sel-pay" data-oid="'+o.id+'" data-st="'+o.status+'" style="width:100%">'+payOpts+'</select></div>'
+          +'<button class="btn btn-p btn-sm adm-btn-save-status" data-oid="'+o.id+'" style="white-space:nowrap;height:36px">💾 Guardar</button>'
+        +'</div>'
+      +'</div>'
+      // acciones
+      +'<div style="display:flex;flex-wrap:wrap;gap:8px;border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
+        +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
+        +archiveBtn
+        +deleteBtn
+        +'<div id="adm-chat-'+o.id+'" style="display:none;width:100%;margin-top:8px">'
+          +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
+          +'<div style="display:flex;gap:8px">'
+            +'<input type="text" class="fi adm-chat-inp" id="adm-msginp-'+o.id+'" data-oid="'+o.id+'" placeholder="Mensaje al cliente..." style="flex:1;font-size:.85rem"/>'
+            +'<button class="btn btn-p btn-sm adm-btn-send" data-oid="'+o.id+'">Enviar ✉️</button>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
   }
 
   function renderList() {
-    const list = ordersFilter === 'all' ? orders : orders.filter(o => o.status === ordersFilter);
-    document.getElementById('orders-list').innerHTML = list.length
-      ? list.map(buildCard).join('')
-      : '<div style="text-align:center;padding:60px 20px;color:var(--muted)"><span style="font-size:3rem;display:block;margin-bottom:12px">📭</span>Sin pedidos en esta categoría</div>';
+    var filtered = (typeof ordersFilter !== 'undefined' && ordersFilter !== 'all') ? orders.filter(function(o){ return o.status===ordersFilter; }) : orders;
+    var listEl = document.getElementById('orders-list');
+    if (!listEl) return;
+    listEl.innerHTML = filtered.length
+      ? filtered.map(buildCard).join('')
+      : '<div style="text-align:center;padding:60px;color:var(--muted)"><span style="font-size:3rem;display:block;margin-bottom:12px">📭</span>Sin pedidos</div>';
   }
-
   window.renderOrdersFiltered = renderList;
 
-  const tabsCfg = [
-    {id:'all',            label:'Todos',           cnt: cnt.all||0},
-    {id:'payment_review', label:'⚠️ Ver. Pago',    cnt: cnt.payment_review||0},
-    {id:'pending',        label:'⏳ Pendientes',   cnt: cnt.pending||0},
-    {id:'confirmed',      label:'✅ Confirmados',  cnt: cnt.confirmed||0},
-    {id:'preparing',      label:'👨‍🍳 Preparando',  cnt: cnt.preparing||0},
-    {id:'delivered',      label:'📦 Entregados',   cnt: cnt.delivered||0},
-    {id:'cancelled',      label:'❌ Cancelados',   cnt: cnt.cancelled||0},
+  var tabsCfg = [
+    {id:'all',label:'Todos',cnt:cnt.all||0},
+    {id:'payment_review',label:'⚠️ Ver. Pago',cnt:cnt.payment_review||0},
+    {id:'pending',label:'⏳ Pendientes',cnt:cnt.pending||0},
+    {id:'confirmed',label:'✅ Confirmados',cnt:cnt.confirmed||0},
+    {id:'preparing',label:'👨‍🍳 Preparando',cnt:cnt.preparing||0},
+    {id:'delivered',label:'📦 Entregados',cnt:cnt.delivered||0},
+    {id:'cancelled',label:'❌ Cancelados',cnt:cnt.cancelled||0},
   ];
-
-  const tabsHtml = tabsCfg.map(t => {
-    const active = ordersFilter === t.id;
-    return '<button class="orders-tab-btn" data-filter="' + t.id + '" style="padding:7px 14px;border:1px solid '
-      + (active ? 'rgba(255,107,0,.5)' : 'rgba(255,255,255,.1)') + ';background:'
-      + (active ? 'rgba(255,107,0,.18)' : 'rgba(255,255,255,.04)') + ';color:var(--txt);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700;white-space:nowrap">'
-      + t.label + (t.cnt ? ' <span style="background:rgba(255,255,255,.12);padding:1px 7px;border-radius:10px;font-size:.72rem">' + t.cnt + '</span>' : '')
-      + '</button>';
+  var tabsHtml = tabsCfg.map(function(t){
+    var active = (typeof ordersFilter !== 'undefined') && ordersFilter===t.id;
+    return '<button class="orders-tab-btn" data-filter="'+t.id+'" style="padding:7px 14px;border:1px solid '+(active?'rgba(255,107,0,.5)':'rgba(255,255,255,.1)')+';background:'+(active?'rgba(255,107,0,.18)':'rgba(255,255,255,.04)')+';color:var(--txt);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700;white-space:nowrap">'+t.label+(t.cnt?' <span style="background:rgba(255,255,255,.12);padding:1px 7px;border-radius:10px;font-size:.72rem">'+t.cnt+'</span>':'')+'</button>';
   }).join('');
 
   el.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">'
-    + '<h2 class="adm-title" style="margin-bottom:0">📦 Pedidos</h2>'
-    + (pendPay ? '<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:8px 14px;font-size:.85rem;color:var(--p);font-weight:700">⚠️ ' + pendPay + ' comprobante' + (pendPay>1?'s':'') + ' por verificar</div>' : '')
-    + '</div>'
-    + '<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px" id="orders-tabs">' + tabsHtml + '</div>'
-    + '<div id="orders-list"></div>';
-
+    +'<h2 class="adm-title" style="margin-bottom:0">📦 Pedidos</h2>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap">'
+    +(pendPay && !window._ordArchived ? '<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:8px 14px;font-size:.85rem;color:var(--p);font-weight:700">⚠️ '+pendPay+' por verificar</div>' : '')
+    +'<button class="btn btn-sm" onclick="window._ordArchived=!window._ordArchived;admTab(\'orders\')" style="padding:7px 14px;border:1px solid rgba(255,255,255,.15);background:'+(window._ordArchived?'rgba(0,230,118,.12)':'rgba(255,255,255,.05)')+';color:'+(window._ordArchived?'var(--ok)':'var(--muted)')+';border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">'+(window._ordArchived?'📦 Ver Activos':'🗄️ Ver Archivados')+'</button>'
+    +'</div></div>'
+    +(window._ordArchived ? '<div style="background:rgba(0,230,118,.07);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-size:.85rem;color:var(--ok)">🗄️ Mostrando pedidos archivados — puedes restaurarlos o eliminarlos permanentemente</div>' : '')
+    +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:22px" id="orders-tabs">'+tabsHtml+'</div>'
+    +'<div id="orders-list"></div>';
   renderList();
+}
+async function admArchiveOrder(id) {
+  if (!confirm('¿Archivar este pedido? Podrás restaurarlo después.')) return;
+  await api('PUT','/orders/'+id+'/status',{status:'archived',payment_status:'pending'});
+  admTab('orders');
+}
+async function admRestoreOrder(id) {
+  await api('PUT','/orders/'+id+'/status',{status:'pending',payment_status:'pending'});
+  admTab('orders');
+}
+async function admDeleteOrder(id) {
+  if (!confirm('⚠️ ¿ELIMINAR PERMANENTEMENTE este pedido? Esta acción NO se puede deshacer.')) return;
+  try {
+    await api('DELETE','/orders/'+id);
+    admTab('orders');
+  } catch(e) { alert('Error: '+e.message); }
 }
 
 async function admToggleChat(oid) {
@@ -2310,58 +2396,15 @@ async function admUpdateOrderStatus(sel, oid, other, isPayment=false) {
   } catch(e) { alert('Error: '+e.message); }
 }
 function admViewProof(url) {
-  if (!url) return;
-  const prev = document.getElementById('kame-proof-modal');
-  if (prev) prev.remove();
   const ov = document.createElement('div');
-  ov.id = 'kame-proof-modal';
-  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;animation:foi .25s ease;';
-  const onKey = e => { if (e.key==='Escape') { ov.remove(); document.removeEventListener('keydown',onKey); } };
-  document.addEventListener('keydown', onKey);
-  ov.addEventListener('click', e => { if (e.target===ov) { ov.remove(); document.removeEventListener('keydown',onKey); } });
-
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'width:100%;max-width:860px;display:flex;flex-direction:column;gap:14px;';
-
-  // Barra superior
-  const bar = document.createElement('div');
-  bar.style.cssText = 'display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;';
-  bar.innerHTML = '<span style="font-weight:700;font-size:1.1rem;color:var(--s)">📎 Comprobante de Pago</span>'
-    + '<div style="display:flex;gap:8px">'
-    + '<a href="' + url + '" download target="_blank" class="btn btn-o btn-sm">📥 Descargar</a>'
-    + '<a href="' + url + '" target="_blank" class="btn btn-o btn-sm">🔗 Abrir</a>'
-    + '<button id="close-proof-btn" style="background:rgba(255,23,68,.25);border:1px solid rgba(255,23,68,.5);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>'
-    + '</div>';
-
-  // Imagen con zoom toggle
-  const imgWrap = document.createElement('div');
-  imgWrap.style.cssText = 'display:flex;align-items:center;justify-content:center;overflow:auto;max-height:74vh;';
-  const img = document.createElement('img');
-  img.src = url;
-  img.style.cssText = 'max-width:100%;max-height:74vh;object-fit:contain;border-radius:12px;box-shadow:0 8px 60px rgba(0,0,0,.8);cursor:zoom-in;transition:transform .3s ease;';
-  let zoomed = false;
-  img.addEventListener('click', () => {
-    zoomed = !zoomed;
-    img.style.transform = zoomed ? 'scale(2)' : 'scale(1)';
-    img.style.cursor = zoomed ? 'zoom-out' : 'zoom-in';
-    imgWrap.style.overflow = zoomed ? 'scroll' : 'auto';
-  });
-  img.addEventListener('error', () => {
-    imgWrap.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)"><span style="font-size:3rem">📄</span><p style="margin-top:12px">No se puede previsualizar.<br/>Usa Abrir o Descargar.</p></div>';
-  });
-
-  const hint = document.createElement('p');
-  hint.style.cssText = 'color:rgba(255,255,255,.3);font-size:.72rem;text-align:center;';
-  hint.textContent = 'Clic en imagen para zoom · ESC o clic fuera para cerrar';
-
-  imgWrap.appendChild(img);
-  wrap.appendChild(bar);
-  wrap.appendChild(imgWrap);
-  wrap.appendChild(hint);
-  ov.appendChild(wrap);
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+  ov.onclick=()=>ov.remove();
+  ov.innerHTML=`<div style="position:relative;max-width:90vw;max-height:90vh" onclick="event.stopPropagation()">
+    <img src="${url}" style="max-width:90vw;max-height:85vh;object-fit:contain;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,.8);" onerror="this.style.display='none'"/>
+    <button onclick="this.parentElement.parentElement.remove()" style="position:absolute;top:-14px;right:-14px;background:var(--a);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    <a href="${url}" target="_blank" style="display:block;text-align:center;margin-top:12px;color:var(--p);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.9rem;">📎 Descargar comprobante</a>
+  </div>`;
   document.body.appendChild(ov);
-
-  document.getElementById('close-proof-btn').onclick = () => { ov.remove(); document.removeEventListener('keydown',onKey); };
 }
 async function admOpinions(el) {
   const ops = await api('GET','/admin/opinions');
@@ -2543,23 +2586,58 @@ async function admCarousel(el) {
   </div>`;
 }
 function admSlideForm(s) {
-  document.getElementById('adm-main').insertAdjacentHTML('afterbegin',`<div class="overlay" id="sf-overlay" onclick="document.getElementById('sf-overlay').remove()"><div class="modal" onclick="event.stopPropagation()">
+  const esc = v => (v||'').replace(/"/g,'&quot;');
+  document.getElementById('adm-main').insertAdjacentHTML('afterbegin',`<div class="overlay" id="sf-overlay" onclick="if(event.target.id==='sf-overlay')document.getElementById('sf-overlay').remove()"><div class="modal" onclick="event.stopPropagation()">
     <div class="mhdr"><h3>${s?'Editar':'Nuevo'} Slide</h3><button class="xbtn" onclick="document.getElementById('sf-overlay').remove()">✕</button></div>
     <div class="mbody">
-      <div class="fc"><label>URL Imagen</label><input type="text" class="fi" id="sf-img" value="${s?.image_url||''}"/></div>
-      <div class="fc"><label>Título</label><input type="text" class="fi" id="sf-title" value="${s?.title||''}"/></div>
-      <div class="fc"><label>Subtítulo</label><textarea class="fi" id="sf-sub" rows="2">${s?.subtitle||''}</textarea></div>
+      <div class="fc"><label>📷 Imagen del Slide</label>
+        <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          ${s?.image_url ? `<img id="sf-img-preview" src="${esc(s.image_url)}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,107,0,.2)"/>` : `<div id="sf-img-preview" style="width:100%;height:80px;border-radius:8px;border:2px dashed rgba(255,107,0,.2);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem">Vista previa</div>`}
+          <label class="up-sm" style="justify-content:center">
+            <input type="file" accept="image/*,video/*" id="sf-file-inp" onchange="admUploadSlideImg(this)" style="display:none"/>
+            📎 Subir desde archivo
+          </label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div>
+            <span style="font-size:.72rem;color:var(--muted)">o</span>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,.08)"></div>
+          </div>
+          <input type="text" class="fi" id="sf-img" value="${esc(s?.image_url)}" placeholder="https://... URL de imagen" style="font-size:.85rem" oninput="const p=document.getElementById('sf-img-preview');if(this.value){p.tagName==='DIV'?p.outerHTML='<img id=sf-img-preview src='+this.value+' style=width:100%;height:120px;object-fit:cover;border-radius:8px>':p.src=this.value;}"/>
+        </div>
+      </div>
+      <div class="fc"><label>Título</label><input type="text" class="fi" id="sf-title" value="${esc(s?.title)}"/></div>
+      <div class="fc"><label>Subtítulo</label><textarea class="fi" id="sf-sub" rows="2">${esc(s?.subtitle)}</textarea></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div class="fc"><label>Texto Botón</label><input type="text" class="fi" id="sf-btxt" value="${s?.button_text||''}"/></div>
-        <div class="fc"><label>Enlace Botón</label><input type="text" class="fi" id="sf-blink" value="${s?.button_link||''}"/></div>
+        <div class="fc"><label>Texto Botón</label><input type="text" class="fi" id="sf-btxt" value="${esc(s?.button_text)}"/></div>
+        <div class="fc"><label>Enlace Botón</label><input type="text" class="fi" id="sf-blink" value="${esc(s?.button_link)}"/></div>
         <div class="fc"><label>Orden</label><input type="number" class="fi" id="sf-ord" value="${s?.order_index||0}"/></div>
       </div>
     </div>
-    <div class="mftr"><button class="btn btn-o btn-sm" onclick="document.getElementById('sf-overlay').remove()">Cancelar</button><button class="btn btn-p btn-sm" onclick="admSaveSlide(${s?.id||null})">💾 Guardar</button></div>
+    <div class="mftr"><button class="btn btn-o btn-sm" onclick="document.getElementById('sf-overlay').remove()">Cancelar</button><button class="btn btn-p btn-sm" id="sf-save-btn" onclick="admSaveSlide(${s?.id||null})">💾 Guardar</button></div>
   </div></div>`);
 }
+async function admUploadSlideImg(inp) {
+  const f = inp.files[0]; if (!f) return;
+  const lbl = inp.closest('label'); lbl.textContent = '⏳ Subiendo...';
+  const fd = new FormData(); fd.append('file', f);
+  try {
+    const r = await fetch('/api/upload?folder=carousel',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
+    const d = await r.json();
+    document.getElementById('sf-img').value = d.url;
+    const prev = document.getElementById('sf-img-preview');
+    if (prev.tagName === 'DIV') {
+      prev.outerHTML = '<img id="sf-img-preview" src="'+d.url+'" style="width:100%;height:120px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,107,0,.3)"/>';
+    } else {
+      prev.src = d.url;
+    }
+    lbl.innerHTML = '<input type="file" accept="image/*,video/*" id="sf-file-inp" onchange="admUploadSlideImg(this)" style="display:none"/>📎 Subir desde archivo';
+  } catch(e) { alert('Error subiendo: '+e.message); lbl.innerHTML = '<input type="file" accept="image/*,video/*" id="sf-file-inp" onchange="admUploadSlideImg(this)" style="display:none"/>📎 Subir desde archivo'; }
+}
 async function admSaveSlide(id) {
+  const btn = document.getElementById('sf-save-btn');
+  btn.disabled=true; btn.textContent='⏳ Guardando...';
   const data={image_url:document.getElementById('sf-img').value,title:document.getElementById('sf-title').value,subtitle:document.getElementById('sf-sub').value,button_text:document.getElementById('sf-btxt').value,button_link:document.getElementById('sf-blink').value,order_index:+document.getElementById('sf-ord').value,is_active:true};
+  if (!data.image_url) { alert('La imagen es requerida'); btn.disabled=false; btn.textContent='💾 Guardar'; return; }
   await api(id?'PUT':'POST',id?'/carousel/'+id:'/carousel',data);
   document.getElementById('sf-overlay').remove(); loadCarousel(); admTab('carousel');
 }
@@ -2645,12 +2723,35 @@ async function admSiteConfig(el) {
       <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--s);margin-bottom:18px">📱 Nequi</h3>
       <div class="fc"><label>Nombre</label><input type="text" class="fi" id="cfg-nname" value="${cfg.nequi_name||''}"/></div>
       <div class="fc"><label>Teléfono</label><input type="text" class="fi" id="cfg-nphone" value="${cfg.nequi_phone||''}"/></div>
+      <div class="fc"><label>QR de Pago</label>
+        <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.15);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          ${cfg.nequi_qr ? `<img src="${cfg.nequi_qr}" style="width:120px;height:120px;object-fit:contain;background:#fff;padding:6px;border-radius:8px;border:1px solid rgba(255,107,0,.2)"/>` : `<div style="width:120px;height:120px;border-radius:8px;border:2px dashed rgba(255,107,0,.2);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--muted)">Sin QR</div>`}
+          <label class="up-sm"><input type="file" accept="image/*" id="cfg-qr-file" onchange="admUploadNequiQR(this)" style="display:none"/>📎 Subir imagen QR</label>
+          <input type="text" class="fi" id="cfg-nqr" value="${cfg.nequi_qr||''}" placeholder="URL del QR (opcional)" style="font-size:.82rem"/>
+          <p style="font-size:.72rem;color:var(--muted)">Si no subes QR, se genera uno automáticamente con el número de Nequi</p>
+        </div>
+      </div>
     </div>
   </div>
   <div style="text-align:right;margin-top:22px"><button class="btn btn-p btn-lg" id="cfg-save-btn" onclick="admSaveConfig()">💾 Guardar Todo</button></div>`;
   document.getElementById('cfg-pc').addEventListener('input', e => { document.getElementById('cfg-pct').value = e.target.value; });
   document.getElementById('cfg-sc').addEventListener('input', e => { document.getElementById('cfg-sct').value = e.target.value; });
   document.getElementById('cfg-ac').addEventListener('input', e => { document.getElementById('cfg-act').value = e.target.value; });
+}
+async function admUploadNequiQR(inp) {
+  const f = inp.files[0]; if (!f) return;
+  const lbl = inp.closest('label'); lbl.textContent = '⏳ Subiendo...';
+  const fd = new FormData(); fd.append('file', f);
+  try {
+    const r = await fetch('/api/upload?folder=general',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
+    const d = await r.json();
+    document.getElementById('cfg-nqr').value = d.url;
+    lbl.innerHTML = '<input type="file" accept="image/*" id="cfg-qr-file" onchange="admUploadNequiQR(this)" style="display:none"/>📎 Subir imagen QR';
+    // preview
+    const prev = lbl.closest('div').querySelector('img,div[style*="Sin QR"]');
+    if (prev && prev.tagName === 'IMG') prev.src = d.url;
+    alert('✅ QR subido. Haz clic en Guardar Todo para aplicarlo.');
+  } catch(e) { alert('Error: '+e.message); lbl.innerHTML = '<input type="file" accept="image/*" id="cfg-qr-file" onchange="admUploadNequiQR(this)" style="display:none"/>📎 Subir imagen QR'; }
 }
 async function admSaveConfig() {
   const btn = document.getElementById('cfg-save-btn');
@@ -2662,7 +2763,8 @@ async function admSaveConfig() {
     secondary_color: document.getElementById('cfg-sct').value,
     accent_color: document.getElementById('cfg-act').value,
     nequi_name: document.getElementById('cfg-nname').value,
-    nequi_phone: document.getElementById('cfg-nphone').value
+    nequi_phone: document.getElementById('cfg-nphone').value,
+    nequi_qr: document.getElementById('cfg-nqr')?.value || ''
   };
   await api('PUT','/admin/site-config',cfg);
   const r = document.documentElement;
@@ -2708,31 +2810,6 @@ document.addEventListener('click',e=>{
 //  INIT
 // ════════════════════════════════════════
 document.getElementById('footer-year').textContent = `© ${new Date().getFullYear()} Empanadas Kame · El sabor que supera los límites ⚡`;
-
-// ── EVENT DELEGATION admin orders ────────────────────────────────────────────
-document.addEventListener('change', function(ev) {
-  const t = ev.target;
-  if (t.classList.contains('adm-sel-order')) admUpdateOrderStatus(t, t.dataset.oid, t.dataset.pay, false);
-  if (t.classList.contains('adm-sel-pay'))   admUpdateOrderStatus(t, t.dataset.oid, t.dataset.st,  true);
-});
-document.addEventListener('click', function(ev) {
-  const t = ev.target;
-  if (t.classList.contains('orders-tab-btn')) {
-    ordersFilter = t.dataset.filter;
-    document.querySelectorAll('.orders-tab-btn').forEach(b => {
-      b.style.background = 'rgba(255,255,255,.04)';
-      b.style.borderColor = 'rgba(255,255,255,.1)';
-    });
-    t.style.background = 'rgba(255,107,0,.18)';
-    t.style.borderColor = 'rgba(255,107,0,.5)';
-    if (window.renderOrdersFiltered) window.renderOrdersFiltered();
-  }
-  if (t.classList.contains('adm-btn-chat')) admToggleChat(t.dataset.oid);
-  if (t.classList.contains('adm-btn-send')) admSendMsg(t.dataset.oid);
-});
-document.addEventListener('keydown', function(ev) {
-  if (ev.key === 'Enter' && ev.target.classList.contains('adm-chat-inp')) admSendMsg(ev.target.dataset.oid);
-});
 updateNavAuth();
 updateCartUI();
 // Apply saved config
