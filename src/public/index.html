@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--p:#FF6B00;--s:#FFD700;--a:#CC0000;--dark:#0A0A0F;--dark2:#13131E;--dark3:#1C1C2E;--sur:#22223A;--txt:#F0E6D3;--muted:#9B8F7A;--ok:#00E676;--err:#FF1744;--glow:0 0 20px rgba(255,107,0,.6);--r:12px;}
@@ -822,10 +821,11 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="auth-card">
       <div class="auth-logo"><h1>Empanadas <span>Kame</span></h1><p style="color:var(--muted);font-size:.85rem">Únete al dojo del sabor</p></div>
       <div id="reg-err" class="alert-e" style="display:none"></div>
-      <div class="fc"><label>Nombre Completo</label><input type="text" class="fi" id="r-name" placeholder="Tu nombre"/></div>
-      <div class="fc"><label>Email</label><input type="email" class="fi" id="r-email"/></div>
-      <div class="fc"><label>Teléfono (opcional)</label><input type="tel" class="fi" id="r-phone" placeholder="3001234567"/></div>
-      <div class="fc"><label>Contraseña</label><input type="password" class="fi" id="r-pass" placeholder="Mínimo 6 caracteres"/></div>
+      <div class="fc"><label>Nombre Completo *</label><input type="text" class="fi" id="r-name" placeholder="Tu nombre completo"/></div>
+      <div class="fc"><label>Email *</label><input type="email" class="fi" id="r-email"/></div>
+      <div class="fc"><label>📱 Teléfono *</label><input type="tel" class="fi" id="r-phone" placeholder="3001234567"/></div>
+      <div class="fc"><label>🏠 Ambiente / Apartamento *</label><input type="text" class="fi" id="r-ambiente" placeholder="Apto 301, Casa 5, Local 2B"/></div>
+      <div class="fc"><label>Contraseña *</label><input type="password" class="fi" id="r-pass" placeholder="Mínimo 6 caracteres"/></div>
       <button class="btn btn-p" style="width:100%;justify-content:center" id="reg-btn" onclick="doRegister()">🔥 Crear Cuenta</button>
       <p class="auth-link">¿Ya tienes cuenta? <a onclick="showPage('login')">Inicia sesión</a></p>
     </div>
@@ -1116,6 +1116,47 @@ function showPage(page) {
 // ════════════════════════════════════════
 //  NAVBAR
 // ════════════════════════════════════════
+
+// ── EVENT DELEGATION ─────────────────────────────────────────────────────────
+document.addEventListener('change', function(ev){
+  var t=ev.target;
+  if(t.classList.contains('adm-sel-order')||t.classList.contains('adm-sel-pay')){
+    var btn=document.querySelector('.adm-btn-save-status[data-oid="'+t.dataset.oid+'"]');
+    if(btn){btn.style.background='linear-gradient(135deg,var(--s),#FFA500)';btn.style.color='var(--dark)';}
+  }
+});
+document.addEventListener('click', function(ev){
+  var t=ev.target.closest('button')||ev.target;
+  // Guardar estado pedido
+  if(t.classList.contains('adm-btn-save-status')){
+    var oid=t.dataset.oid;
+    var sO=document.querySelector('.adm-sel-order[data-oid="'+oid+'"]');
+    var sP=document.querySelector('.adm-sel-pay[data-oid="'+oid+'"]');
+    if(sO&&sP){t.textContent='⏳';t.disabled=true;
+      api('PUT','/orders/'+oid+'/status',{status:sO.value,payment_status:sP.value})
+        .then(function(){t.textContent='✅ Guardado!';t.style.background='var(--ok)';t.style.color='#fff';
+          setTimeout(function(){t.textContent='💾 Guardar';t.style.background='';t.style.color='';t.disabled=false;},2000);
+        }).catch(function(e){alert(e.message);t.textContent='💾 Guardar';t.disabled=false;});
+    }
+  }
+  // Filtros pedidos
+  if(t.classList.contains('ord-tab-btn')){
+    window._ordFilter=t.dataset.filter;
+    document.querySelectorAll('.ord-tab-btn').forEach(function(b){b.style.background='rgba(255,255,255,.04)';b.style.borderColor='rgba(255,255,255,.1)';});
+    t.style.background='rgba(255,107,0,.18)';t.style.borderColor='rgba(255,107,0,.5)';
+    if(window.renderOrdersFiltered) window.renderOrdersFiltered();
+  }
+  // Chat pedidos
+  if(t.classList.contains('adm-btn-chat')) admToggleChat(t.dataset.oid);
+  if(t.classList.contains('adm-btn-send')) admSendMsg(t.dataset.oid);
+  // Rol usuario
+  if(t.classList.contains('adm-user-role')) admToggleUserRole(t.dataset.uid, t.dataset.role, t.dataset.name);
+  // Activo usuario
+  if(t.classList.contains('adm-user-active')) admToggleUserActive(t.dataset.uid, t.dataset.active, t.dataset.name);
+});
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Enter'&&ev.target.classList.contains('adm-chat-inp')) admSendMsg(ev.target.dataset.oid);
+});
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
 });
@@ -1524,9 +1565,22 @@ async function doRegister() {
   const btn = document.getElementById('reg-btn');
   const err = document.getElementById('reg-err');
   err.style.display = 'none';
+  const rName  = (document.getElementById('r-name').value||'').trim();
+  const rEmail = (document.getElementById('r-email').value||'').trim();
+  const rPhone = (document.getElementById('r-phone').value||'').trim();
+  const rAmb   = (document.getElementById('r-ambiente').value||'').trim();
+  const rPass  = document.getElementById('r-pass').value;
+  if (!rName)  { err.textContent='El nombre es obligatorio'; err.style.display=''; return; }
+  if (!rEmail) { err.textContent='El email es obligatorio'; err.style.display=''; return; }
+  if (!rPhone) { err.textContent='El teléfono es obligatorio'; err.style.display=''; return; }
+  if (!rAmb)   { err.textContent='El número de ambiente/apartamento es obligatorio'; err.style.display=''; return; }
+  if (!rPass||rPass.length<6) { err.textContent='La contraseña debe tener mínimo 6 caracteres'; err.style.display=''; return; }
   btn.disabled = true; btn.textContent = '⏳ Registrando...';
   try {
-    const res = await api('POST','/auth/register',{ full_name: document.getElementById('r-name').value, email: document.getElementById('r-email').value, password: document.getElementById('r-pass').value, phone: document.getElementById('r-phone').value });
+    const res = await api('POST','/auth/register',{
+      full_name: rName, email: rEmail, password: rPass,
+      phone: rPhone, ambiente_numero: rAmb, nombre_completo_real: rName
+    });
     TOKEN = res.token; USER = res.user;
     localStorage.setItem('kame_token', TOKEN);
     localStorage.setItem('kame_user', JSON.stringify(USER));
@@ -2119,61 +2173,148 @@ async function admSaveCombo(id) {
   document.getElementById('cf-overlay').remove(); admTab('combos');
 }
 async function admOrders(el) {
+  el.innerHTML = '<div class="spinner" style="padding:60px"></div>';
   const orders = await api('GET','/orders');
-  el.innerHTML = `<h2 class="adm-title">📦 Pedidos</h2>
-  <div style="display:flex;flex-direction:column;gap:16px">
-  ${orders.map(o=>`
-    <div class="co-card">
-      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
-        <div>
-          <span style="font-family:'Bangers',cursive;font-size:1.1rem;letter-spacing:1px;color:var(--s)">${o.order_number}</span>
-          <span style="display:block;font-size:.75rem;color:var(--muted)">${new Date(o.created_at).toLocaleString('es-CO')}</span>
-        </div>
-        <div>
-          <strong style="font-family:'Rajdhani',sans-serif;font-weight:700">${o.full_name||'—'}</strong>
-          <span style="display:block;font-size:.75rem;color:var(--muted)">${o.email||''}</span>
-        </div>
-        <span style="font-family:'Bangers',cursive;font-size:1.3rem;color:var(--s)">${fmt(o.total)}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-        <div>
-          <label style="font-size:.72rem;font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--p);letter-spacing:1px;text-transform:uppercase">Estado Pedido</label>
-          <select class="sel-s" style="width:100%;margin-top:4px" onchange="admUpdateOrderStatus(this,'${o.id}','${o.payment_status}')">
-            ${['pending','payment_review','confirmed','preparing','delivered','cancelled'].map(s=>`<option value="${s}"${s===o.status?' selected':''}>${{pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado'}[s]||s}</option>`).join('')}
-          </select>
-        </div>
-        <div>
-          <label style="font-size:.72rem;font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--p);letter-spacing:1px;text-transform:uppercase">Estado Pago · ${o.payment_method||''}</label>
-          <select class="sel-s" style="width:100%;margin-top:4px" onchange="admUpdateOrderStatus(this,'${o.id}','${o.status}',true)">
-            ${['pending','processing','approved','rejected'].map(s=>`<option value="${s}"${s===o.payment_status?' selected':''}>${{pending:'⏳ Pendiente',processing:'🔄 Procesando',approved:'✅ Aprobado',rejected:'❌ Rechazado'}[s]||s}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-      ${o.payment_proof ? `
-      <div style="margin-bottom:12px">
-        <label style="font-size:.72rem;font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--p);letter-spacing:1px;text-transform:uppercase">Comprobante de Pago</label>
-        <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
-          <img src="${o.payment_proof}" style="width:90px;height:64px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,107,0,.3);cursor:pointer" onclick="admViewProof('${o.payment_proof}')" onerror="this.style.display='none'"/>
-          <a href="${o.payment_proof}" target="_blank" class="btn btn-o btn-sm">📎 Ver completo</a>
-        </div>
-      </div>` : ''}
-      <!-- Chat admin → usuario -->
-      <div style="border-top:1px solid rgba(255,107,0,.1);padding-top:12px">
-        <button class="btn btn-o btn-sm" onclick="admToggleChat(${o.id})">💬 Escribirle al cliente</button>
-        <div id="adm-chat-${o.id}" style="display:none;margin-top:10px">
-          <div id="adm-msgs-${o.id}" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px">
-            <p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p>
-          </div>
-          <div style="display:flex;gap:8px">
-            <input type="text" class="fi" id="adm-msginp-${o.id}" placeholder="Escribe un mensaje al cliente..." style="flex:1;font-size:.85rem" onkeydown="if(event.key==='Enter')admSendMsg(${o.id})"/>
-            <button class="btn btn-p btn-sm" onclick="admSendMsg(${o.id})">Enviar ✉️</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('')}
-  </div>`;
+  window._proofUrls = window._proofUrls||{};
+  orders.forEach(function(o){ if(o.payment_proof) window._proofUrls[o.id]=o.payment_proof; });
+
+  if (typeof window._ordFilter==='undefined') window._ordFilter='all';
+
+  var stLbl  = {pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado'};
+  var stClr  = {pending:'#FFD740',payment_review:'#FF6B00',confirmed:'#00E676',preparing:'#FF8C00',delivered:'#00E676',cancelled:'#FF1744'};
+  var payLbl = {pending:'⏳ Pendiente',processing:'🔄 Procesando',approved:'✅ Aprobado',rejected:'❌ Rechazado'};
+
+  var cnt={all:orders.length};
+  orders.forEach(function(o){ cnt[o.status]=(cnt[o.status]||0)+1; });
+  var pendPay=cnt.payment_review||0;
+
+  function buildCard(o){
+    var sc=stClr[o.status]||'#aaa';
+    var itemsH='';
+    (o.items||[]).forEach(function(it){
+      var ex=''; try{var e=JSON.parse(it.extras||'{}');if(e.drink)ex=' <span style="color:var(--p)">+'+e.drink+'</span>';}catch(er){}
+      itemsH+='<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--dark3);border-radius:7px;font-size:.83rem;gap:8px">'
+        +'<span>'+(it.combo_name?'🎁':'🥟')+' '+(it.product_name||it.combo_name||'—')+' <span style="color:var(--muted)">x'+it.quantity+'</span>'+ex+'</span>'
+        +'<span style="font-weight:700;color:var(--s);white-space:nowrap">'+fmt(it.unit_price*it.quantity)+'</span></div>';
+    });
+    if(!itemsH) itemsH='<p style="color:var(--muted);font-size:.78rem;padding:4px 0">Sin items</p>';
+
+    var proofH='';
+    if(o.payment_proof){
+      proofH='<div style="margin-bottom:13px">'
+        +'<div style="font-size:.7rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">📎 Comprobante</div>'
+        +'<div style="display:flex;align-items:center;gap:12px">'
+        +'<img src="'+o.payment_proof+'" style="width:100px;height:72px;object-fit:cover;border-radius:9px;border:2px solid rgba(255,107,0,.4);cursor:pointer;flex-shrink:0" onclick="admViewProof(window._proofUrls['+o.id+'])"/>'
+        +'<div style="display:flex;flex-direction:column;gap:7px">'
+        +'<button class="btn btn-p btn-sm" onclick="admViewProof(window._proofUrls['+o.id+'])">🔍 Ver</button>'
+        +'<a href="'+o.payment_proof+'" target="_blank" class="btn btn-o btn-sm">📥 Descargar</a>'
+        +'</div></div></div>';
+    }
+    var stOpts=['pending','payment_review','confirmed','preparing','delivered','cancelled']
+      .map(function(s){return '<option value="'+s+'"'+(s===o.status?' selected':'')+'>'+stLbl[s]+'</option>';}).join('');
+    var payOpts=['pending','processing','approved','rejected']
+      .map(function(s){return '<option value="'+s+'"'+(s===o.payment_status?' selected':'')+'>'+payLbl[s]+'</option>';}).join('');
+
+    return '<div class="co-card" style="border-left:4px solid '+sc+'">'
+      +'<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">'
+        +'<div><span style="font-weight:700;font-size:1.05rem;color:var(--s);letter-spacing:1px">'+(o.order_number||'')+'</span>'
+        +'<span style="display:block;font-size:.7rem;color:var(--muted)">'+new Date(o.created_at).toLocaleString('es-CO')+'</span>'
+        +'<span style="display:block;font-size:.75rem;margin-top:2px">💳 '+(o.payment_method||'').toUpperCase()+'</span></div>'
+        +'<div style="text-align:right">'
+          +'<span style="border:1px solid '+sc+';color:'+sc+';padding:3px 10px;border-radius:20px;font-weight:700;font-size:.75rem;display:inline-block">'+(stLbl[o.status]||o.status)+'</span>'
+          +'<div style="font-size:1.4rem;font-weight:700;color:var(--s);margin-top:3px">'+fmt(o.total)+'</div>'
+        +'</div>'
+      +'</div>'
+      // DATOS CLIENTE
+      +'<div style="background:rgba(255,107,0,.06);border:1px solid rgba(255,107,0,.18);border-radius:9px;padding:11px 13px;margin-bottom:12px">'
+        +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">👤 Datos del Cliente</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">'
+          +'<div style="grid-column:1/-1;background:rgba(255,255,255,.04);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px">'
+            +'<span>👤</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Nombre</span>'
+            +'<span style="font-weight:700;font-size:.9rem">'+(o.customer_name||o.full_name||'—')+'</span></div>'
+          +'</div>'
+          +'<div style="background:rgba(0,230,118,.06);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px">'
+            +'<span>📱</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Teléfono</span>'
+            +'<span style="font-weight:700;font-size:.9rem;color:var(--ok)">'+(o.customer_phone||'—')+'</span></div>'
+          +'</div>'
+          +'<div style="background:rgba(255,215,0,.06);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px">'
+            +'<span>🏠</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Ambiente/Apto</span>'
+            +'<span style="font-weight:700;font-size:.9rem;color:var(--s)">'+(o.customer_ambiente||'—')+'</span></div>'
+          +'</div>'
+          +(o.delivery_address
+            ?'<div style="grid-column:1/-1;background:rgba(255,255,255,.04);border-radius:7px;padding:7px 10px;display:flex;align-items:flex-start;gap:8px">'
+              +'<span>📍</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Dirección</span>'
+              +'<span style="font-size:.87rem">'+o.delivery_address+'</span></div></div>':'')
+          +(o.notes
+            ?'<div style="grid-column:1/-1;background:rgba(255,215,0,.05);border-left:3px solid rgba(255,215,0,.3);border-radius:0 7px 7px 0;padding:7px 10px">'
+              +'<span style="font-size:.62rem;color:var(--s);font-weight:700;display:block">📝 Notas</span>'
+              +'<span style="font-size:.82rem;color:var(--muted)">'+o.notes+'</span></div>':'')
+        +'</div>'
+      +'</div>'
+      // ITEMS
+      +'<div style="margin-bottom:12px">'
+        +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🛒 Productos</div>'
+        +'<div style="display:flex;flex-direction:column;gap:5px">'+itemsH+'</div>'
+      +'</div>'
+      +proofH
+      // ESTADOS + GUARDAR
+      +'<div style="background:var(--dark3);border-radius:10px;padding:12px;margin-bottom:10px">'
+        +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🔄 Cambiar Estado</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end">'
+          +'<div><label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:3px">Pedido</label>'
+            +'<select class="sel-s adm-sel-order" data-oid="'+o.id+'" data-pay="'+o.payment_status+'" style="width:100%">'+stOpts+'</select></div>'
+          +'<div><label style="font-size:.68rem;color:var(--muted);display:block;margin-bottom:3px">Pago · '+(o.payment_method||'')+'</label>'
+            +'<select class="sel-s adm-sel-pay" data-oid="'+o.id+'" data-st="'+o.status+'" style="width:100%">'+payOpts+'</select></div>'
+          +'<button class="btn btn-p btn-sm adm-btn-save-status" data-oid="'+o.id+'" style="white-space:nowrap;height:36px">💾 Guardar</button>'
+        +'</div>'
+      +'</div>'
+      // CHAT
+      +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
+        +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
+        +'<div id="adm-chat-'+o.id+'" style="display:none;margin-top:10px">'
+          +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
+          +'<div style="display:flex;gap:8px">'
+            +'<input type="text" class="fi adm-chat-inp" id="adm-msginp-'+o.id+'" data-oid="'+o.id+'" placeholder="Mensaje al cliente..." style="flex:1;font-size:.85rem"/>'
+            +'<button class="btn btn-p btn-sm adm-btn-send" data-oid="'+o.id+'">Enviar ✉️</button>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
+  }
+
+  function renderList(){
+    var filtered = window._ordFilter==='all' ? orders : orders.filter(function(o){return o.status===window._ordFilter;});
+    var listEl=document.getElementById('orders-list');
+    if(!listEl) return;
+    listEl.innerHTML = filtered.length
+      ? filtered.map(buildCard).join('')
+      : '<div style="text-align:center;padding:50px;color:var(--muted)"><span style="font-size:2.5rem;display:block;margin-bottom:10px">📭</span>Sin pedidos en esta categoría</div>';
+  }
+  window.renderOrdersFiltered=renderList;
+
+  var tabs=[
+    {id:'all',       label:'Todos',         cnt:cnt.all||0},
+    {id:'payment_review',label:'⚠️ Ver. Pago',cnt:cnt.payment_review||0},
+    {id:'pending',   label:'⏳ Pendientes',  cnt:cnt.pending||0},
+    {id:'confirmed', label:'✅ Confirmados', cnt:cnt.confirmed||0},
+    {id:'preparing', label:'👨‍🍳 Preparando', cnt:cnt.preparing||0},
+    {id:'delivered', label:'📦 Entregados',  cnt:cnt.delivered||0},
+    {id:'cancelled', label:'❌ Cancelados',  cnt:cnt.cancelled||0},
+  ];
+  var tabsHtml=tabs.map(function(t){
+    var act=window._ordFilter===t.id;
+    return '<button class="ord-tab-btn" data-filter="'+t.id+'" style="padding:7px 13px;border:1px solid '+(act?'rgba(255,107,0,.5)':'rgba(255,255,255,.1)')+';background:'+(act?'rgba(255,107,0,.18)':'rgba(255,255,255,.04)')+';color:var(--txt);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700;white-space:nowrap;transition:.2s">'+t.label+(t.cnt?' <span style="background:rgba(255,255,255,.12);padding:1px 6px;border-radius:10px;font-size:.7rem">'+t.cnt+'</span>':'')+'</button>';
+  }).join('');
+
+  el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
+    +'<h2 class="adm-title" style="margin-bottom:0">📦 Pedidos</h2>'
+    +(pendPay?'<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:7px 13px;font-size:.83rem;color:var(--p);font-weight:700">⚠️ '+pendPay+' comprobante'+(pendPay>1?'s':'')+' por verificar</div>':'')
+    +'</div>'
+    +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px" id="ord-tabs">'+tabsHtml+'</div>'
+    +'<div id="orders-list"></div>';
+  renderList();
 }
+
 async function admToggleChat(oid) {
   const chat = document.getElementById('adm-chat-'+oid);
   if (chat.style.display === 'none') {
@@ -2320,81 +2461,34 @@ async function admGuerreros(el) {
   </div>`;
 }
 function admGuerreroForm(c) {
-  // Construir sin template literals anidados para evitar errores de parser
-  var rating = (c && c.rating) ? c.rating : 5;
-  var saveId = (c && c.id) ? c.id : null;
-
-  var starsHtml = '';
-  for (var n = 1; n <= 5; n++) {
-    var col = rating >= n ? 'var(--s)' : 'var(--muted)';
-    starsHtml += '<span data-v="' + n + '" class="gf-star" style="color:' + col + ';transition:.15s;font-size:1.8rem;cursor:pointer">★</span>';
-  }
-
-  var photoSrc   = (c && c.photo_url) ? c.photo_url : '';
-  var photoStyle = photoSrc ? 'width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--p);margin-top:8px;display:block'
-                            : 'width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--p);margin-top:8px;display:none';
-
-  var ov = document.createElement('div');
-  ov.className = 'overlay';
-  ov.id = 'gf-overlay';
-  ov.innerHTML =
-    '<div class="modal" style="max-width:560px" onclick="event.stopPropagation()">'
-    + '<div class="mhdr">'
-    +   '<h3>' + (c ? '✏️ Editar' : '➕ Nuevo') + ' Guerrero</h3>'
-    +   '<button class="xbtn" onclick="document.getElementById(\'gf-overlay\').remove()">✕</button>'
-    + '</div>'
-    + '<div class="mbody">'
-    +   '<div class="fc"><label>Nombre del cliente</label>'
-    +     '<input type="text" class="fi" id="gf-name" value="' + ((c && c.client_name) ? c.client_name.replace(/"/g,'&quot;') : '') + '" placeholder="Nombre del cliente"/>'
-    +   '</div>'
-    +   '<div class="fc"><label>Producto comprado</label>'
-    +     '<input type="text" class="fi" id="gf-prod" value="' + ((c && c.product_bought) ? c.product_bought.replace(/"/g,'&quot;') : '') + '" placeholder="Ej: Empanada de Carne"/>'
-    +   '</div>'
-    +   '<div class="fc"><label>Descripción / Testimonio</label>'
-    +     '<textarea class="fi" id="gf-desc" rows="3" placeholder="Testimonio del cliente...">' + ((c && c.description) ? c.description.replace(/</g,'&lt;') : '') + '</textarea>'
-    +   '</div>'
-    +   '<div class="fc"><label>Calificación (1-5)</label>'
-    +     '<div id="gf-stars" style="display:flex;gap:6px;margin-top:4px">' + starsHtml + '</div>'
-    +     '<input type="hidden" id="gf-rating" value="' + rating + '"/>'
-    +   '</div>'
-    +   '<div class="fc"><label>Foto</label>'
-    +     '<input type="text" class="fi" id="gf-photo" value="' + photoSrc.replace(/"/g,'&quot;') + '" placeholder="https://... URL de la foto"/>'
-    +     '<label class="up-sm" style="margin-top:8px">'
-    +       '<input type="file" accept="image/*" id="gf-file-inp" style="display:none"/>📎 Subir foto'
-    +     '</label>'
-    +     '<img id="gf-preview" src="' + photoSrc + '" style="' + photoStyle + '"/>'
-    +   '</div>'
-    +   '<div class="fc"><label>Orden de aparición</label>'
-    +     '<input type="number" class="fi" id="gf-order" value="' + ((c && c.order_index != null) ? c.order_index : 0) + '" min="0"/>'
-    +   '</div>'
-    + '</div>'
-    + '<div class="mftr">'
-    +   '<button class="btn btn-o btn-sm" onclick="document.getElementById(\'gf-overlay\').remove()">Cancelar</button>'
-    +   '<button class="btn btn-p btn-sm" id="gf-save-btn">💾 Guardar</button>'
-    + '</div>'
-    + '</div>';
-
-  ov.addEventListener('click', function(e) { if (e.target === ov) ov.remove(); });
+  var rating=(c&&c.rating)?c.rating:5, saveId=(c&&c.id)?c.id:null, photoSrc=(c&&c.photo_url)?c.photo_url:'';
+  var starsH=''; for(var n=1;n<=5;n++){starsH+='<span data-v="'+n+'" class="gf-star" style="color:'+(rating>=n?'var(--s)':'var(--muted)')+';font-size:1.8rem;cursor:pointer">★</span>';}
+  var ov=document.createElement('div'); ov.className='overlay'; ov.id='gf-overlay';
+  ov.innerHTML='<div class="modal" style="max-width:560px" onclick="event.stopPropagation()">'
+    +'<div class="mhdr"><h3>'+(c?'✏️ Editar':'➕ Nuevo')+' Guerrero</h3><button class="xbtn" onclick="document.getElementById(\'gf-overlay\').remove()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<div class="fc"><label>Nombre del cliente</label><input type="text" class="fi" id="gf-name" value="'+((c&&c.client_name)?c.client_name.replace(/"/g,'&quot;'):'')+'" placeholder="Nombre"/></div>'
+    +'<div class="fc"><label>Producto comprado</label><input type="text" class="fi" id="gf-prod" value="'+((c&&c.product_bought)?c.product_bought.replace(/"/g,'&quot;'):'')+'" placeholder="Ej: Empanada de Carne"/></div>'
+    +'<div class="fc"><label>Descripción / Testimonio</label><textarea class="fi" id="gf-desc" rows="3">'+((c&&c.description)?c.description.replace(/</g,'&lt;'):'')+'</textarea></div>'
+    +'<div class="fc"><label>Calificación (1-5)</label><div id="gf-stars" style="display:flex;gap:6px;margin-top:4px">'+starsH+'</div><input type="hidden" id="gf-rating" value="'+rating+'"/></div>'
+    +'<div class="fc"><label>Foto</label>'
+    +'<input type="text" class="fi" id="gf-photo" value="'+photoSrc.replace(/"/g,'&quot;')+'" placeholder="https://..."/>'
+    +'<label class="up-sm" style="margin-top:8px"><input type="file" accept="image/*" id="gf-file-inp" style="display:none"/>📎 Subir foto</label>'
+    +'<img id="gf-preview" src="'+photoSrc+'" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid var(--p);margin-top:8px;display:'+(photoSrc?'block':'none')+'"/>'
+    +'</div>'
+    +'<div class="fc"><label>Orden de aparición</label><input type="number" class="fi" id="gf-order" value="'+((c&&c.order_index!=null)?c.order_index:0)+'" min="0"/></div>'
+    +'</div>'
+    +'<div class="mftr"><button class="btn btn-o btn-sm" onclick="document.getElementById(\'gf-overlay\').remove()">Cancelar</button>'
+    +'<button class="btn btn-p btn-sm" id="gf-save-btn">💾 Guardar</button></div>'
+    +'</div>';
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
   document.getElementById('adm-main').prepend(ov);
-
-  // Estrellas: click handler
-  document.querySelectorAll('#gf-stars .gf-star').forEach(function(sp) {
-    sp.addEventListener('click', function() { setGFStar(+this.dataset.v); });
-  });
-
-  // Upload foto
-  document.getElementById('gf-file-inp').addEventListener('change', function() { admUploadGFPhoto(this); });
-
-  // URL foto → preview
-  document.getElementById('gf-photo').addEventListener('input', function() {
-    var prev = document.getElementById('gf-preview');
-    if (this.value) { prev.src = this.value; prev.style.display = 'block'; }
-    else prev.style.display = 'none';
-  });
-
-  // Guardar
-  document.getElementById('gf-save-btn').addEventListener('click', function() { admSaveGuerrero(saveId); });
+  document.querySelectorAll('#gf-stars .gf-star').forEach(function(sp){sp.addEventListener('click',function(){setGFStar(+this.dataset.v);});});
+  document.getElementById('gf-file-inp').addEventListener('change',function(){admUploadGFPhoto(this);});
+  document.getElementById('gf-photo').addEventListener('input',function(){var p=document.getElementById('gf-preview');if(this.value){p.src=this.value;p.style.display='block';}else p.style.display='none';});
+  document.getElementById('gf-save-btn').addEventListener('click',function(){admSaveGuerrero(saveId);});
 }
+
 let gfStarVal = 5;
 function setGFStar(n) {
   gfStarVal = n;
@@ -2475,40 +2569,74 @@ async function admSaveSlide(id) {
   document.getElementById('sf-overlay').remove(); loadCarousel(); admTab('carousel');
 }
 async function admUsers(el) {
+  el.innerHTML = '<div class="spinner" style="padding:40px"></div>';
   const users = await api('GET','/admin/users');
-  el.innerHTML = `<h2 class="adm-title">👥 Usuarios</h2>
-  <div style="display:flex;flex-direction:column;gap:14px">
-  ${users.filter(u=>u.role!=='admin').map(u=>`
-    <div class="co-card" style="display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start">
-      <img src="${u.avatar||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.full_name)}&background=FF6B00&color=fff&size=80`}"
-        style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--p);flex-shrink:0"/>
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px">
-          <strong style="font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px">${u.full_name}</strong>
-          <span style="color:var(--muted);font-size:.8rem">@${u.username||'—'}</span>
-          <span style="color:${u.is_active?'var(--ok)':'var(--err)'};font-size:.75rem">${u.is_active?'✅ Activo':'❌ Inactivo'}</span>
-          <button class="aico" style="margin-left:auto" onclick="api('PUT','/admin/users/${u.id}',{role:'${u.role==='admin'?'client':'admin'}',is_active:${u.is_active}}).then(()=>admTab('users'))">${u.role==='admin'?'👤 → Cliente':'⚙️ → Admin'}</button>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;margin-bottom:10px">
-          <div class="ir"><span>Email</span><strong style="font-size:.82rem">${u.email}</strong></div>
-          <div class="ir"><span>Teléfono</span><strong style="font-size:.82rem">${u.phone||'—'}</strong></div>
-          <div class="ir"><span>Celular contacto</span><strong style="font-size:.82rem;color:var(--p)">${u.celular||'—'}</strong></div>
-          <div class="ir"><span>Cliente desde</span><strong style="font-size:.82rem">${new Date(u.created_at).toLocaleDateString('es-CO')}</strong></div>
-        </div>
-        ${(u.ambiente_numero||u.nombre_completo_real||u.celular) ? `
-        <div style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.2);border-radius:8px;padding:10px 14px">
-          <span style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.72rem;color:var(--p);letter-spacing:1px;text-transform:uppercase">📋 Datos de entrega</span>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px">
-            ${u.nombre_completo_real?`<span style="font-size:.82rem"><strong>Nombre real:</strong> ${u.nombre_completo_real}</span>`:''}
-            ${u.ambiente_numero?`<span style="font-size:.82rem"><strong>Ambiente/Apto:</strong> ${u.ambiente_numero}</span>`:''}
-            ${u.celular?`<span style="font-size:.82rem"><strong>Celular:</strong> ${u.celular}</span>`:''}
-          </div>
-        </div>` : `<div style="background:rgba(255,255,255,.03);border-radius:8px;padding:8px 12px;font-size:.78rem;color:var(--muted)">⚠️ Sin datos de entrega registrados</div>`}
-      </div>
-    </div>
-  `).join('')}
-  </div>`;
+
+  function userCard(u) {
+    var av = u.avatar||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.full_name||'U')+'&background=FF6B00&color=fff&size=80');
+    var isAdmin = u.role==='admin';
+    var entrega = (u.ambiente_numero||u.nombre_completo_real||u.celular||u.phone)
+      ? '<div style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.15);border-radius:8px;padding:9px 12px;margin-top:8px">'
+          +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">📋 Datos de entrega</div>'
+          +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px">'
+          +(u.nombre_completo_real?'<div class="ir"><span>Nombre real</span><strong style="font-size:.8rem">'+u.nombre_completo_real+'</strong></div>':'')
+          +(u.ambiente_numero?'<div class="ir"><span>Ambiente/Apto</span><strong style="font-size:.8rem;color:var(--s)">'+u.ambiente_numero+'</strong></div>':'')
+          +((u.celular||u.phone)?'<div class="ir"><span>Teléfono</span><strong style="font-size:.8rem;color:var(--ok)">'+(u.celular||u.phone)+'</strong></div>':'')
+          +'</div></div>'
+      : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,107,0,.15);border-radius:8px;padding:7px 12px;margin-top:8px;font-size:.75rem;color:var(--muted)">⚠️ Sin datos de entrega completos</div>';
+
+    return '<div class="co-card" style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start">'
+      +'<div style="position:relative;flex-shrink:0">'
+        +'<img src="'+av+'" style="width:58px;height:58px;border-radius:50%;object-fit:cover;border:2px solid '+(isAdmin?'var(--s)':'var(--p)')+'"/>'
+        +(isAdmin?'<span style="position:absolute;bottom:-3px;right:-3px;background:var(--s);border:2px solid var(--dark2);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.6rem">⚙️</span>':'')
+      +'</div>'
+      +'<div>'
+        // nombre + badges + estado
+        +'<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px">'
+          +'<strong style="font-size:1rem">'+u.full_name+'</strong>'
+          +(u.username?'<span style="color:var(--muted);font-size:.75rem">@'+u.username+'</span>':'')
+          +'<span style="background:'+(isAdmin?'rgba(255,215,0,.15)':'rgba(255,107,0,.1)')+';color:'+(isAdmin?'var(--s)':'var(--p)')+';padding:2px 8px;border-radius:20px;font-weight:700;font-size:.7rem">'+(isAdmin?'⚙️ Admin':'👤 Cliente')+'</span>'
+          +'<span style="color:'+(u.is_active?'var(--ok)':'var(--err)')+';font-size:.7rem;margin-left:auto">'+(u.is_active?'● Activo':'● Inactivo')+'</span>'
+        +'</div>'
+        // info básica
+        +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:8px">'
+          +'<div class="ir"><span>Email</span><strong style="font-size:.78rem">'+u.email+'</strong></div>'
+          +'<div class="ir"><span>Registrado</span><strong style="font-size:.78rem">'+new Date(u.created_at).toLocaleDateString('es-CO')+'</strong></div>'
+        +'</div>'
+        +entrega
+        // botones de acción
+        +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,107,0,.1)">'
+          +'<button class="btn btn-sm adm-user-role" data-uid="'+u.id+'" data-role="'+u.role+'" data-name="'+u.full_name.replace(/"/g,'&quot;')+'" style="padding:5px 11px;font-size:.78rem;background:'+(isAdmin?'rgba(255,23,68,.08)':'rgba(255,107,0,.1)')+';border:1px solid '+(isAdmin?'rgba(255,23,68,.35)':'rgba(255,107,0,.35)')+';color:'+(isAdmin?'var(--err)':'var(--p)')+';border-radius:8px;cursor:pointer">'
+            +(isAdmin?'👤 Quitar Admin':'⚙️ Hacer Admin')
+          +'</button>'
+          +'<button class="btn btn-sm adm-user-active" data-uid="'+u.id+'" data-active="'+u.is_active+'" data-name="'+u.full_name.replace(/"/g,'&quot;')+'" style="padding:5px 11px;font-size:.78rem;background:'+(u.is_active?'rgba(255,23,68,.08)':'rgba(0,230,118,.08)')+';border:1px solid '+(u.is_active?'rgba(255,23,68,.3)':'rgba(0,230,118,.3)')+';color:'+(u.is_active?'var(--err)':'var(--ok)')+';border-radius:8px;cursor:pointer">'
+            +(u.is_active?'🔒 Desactivar':'✅ Activar')
+          +'</button>'
+        +'</div>'
+      +'</div>'
+    +'</div>';
+  }
+
+  el.innerHTML = '<h2 class="adm-title">👥 Usuarios</h2>'
+    +'<div style="display:flex;flex-direction:column;gap:12px">'
+    +(users.length ? users.map(userCard).join('') : '<p style="color:var(--muted)">Sin usuarios</p>')
+    +'</div>';
 }
+async function admToggleUserRole(uid, currentRole, name) {
+  var newRole = currentRole==='admin' ? 'client' : 'admin';
+  var action  = newRole==='admin' ? 'hacer Admin a' : 'quitar Admin a';
+  if (!confirm(action+' "'+name+'"?')) return;
+  try { await api('PUT','/admin/users/'+uid,{role:newRole,is_active:true}); admTab('users'); }
+  catch(e) { alert('Error: '+e.message); }
+}
+async function admToggleUserActive(uid, currentActive, name) {
+  var newActive = currentActive==='true'||currentActive===true ? false : true;
+  var action = newActive ? 'activar' : 'desactivar';
+  if (!confirm('¿Deseas '+action+' la cuenta de "'+name+'"?')) return;
+  try { await api('PUT','/admin/users/'+uid,{is_active:newActive}); admTab('users'); }
+  catch(e) { alert('Error: '+e.message); }
+}
+
 async function admCoupons(el) {
   const coupons = await api('GET','/admin/coupons');
   el.innerHTML = `<h2 class="adm-title">🎟️ Cupones</h2>
