@@ -825,7 +825,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
       <div class="fc"><label>Nombre Completo *</label><input type="text" class="fi" id="r-name" placeholder="Tu nombre completo"/></div>
       <div class="fc"><label>Email *</label><input type="email" class="fi" id="r-email"/></div>
       <div class="fc"><label>📱 Teléfono *</label><input type="tel" class="fi" id="r-phone" placeholder="3001234567"/></div>
-      <div class="fc"><label>🏠 Ambiente / Apartamento *</label><input type="text" class="fi" id="r-ambiente" placeholder="Apto 301, Casa 5, Local 2B"/></div>
+      <div class="fc"><label>🏠 Número de Ambiente *</label><input type="text" class="fi" id="r-ambiente" placeholder="Ej: 101, 205, 312..."/></div>
       <div class="fc"><label>Contraseña *</label><input type="password" class="fi" id="r-pass" placeholder="Mínimo 6 caracteres"/></div>
       <button class="btn btn-p" style="width:100%;justify-content:center" id="reg-btn" onclick="doRegister()">🔥 Crear Cuenta</button>
       <p class="auth-link">¿Ya tienes cuenta? <a onclick="showPage('login')">Inicia sesión</a></p>
@@ -974,7 +974,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 
         <h3 style="font-family:'Bangers',cursive;font-size:1.5rem;letter-spacing:2px;margin:24px 0 16px;color:var(--s)">📋 Datos de Entrega <span style="font-size:.9rem;color:var(--p);font-family:'Rajdhani',sans-serif;font-weight:700;">(Solo visible para el admin)</span></h3>
         <div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:12px;padding:20px;margin-bottom:20px">
-          <div class="fc"><label>🏠 Número de Ambiente / Apartamento</label><input type="text" class="fi" id="ef-ambiente" placeholder="Ej: Apto 301, Casa 5, Local 2B"/></div>
+          <div class="fc"><label>🏠 Número de Ambiente</label><input type="text" class="fi" id="ef-ambiente" placeholder="Ej: 101, 205, 312..."/></div>
           <div class="fc"><label>👤 Nombre Completo Real</label><input type="text" class="fi" id="ef-nombre-real" placeholder="Como aparece en tu documento de identidad"/></div>
           <div class="fc" style="margin-bottom:0"><label>📱 Celular de Contacto</label><input type="tel" class="fi" id="ef-celular" placeholder="Número para coordinación de entrega"/></div>
         </div>
@@ -1574,7 +1574,7 @@ async function doRegister() {
   if (!rName)  { err.textContent='El nombre es obligatorio'; err.style.display=''; return; }
   if (!rEmail) { err.textContent='El email es obligatorio'; err.style.display=''; return; }
   if (!rPhone) { err.textContent='El teléfono es obligatorio'; err.style.display=''; return; }
-  if (!rAmb)   { err.textContent='El número de ambiente/apartamento es obligatorio'; err.style.display=''; return; }
+  if (!rAmb)   { err.textContent='El número de ambiente es obligatorio'; err.style.display=''; return; }
   if (!rPass||rPass.length<6) { err.textContent='La contraseña debe tener mínimo 6 caracteres'; err.style.display=''; return; }
   btn.disabled = true; btn.textContent = '⏳ Registrando...';
   try {
@@ -2239,7 +2239,7 @@ async function admOrders(el) {
             +'<span style="font-weight:700;font-size:.9rem;color:var(--ok)">'+(o.customer_phone||'—')+'</span></div>'
           +'</div>'
           +'<div style="background:rgba(255,215,0,.06);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px">'
-            +'<span>🏠</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Ambiente/Apto</span>'
+            +'<span>🏠</span><div><span style="font-size:.62rem;color:var(--muted);display:block">Ambiente SENA</span>'
             +'<span style="font-weight:700;font-size:.9rem;color:var(--s)">'+(o.customer_ambiente||'—')+'</span></div>'
           +'</div>'
           +(o.delivery_address
@@ -2581,7 +2581,7 @@ async function admUsers(el) {
           +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">📋 Datos de entrega</div>'
           +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px">'
           +(u.nombre_completo_real?'<div class="ir"><span>Nombre real</span><strong style="font-size:.8rem">'+u.nombre_completo_real+'</strong></div>':'')
-          +(u.ambiente_numero?'<div class="ir"><span>Ambiente/Apto</span><strong style="font-size:.8rem;color:var(--s)">'+u.ambiente_numero+'</strong></div>':'')
+          +(u.ambiente_numero?'<div class="ir"><span>Ambiente SENA</span><strong style="font-size:.8rem;color:var(--s)">'+u.ambiente_numero+'</strong></div>':'')
           +((u.celular||u.phone)?'<div class="ir"><span>Teléfono</span><strong style="font-size:.8rem;color:var(--ok)">'+(u.celular||u.phone)+'</strong></div>':'')
           +'</div></div>'
       : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,107,0,.15);border-radius:8px;padding:7px 12px;margin-top:8px;font-size:.75rem;color:var(--muted)">⚠️ Sin datos de entrega completos</div>';
