@@ -145,8 +145,9 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .pm-desc{color:var(--muted);line-height:1.6;font-size:.92rem;}
 .opt-lbl{font-weight:700;font-weight:700;color:var(--s);font-size:.88rem;letter-spacing:1px;}
 .drink-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.dopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;transition:.2s;font-size:.82rem;text-align:center;}
-.dopt:hover{border-color:rgba(255,107,0,.4);}.dopt.sel{border-color:var(--p);background:rgba(255,107,0,.1);}
+.dopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 9px 9px 9px;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;transition:.2s;font-size:.82rem;text-align:center;position:relative;}
+.dopt:hover{border-color:rgba(255,107,0,.4);background:rgba(255,107,0,.05);}
+.dopt.sel{border-color:var(--p);background:rgba(255,107,0,.12);box-shadow:0 0 0 1px var(--p);}
 .qty-row{display:flex;align-items:center;gap:14px;}
 .qbtn{width:36px;height:36px;border-radius:50%;background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.25);color:var(--txt);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}.qbtn:hover{background:var(--p);}
 .qnum{font-family:'Bangers',cursive;font-size:1.8rem;color:var(--s);min-width:30px;text-align:center;}
@@ -1051,6 +1052,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
           <span class="qnum" id="pm-qty">1</span>
           <button class="qbtn" onclick="pmQty(1)">+</button>
         </div>
+        <div id="pm-extras-sum" style="display:none;font-size:.78rem;color:var(--p);text-align:right;margin-bottom:4px"></div>
         <div class="total-row"><span style="color:var(--muted);font-weight:700;font-weight:700">Total</span><span class="total-price" id="pm-total">$0</span></div>
         <button class="btn btn-p btn-lg" style="width:100%;justify-content:center" id="pm-add-btn" onclick="pmAddToCart()">🛒 Agregar al Carrito</button>
         <!-- Reseñas dentro del modal -->
@@ -1081,7 +1083,7 @@ let TOKEN = localStorage.getItem('kame_token');
 let USER  = JSON.parse(localStorage.getItem('kame_user') || 'null');
 let CART  = JSON.parse(localStorage.getItem('kame_cart') || '[]');
 let allProducts = [], currentCat = 'all';
-let pmProduct = null, pmQtyVal = 1, pmDrink = '';
+let pmProduct = null, pmQtyVal = 1, pmDrinks = [];
 let coStep = 1, coMethod = 'cash', coOrderId = 0, coOrderNum = '', coLastTotal = 0;
 let profileTab = 'orders';
 let adminTab = 'dashboard';
@@ -1493,7 +1495,7 @@ async function loadClients() {
 //  PRODUCT MODAL
 // ════════════════════════════════════════
 async function openPM(id) {
-  pmQtyVal = 1; pmDrink = '';
+  pmQtyVal = 1; pmDrinks = [];
   try {
     await loadDrinks();
     pmProduct = await api('GET','/products/'+id);
@@ -1511,8 +1513,11 @@ async function openPM(id) {
     if (pmProduct.category_id == 1 && DRINKS.length) {
       drinksSection.style.display = '';
       document.getElementById('pm-drinks').innerHTML =
-        DRINKS.map(d => `<div class="dopt${pmDrink===d.id?' sel':''}" onclick="pmSelDrink('${d.id}',this)"><span>${d.label}</span><small style="color:var(--s)">+${fmt(d.price)}</small></div>`).join('')
-        + `<div class="dopt${pmDrink===''?' sel':''}" onclick="pmSelDrink('',this)"><span>Sin adición</span><small style="color:var(--ok)">Gratis</small></div>`;
+        DRINKS.map(d => `<div class="dopt" id="dopt-${d.id}" onclick="pmToggleDrink('${d.id}',this)" style="position:relative;user-select:none">
+          <div style="position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:4px;border:2px solid rgba(255,107,0,.4);background:transparent;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:.2s" id="dopt-chk-${d.id}"></div>
+          <span>${d.label}</span>
+          <small style="color:var(--s)">+${fmt(d.price)}</small>
+        </div>`).join('');
     } else {
       drinksSection.style.display = 'none';
     }
@@ -1589,24 +1594,66 @@ async function submitPMReview(productId) {
 }
 function closePM() { document.getElementById('pm-overlay').style.display = 'none'; }
 function pmSelImg(el, src) { document.getElementById('pm-img').src = src; document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
-function pmSelDrink(id, el) { pmDrink = id ? String(id) : ''; document.querySelectorAll('.dopt').forEach(d => d.classList.remove('sel')); el.classList.add('sel'); updatePMPrices(); }
+function pmToggleDrink(id, el) {
+  id = String(id);
+  var idx = pmDrinks.indexOf(id);
+  var chk = document.getElementById('dopt-chk-'+id);
+  if (idx >= 0) {
+    pmDrinks.splice(idx, 1);
+    el.classList.remove('sel');
+    if (chk) { chk.textContent = ''; chk.style.background = 'transparent'; chk.style.borderColor = 'rgba(255,107,0,.4)'; }
+  } else {
+    pmDrinks.push(id);
+    el.classList.add('sel');
+    if (chk) { chk.textContent = '✓'; chk.style.background = 'var(--p)'; chk.style.borderColor = 'var(--p)'; chk.style.color = '#fff'; }
+  }
+  updatePMPrices();
+}
 function pmQty(d) { pmQtyVal = Math.max(1, pmQtyVal + d); document.getElementById('pm-qty').textContent = pmQtyVal; updatePMPrices(); }
 function updatePMPrices() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  const drinkP = pmDrink ? (DRINKS.find(d=>String(d.id)===String(pmDrink))?.price||0) : 0;
-  const total = (base + drinkP) * pmQtyVal;
+  const extrasP = pmDrinks.reduce(function(s, id) {
+    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
+    return s + (d ? +d.price : 0);
+  }, 0);
+  const total = (base + extrasP) * pmQtyVal;
   document.getElementById('pm-price').textContent = fmt(base);
   const po = document.getElementById('pm-price-old');
   if (pmProduct.discount_percent>0) { po.textContent = fmt(pmProduct.price); po.style.display = ''; } else { po.style.display = 'none'; }
+  // Mostrar desglose de extras si hay seleccionadas
+  var extrasEl = document.getElementById('pm-extras-sum');
+  if (extrasEl) {
+    if (extrasP > 0) {
+      extrasEl.textContent = '+ ' + fmt(extrasP) + ' en adiciones';
+      extrasEl.style.display = '';
+    } else {
+      extrasEl.style.display = 'none';
+    }
+  }
   document.getElementById('pm-total').textContent = fmt(total);
 }
 function pmAddToCart() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  const drinkInfo = pmDrink ? DRINKS.find(d=>String(d.id)===String(pmDrink)) : null;
   const imgs = Array.isArray(pmProduct.images) ? pmProduct.images : (()=>{try{return JSON.parse(pmProduct.images||'[]');}catch{return[];}})();
-  addToCart({ pid: pmProduct.id, cid: null, name: pmProduct.name, img: imgs[0]||'', price: base + (drinkInfo?.price||0), qty: pmQtyVal, drink: drinkInfo?.label||'' });
+  // Calcular precio total con todas las adiciones
+  var extrasP = pmDrinks.reduce(function(s, id) {
+    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
+    return s + (d ? +d.price : 0);
+  }, 0);
+  var drinkLabels = pmDrinks.map(function(id) {
+    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
+    return d ? d.label : '';
+  }).filter(Boolean).join(', ');
+  addToCart({
+    pid: pmProduct.id, cid: null,
+    name: pmProduct.name,
+    img: imgs[0]||'',
+    price: base + extrasP,
+    qty: pmQtyVal,
+    drink: drinkLabels
+  });
   const btn = document.getElementById('pm-add-btn');
   btn.textContent = '✓ ¡Agregado!';
   btn.style.background = 'var(--ok)';
