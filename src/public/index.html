@@ -1090,7 +1090,7 @@ async function loadDrinks() {
   if (DRINKS.length) return;
   try {
     const adds = await api('GET','/products?category=2');
-    DRINKS = adds.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:a.price}));
+    DRINKS = adds.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:+a.price}));
   } catch(e) { DRINKS = []; }
 }
 const METHODS = [{id:'cash',icon:'💵',label:'Efectivo',desc:'Paga al recibir'},{id:'nequi',icon:'📱',label:'Nequi',desc:'Transfiere por Nequi'},];
@@ -1589,12 +1589,12 @@ async function submitPMReview(productId) {
 }
 function closePM() { document.getElementById('pm-overlay').style.display = 'none'; }
 function pmSelImg(el, src) { document.getElementById('pm-img').src = src; document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
-function pmSelDrink(id, el) { pmDrink = id; document.querySelectorAll('.dopt').forEach(d => d.classList.remove('sel')); el.classList.add('sel'); updatePMPrices(); }
+function pmSelDrink(id, el) { pmDrink = id ? String(id) : ''; document.querySelectorAll('.dopt').forEach(d => d.classList.remove('sel')); el.classList.add('sel'); updatePMPrices(); }
 function pmQty(d) { pmQtyVal = Math.max(1, pmQtyVal + d); document.getElementById('pm-qty').textContent = pmQtyVal; updatePMPrices(); }
 function updatePMPrices() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  const drinkP = pmDrink ? (DRINKS.find(d=>d.id===pmDrink)?.price||0) : 0;
+  const drinkP = pmDrink ? (DRINKS.find(d=>String(d.id)===String(pmDrink))?.price||0) : 0;
   const total = (base + drinkP) * pmQtyVal;
   document.getElementById('pm-price').textContent = fmt(base);
   const po = document.getElementById('pm-price-old');
@@ -1604,7 +1604,7 @@ function updatePMPrices() {
 function pmAddToCart() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  const drinkInfo = pmDrink ? DRINKS.find(d=>d.id===pmDrink) : null;
+  const drinkInfo = pmDrink ? DRINKS.find(d=>String(d.id)===String(pmDrink)) : null;
   const imgs = Array.isArray(pmProduct.images) ? pmProduct.images : (()=>{try{return JSON.parse(pmProduct.images||'[]');}catch{return[];}})();
   addToCart({ pid: pmProduct.id, cid: null, name: pmProduct.name, img: imgs[0]||'', price: base + (drinkInfo?.price||0), qty: pmQtyVal, drink: drinkInfo?.label||'' });
   const btn = document.getElementById('pm-add-btn');
@@ -2548,8 +2548,8 @@ function admProductForm(p, defaultCat=1) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div class="fc" style="grid-column:1/-1"><label>Nombre *</label><input type="text" class="fi" id="pf-name" value="${esc(p?.name)}" placeholder="Ej: Empanada de Carne"/></div>
         <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat">
-          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Salsas</option>
-          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Vaso de gaseosas</option>
+          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Empanadas</option>
+          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Adiciones</option>
         </select></div>
         <div class="fc"><label>Precio (COP) *</label><input type="number" class="fi" id="pf-price" value="${p?.price||0}" min="0"/></div>
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
@@ -2639,7 +2639,7 @@ async function admSaveProduct(id) {
     await api(id?'PUT':'POST', id?'/products/'+id:'/products', data);
     document.getElementById('pf-overlay').remove();
     allProducts = [];
-    admTab('products');
+    admTab(data.category_id === 2 ? 'adiciones' : 'products');
   } catch(e) {
     alert('Error guardando: ' + e.message);
     btn.disabled = false; btn.textContent = '💾 Guardar Producto';
@@ -2647,7 +2647,11 @@ async function admSaveProduct(id) {
 }
 async function admDelProduct(id) {
   if (!confirm('¿Desactivar este producto?')) return;
-  try { await api('DELETE','/products/'+id); admTab('products'); } catch(e) { alert(e.message); }
+  try {
+    const p = await api('GET','/products/'+id).catch(()=>null);
+    await api('DELETE','/products/'+id);
+    admTab(p && p.category_id === 2 ? 'adiciones' : 'products');
+  } catch(e) { alert(e.message); }
 }
 async function admCombos(el) {
   const combos = await api('GET','/combos');
