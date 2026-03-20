@@ -16,6 +16,9 @@ r.get('/', async (req, res) => {
   }
 });
 
+// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
+const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
+
 // CREATE
 r.post('/', auth, admin, async (req, res) => {
   try {
