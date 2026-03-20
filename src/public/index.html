@@ -2548,8 +2548,8 @@ function admProductForm(p, defaultCat=1) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div class="fc" style="grid-column:1/-1"><label>Nombre *</label><input type="text" class="fi" id="pf-name" value="${esc(p?.name)}" placeholder="Ej: Empanada de Carne"/></div>
         <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat">
-          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Empanadas</option>
-          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Adiciones</option>
+          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Salsas</option>
+          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Gaseosas</option>
         </select></div>
         <div class="fc"><label>Precio (COP) *</label><input type="number" class="fi" id="pf-price" value="${p?.price||0}" min="0"/></div>
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
