@@ -723,6 +723,30 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
           </div>
         </div>
       </div>
+      <!-- KICK STREAM CARD -->
+      <div id="kick-stream-card" style="display:none;align-items:center;gap:18px;background:rgba(83,208,103,.08);border:1px solid rgba(83,208,103,.25);border-radius:16px;padding:18px 22px;min-width:240px;max-width:290px;flex-direction:column;text-align:center;position:relative;transition:.3s">
+        <!-- Foto de perfil con indicador de estado -->
+        <div style="position:relative;display:inline-block">
+          <img id="kick-avatar-img" src="" alt="Streamer" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid rgba(83,208,103,.5);display:block"/>
+          <!-- Indicador ON/OFF -->
+          <span id="kick-status-dot" style="position:absolute;bottom:3px;right:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--dark2);background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.35);animation:kick-pulse 1.8s ease-in-out infinite"></span>
+        </div>
+        <!-- Nombre de usuario -->
+        <div style="display:flex;align-items:center;gap:7px;justify-content:center">
+          <!-- Logo Kick -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#53D067" style="flex-shrink:0"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
+          <span id="kick-username-display" style="font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:2px;color:#53D067"></span>
+        </div>
+        <!-- Texto invitación -->
+        <div style="font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;color:var(--txt);line-height:1.3">VEN Y MIRA<br/>NUESTRA TRANSMISIÓN</div>
+        <!-- Botón link Kick -->
+        <a id="kick-link-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#53D067,#2da84a);color:#fff;font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;padding:9px 18px;border-radius:30px;text-decoration:none;transition:.2s;box-shadow:0 0 14px rgba(83,208,103,.35)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 24px rgba(83,208,103,.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 0 14px rgba(83,208,103,.35)'">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
+          VER EN KICK
+        </a>
+      </div>
+      <!-- /KICK STREAM CARD -->
+
       <p style="font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:3px;color:rgba(255,107,0,.6);margin-top:22px">
         "EL SABOR QUE SUPERA TODOS LOS LÍMITES" 🔥
       </p>
