@@ -2011,18 +2011,15 @@ function openAvatarModal() {
 
   // Avatares DBZ predefinidos
   var dbzAvatars = [
-    {name:'Goku',url:'https://i.imgur.com/8pLkuDI.png'},
-    {name:'Vegeta',url:'https://i.imgur.com/6MBm6pC.png'},
-    {name:'Gohan',url:'https://i.imgur.com/UPnMvGd.png'},
-    {name:'Piccolo',url:'https://i.imgur.com/7KGbNcT.png'},
-    {name:'Bulma',url:'https://i.imgur.com/9YLRpOF.png'},
-    {name:'Krilin',url:'https://i.imgur.com/mNDUWqX.png'},
-    {name:'Trunks',url:'https://i.imgur.com/LQbWtmJ.png'},
-    {name:'Goten',url:'https://i.imgur.com/3QRQPXZ.png'},
-    {name:'Beerus',url:'https://i.imgur.com/aZoMVDf.png'},
-    {name:'Whis',url:'https://i.imgur.com/UGJLV0d.png'},
-    {name:'Broly',url:'https://i.imgur.com/nEXsHGf.png'},
-    {name:'Cell',url:'https://i.imgur.com/vXPbFBk.png'},
+    {name:'Goku',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/ece9a128678159.55cc60909ebed.jpg'},
+    {name:'Vegeta',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8ee4db28678159.55cc60909dc78.jpg'},
+    {name:'Gohan',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/9cd4e928678159.55cc60909fab7.jpg'},
+    {name:'Piccolo',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/6e021a28678159.55cc6090a320f.jpg'},
+    {name:'Bulma',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/0d6ca628678159.55cc6090a7801.jpg'},
+    {name:'Krilin',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/938da728678159.55cc6090ae68c.jpg'},
+    {name:'Trunks',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/e206b628678159.55cc6090b9092.jpg'},
+    {name:'raditz',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/25206d28678159.55cc6090a09ab.jpg'},
+    {name:'Freezer',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/7bd74e28678159.55cc6090b4bd8.jpg'},
   ];
 
   var ov = document.createElement('div');
@@ -2528,8 +2525,8 @@ function admProductForm(p, defaultCat=1) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div class="fc" style="grid-column:1/-1"><label>Nombre *</label><input type="text" class="fi" id="pf-name" value="${esc(p?.name)}" placeholder="Ej: Empanada de Carne"/></div>
         <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat">
-          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Empanadas</option>
-          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Adiciones</option>
+          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Salsa</option>
+          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Gaseosa</option>
         </select></div>
         <div class="fc"><label>Precio (COP) *</label><input type="number" class="fi" id="pf-price" value="${p?.price||0}" min="0"/></div>
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
