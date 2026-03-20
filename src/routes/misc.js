@@ -3,6 +3,9 @@ const db = require('../config/db');
 const { auth, admin } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 
+// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
+const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
+
 // REVIEWS
 r.post('/reviews', auth, async (req, res) => {
   try {
