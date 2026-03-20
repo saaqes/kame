@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--p:#FF6B00;--s:#FFD700;--a:#CC0000;--dark:#0A0A0F;--dark2:#13131E;--dark3:#1C1C2E;--sur:#22223A;--txt:#F0E6D3;--muted:#9B8F7A;--ok:#00E676;--err:#FF1744;--glow:0 0 20px rgba(255,107,0,.6);--r:12px;}
@@ -499,19 +499,14 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
   .adm-side{position:fixed;bottom:0;left:0;right:0;height:auto;flex-direction:row;z-index:100;border-right:none;border-top:1px solid rgba(255,107,0,.2);box-shadow:0 -4px 20px rgba(0,0,0,.5);}
   .adm-brand{display:none;}
   .adm-nav{flex-direction:row;overflow-x:auto;padding:5px;gap:0;-webkit-overflow-scrolling:touch;}
-  .anav{flex-direction:column;gap:2px;padding:8px 4px;min-width:56px;font-size:.6rem;text-align:center;border-left:none!important;border-radius:8px;line-height:1.2;}
-  .adm-main{padding:16px 10px 100px;max-height:none;overflow-y:visible;}
-  .adm-title{font-size:1.4rem;margin-bottom:14px;}
-  .stats{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .stat{padding:12px 10px;gap:8px;}
-  .stat-ico{font-size:1.4rem;}
-  .stat-num{font-size:1.3rem;}
+  .anav{flex-direction:column;gap:1px;padding:6px 4px;min-width:52px;font-size:.58rem;text-align:center;border-left:none!important;border-radius:6px;}
+  .adm-main{padding:18px 12px 90px;max-height:none;overflow-y:visible;}
+  .adm-title{font-size:1.5rem;margin-bottom:16px;}
+  .stats{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .stat{padding:14px;}
+  .stat-num{font-size:1.4rem;}
   .cfg-grid{grid-template-columns:1fr;}
-  .tbl th,.tbl td{padding:7px 8px;font-size:.75rem;}
-  .co-card{padding:14px 12px;}
-  .sub-hdr{flex-direction:column;align-items:flex-start;gap:10px;}
-  .adm-side{height:70px;}
-  .adm-nav{padding:4px 2px;gap:1px;}
+  .tbl th,.tbl td{padding:8px 10px;font-size:.78rem;}
 }
 
 /* ═══════════════════════════════════════════
@@ -623,16 +618,13 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
   .footer-col h4{font-size:.78rem;}
 
   /* Admin */
-  .anav{min-width:48px;font-size:.56rem;padding:6px 2px;}
-  .stats{grid-template-columns:1fr 1fr;gap:7px;}
-  .stat{padding:10px 8px;gap:8px;}
-  .stat-ico{font-size:1.3rem;}
-  .stat-num{font-size:1.1rem;}
-  .adm-main{padding:12px 8px 90px;}
-  .tbl-wrap{margin:0 -8px;padding:0 8px;overflow-x:auto;}
-  .tbl{min-width:500px;}
-  .co-card{padding:12px 10px;}
-  .adm-side{height:68px;}
+  .anav{min-width:46px;font-size:.55rem;padding:5px 3px;}
+  .stats{grid-template-columns:1fr 1fr;gap:8px;}
+  .stat{padding:12px;gap:10px;}
+  .stat-ico{font-size:1.5rem;}
+  .stat-num{font-size:1.2rem;}
+  .adm-main{padding:14px 10px 85px;}
+  .tbl-wrap{margin:0 -10px;padding:0 10px;}
 }
 </style>
 </head>
@@ -745,7 +737,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
   <div class="bg-dark" id="section-reels" style="display:none">
     <div class="section-inner">
       <h2 class="sec-title">🎬 Nuestros <span>Reels</span></h2>
-      <div id="reels-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px"></div>
+      <div id="reels-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;align-items:start"></div>
     </div>
   </div>
 
@@ -1073,7 +1065,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="footer-brand"><h3>Empanadas <span>Kame</span></h3><p>El sabor legendario del Templo Kame. Cada empanada es un Kame Hame Ha de sabor.</p></div>
     <div class="footer-col"><h4>Menú</h4><a onclick="showPage('products')">Todos los Productos</a><a onclick="showPage('combos')">Combos</a><a onclick="showPage('clients')">Clientes Felices</a><a onclick="showPage('contact')">Contacto</a></div>
     <div class="footer-col"><h4>Cuenta</h4><a onclick="showPage('login')">Iniciar Sesión</a><a onclick="showPage('register')">Registrarse</a><a onclick="showPage('profile')">Mi Perfil</a></div>
-    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 300 123 4567</p><p>📧 kame@empanadas.com</p><p>🕐 Lun–Sáb 8am–8pm</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 621 9962</p><p>📧 saqesadsosena@gmail.com</p><p>🕐 Lun y Jue: 1:30pm – 5:00pm</p></div>
   </div>
   <div class="power-bar"></div>
   <div class="footer-bottom"><p id="footer-year">© 2024 Empanadas Kame · El sabor que supera los límites ⚡</p></div>
@@ -1338,25 +1330,66 @@ async function loadHome() {
     if (reels && reels.length && reelsSec && reelsCon) {
       reelsSec.style.display = '';
       reelsCon.innerHTML = reels.filter(function(r){return r.is_active;}).map(function(r){
-        var w = r.escala==='vertical' ? '100%' : r.escala==='cuadrado' ? '100%' : '100%';
         var ratio = r.escala==='vertical' ? '9/16' : r.escala==='cuadrado' ? '1/1' : '16/9';
-        var isYT = r.url && (r.url.includes('youtube.com')||r.url.includes('youtu.be'));
-        var isIG = r.url && r.url.includes('instagram.com');
-        var isTK = r.url && r.url.includes('tiktok.com');
+        var isYT  = r.url && (r.url.includes('youtube.com') || r.url.includes('youtu.be'));
+        var isIG  = r.url && r.url.includes('instagram.com');
+        var isTK  = r.url && r.url.includes('tiktok.com');
+        var isMp4 = r.url && /\.(mp4|webm|ogg)(\?|$)/i.test(r.url);
         var embedHtml = '';
         if (isYT) {
-          var ytId = r.url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-          embedHtml = ytId ? '<iframe src="https://www.youtube.com/embed/'+ytId[1]+'?rel=0" frameborder="0" allowfullscreen allow="autoplay" style="width:100%;height:100%;border-radius:12px;display:block"></iframe>' : '';
-        } else if (r.url && r.url.match(/\.(mp4|webm|ogg)(\?|$)/i)) {
-          embedHtml = '<video src="'+r.url+'" controls playsinline style="width:100%;height:100%;border-radius:12px;object-fit:cover;display:block"></video>';
+          var ytMatch = r.url.match(/(?:v=|youtu\.be\/|shorts\/)([a-zA-Z0-9_-]{11})/);
+          if (ytMatch) {
+            embedHtml = '<iframe src="https://www.youtube.com/embed/'+ytMatch[1]
+              +'?rel=0&modestbranding=1"'
+              +' frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"'
+              +' style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block"></iframe>';
+          }
+        } else if (isIG) {
+          var igUrl = r.url.replace(/\/$/, '');
+          embedHtml = '<blockquote class="instagram-media"'
+            +' data-instgrm-permalink="'+igUrl+'/"'
+            +' data-instgrm-version="14"'
+            +' style="background:#fff;border:0;margin:0;max-width:100%;width:100%;min-width:100%">'
+            +'</blockquote>';
+          if (!window._igLoaded) {
+            window._igLoaded = true;
+            var s = document.createElement('script');
+            s.src = 'https://www.instagram.com/embed.js'; s.async = true;
+            document.head.appendChild(s);
+          } else if (window.instgrm) {
+            setTimeout(function(){ window.instgrm.Embeds.process(); }, 300);
+          }
+        } else if (isTK) {
+          var tkMatch = r.url.match(/video\/(\d+)/);
+          if (tkMatch) {
+            embedHtml = '<blockquote class="tiktok-embed" cite="'+r.url
+              +'" data-video-id="'+tkMatch[1]+'" style="max-width:100%;min-width:100%">'
+              +'<section></section></blockquote>';
+            if (!window._tkLoaded) {
+              window._tkLoaded = true;
+              var s2 = document.createElement('script');
+              s2.src = 'https://www.tiktok.com/embed.js'; s2.async = true;
+              document.head.appendChild(s2);
+            }
+          } else {
+            embedHtml = '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--dark3);gap:12px">'
+              +'<span style="font-size:3rem">🎵</span>'
+              +'<div style="font-weight:700;font-size:.9rem">TikTok</div>'
+              +'<a href="'+r.url+'" target="_blank" class="btn btn-p btn-sm">▶ Ver TikTok</a>'
+              +'</div>';
+          }
+        } else if (isMp4) {
+          embedHtml = '<video src="'+r.url+'" controls playsinline preload="metadata"'
+            +' style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video>';
         } else {
-          embedHtml = '<a href="'+r.url+'" target="_blank" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:var(--dark3);border-radius:12px;color:var(--p);font-weight:700;text-decoration:none;font-size:.9rem">▶ Ver en '+(isIG?'Instagram':isTK?'TikTok':'plataforma')+'</a>';
+          embedHtml = '<iframe src="'+r.url+'" frameborder="0" allowfullscreen'
+            +' style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block"></iframe>';
         }
-        return '<div style="background:var(--sur);border:1px solid rgba(255,107,0,.12);border-radius:14px;overflow:hidden;transition:.3s" class="reel-card-inner" ">'
-          +'<div style="aspect-ratio:'+ratio+';position:relative;background:var(--dark3)">'+embedHtml+'</div>'
-          +(r.titulo?'<div style="padding:10px 12px;font-weight:700;font-size:.88rem">'+r.titulo+'</div>':'')
-          +(r.descripcion?'<div style="padding:0 12px 10px;font-size:.78rem;color:var(--muted)">'+r.descripcion+'</div>':'')
-        +'</div>';
+        return '<div style="background:var(--sur);border:1px solid rgba(255,107,0,.12);border-radius:14px;overflow:hidden">'
+          +'<div style="position:relative;aspect-ratio:'+ratio+';background:var(--dark3);overflow:hidden">'+embedHtml+'</div>'
+          +(r.titulo?'<div style="padding:10px 14px;font-weight:700;font-size:.9rem">'+r.titulo+'</div>':'')
+          +(r.descripcion?'<div style="padding:0 14px 12px;font-size:.78rem;color:var(--muted)">'+r.descripcion+'</div>':'')
+          +'</div>';
       }).join('');
     }
 
@@ -2005,11 +2038,14 @@ async function saveProfile() {
   } catch(e) { alert(e.message); }
   btn.disabled = false;
 }
+async function uploadAvatar(inp) {
+  const f = inp.files[0]; if (!f) return;
+  const fd = new FormData(); fd.append('avatar',f);
+  try { const r = await fetch('/api/me/avatar?folder=avatars',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd}); const d=await r.json(); document.getElementById('prof-avatar-img').src = d.avatar; USER.avatar=d.avatar; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); } catch(e) { alert(e.message); }
+}
 function openAvatarModal() {
   var prev = document.getElementById('avatar-modal-ov');
   if (prev) prev.remove();
-
-  // Avatares DBZ predefinidos
   var dbzAvatars = [
     {name:'Goku',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/ece9a128678159.55cc60909ebed.jpg'},
     {name:'Vegeta',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/8ee4db28678159.55cc60909dc78.jpg'},
@@ -2018,15 +2054,13 @@ function openAvatarModal() {
     {name:'Bulma',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/0d6ca628678159.55cc6090a7801.jpg'},
     {name:'Krilin',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/938da728678159.55cc6090ae68c.jpg'},
     {name:'Trunks',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/e206b628678159.55cc6090b9092.jpg'},
-    {name:'raditz',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/25206d28678159.55cc6090a09ab.jpg'},
+    {name:'Raditz',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/25206d28678159.55cc6090a09ab.jpg'},
     {name:'Freezer',url:'https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/7bd74e28678159.55cc6090b4bd8.jpg'},
   ];
-
   var ov = document.createElement('div');
   ov.id = 'avatar-modal-ov';
   ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;animation:foi .2s ease';
   ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
-
   var avatarsHtml = dbzAvatars.map(function(a){
     return '<div style="text-align:center;cursor:pointer" onclick="selectAvatar(\''+a.url+'\')">'
       +'<img src="'+a.url+'" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid transparent;transition:.2s" '
@@ -2034,28 +2068,21 @@ function openAvatarModal() {
       +'<div style="font-size:.7rem;color:var(--muted);margin-top:4px">'+a.name+'</div>'
       +'</div>';
   }).join('');
-
   ov.innerHTML = '<div class="modal" style="max-width:520px;width:100%" onclick="event.stopPropagation()">'
     +'<div class="mhdr"><h3>📸 Cambiar Foto de Perfil</h3>'
     +'<button class="xbtn" onclick="document.getElementById(\'avatar-modal-ov\').remove()">✕</button></div>'
     +'<div class="mbody">'
-    // Subir foto propia
     +'<div style="background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:10px;padding:14px;margin-bottom:16px">'
     +'<div style="font-weight:700;font-size:.85rem;margin-bottom:10px">📎 Subir mi propia foto</div>'
     +'<label class="up-sm" style="justify-content:center;width:100%">'
-    +'<input type="file" accept="image/*" id="avatar-file-inp" style="display:none"/>'
-    +'Seleccionar archivo'
-    +'</label>'
-    +'</div>'
-    // Avatares DBZ
+    +'<input type="file" accept="image/*" id="avatar-file-inp" style="display:none"/>Seleccionar archivo'
+    +'</label></div>'
     +'<div style="font-weight:700;font-size:.85rem;margin-bottom:12px">🐉 Avatares Dragon Ball Z</div>'
-    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">'+avatarsHtml+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">'+avatarsHtml+'</div>'
     +'</div>'
     +'<div class="mftr"><button class="btn btn-o btn-sm" onclick="document.getElementById(\'avatar-modal-ov\').remove()">Cancelar</button></div>'
     +'</div>';
   document.body.appendChild(ov);
-
-  // Listener para subir archivo
   document.getElementById('avatar-file-inp').addEventListener('change', async function(){
     var f = this.files[0]; if(!f) return;
     var fd = new FormData(); fd.append('avatar', f);
@@ -2088,27 +2115,11 @@ function setAvatarUI(url) {
   if (USER) { USER.avatar = url; localStorage.setItem('kame_user', JSON.stringify(USER)); }
   updateNavAuth();
 }
-async function uploadAvatar(inp) {
-  const f = inp.files[0]; if (!f) return;
-  const fd = new FormData(); fd.append('avatar',f);
-  try { const r = await fetch('/api/me/avatar?folder=avatars',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd}); const d=await r.json(); document.getElementById('prof-avatar-img').src = d.avatar; USER.avatar=d.avatar; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); } catch(e) { alert(e.message); }
-}
 async function uploadBanner(inp) {
-  var f = inp.files[0]; if(!f) return;
-  var lbl = inp.closest('label') || inp.parentElement;
-  if (lbl) lbl.style.opacity = '.5';
-  var fd = new FormData(); fd.append('banner', f);
-  try {
-    var res = await fetch('/api/me/banner', {method:'POST', headers:{'Authorization':'Bearer '+TOKEN}, body:fd});
-    var d = await res.json();
-    if (!res.ok) throw new Error(d.message||'Error');
-    var url = d.url || d.banner;
-    var bannerEl = document.getElementById('prof-banner-img');
-    if (bannerEl) bannerEl.style.backgroundImage = 'url('+url+')';
-  } catch(e) { alert('Error subiendo banner: '+e.message); }
-  if (lbl) lbl.style.opacity = '1';
+  const f = inp.files[0]; if (!f) return;
+  const fd = new FormData(); fd.append('banner',f);
+  try { const r = await fetch('/api/me/banner?folder=banners',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd}); const d=await r.json(); document.getElementById('prof-banner-img').style.backgroundImage=`url(${d.banner})`; } catch(e) { alert(e.message); }
 }
-
 
 // ════════════════════════════════════════
 //  ADMIN
@@ -2525,8 +2536,8 @@ function admProductForm(p, defaultCat=1) {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div class="fc" style="grid-column:1/-1"><label>Nombre *</label><input type="text" class="fi" id="pf-name" value="${esc(p?.name)}" placeholder="Ej: Empanada de Carne"/></div>
         <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat">
-          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Salsa</option>
-          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Gaseosa</option>
+          <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Empanadas</option>
+          <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Adiciones</option>
         </select></div>
         <div class="fc"><label>Precio (COP) *</label><input type="number" class="fi" id="pf-price" value="${p?.price||0}" min="0"/></div>
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
@@ -2789,7 +2800,6 @@ async function admOrders(el) {
 
   el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px">'
     +'<h2 class="adm-title" style="margin-bottom:0">📦 Pedidos</h2>'
-    +'<button class="btn btn-sm" onclick="admVerArchivados()" style="padding:6px 13px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:var(--muted);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🗄️ Ver Archivados</button>'
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
     +(pendPay?'<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:7px 13px;font-size:.83rem;color:var(--p);font-weight:700">⚠️ '+pendPay+' por verificar</div>':'')
     +'<button class="btn btn-sm" id="btn-ver-archivados" onclick="admVerArchivados()" style="padding:6px 13px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:var(--muted);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🗄️ Ver Archivados</button>'
