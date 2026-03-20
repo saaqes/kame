@@ -4,6 +4,9 @@ const { auth, admin } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const { v4: uuid } = require('uuid');
 
+// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
+const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
+
 // POST / — Crear orden
 r.post('/', auth, async (req, res) => {
   const conn = await db.connect();
