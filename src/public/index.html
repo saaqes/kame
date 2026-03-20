@@ -45,6 +45,8 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .power-bar{height:3px;background:linear-gradient(90deg,var(--p),var(--s),var(--a),var(--p));background-size:300% 100%;animation:pf 3s linear infinite;}
 @keyframes pf{0%{background-position:0%}100%{background-position:300%}}
+   @keyframes kick-pulse{0%,100%{box-shadow:0 0 0 3px rgba(76,175,80,.35)}50%{box-shadow:0 0 0 6px rgba(76,175,80,.0)}}
+@keyframes kick-pulse-off{0%,100%{opacity:.7}50%{opacity:.4}}
 .alert-e{background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:.88rem;}
 .section-inner{max-width:1280px;margin:0 auto;padding:48px 24px;}
 .sec-title{font-family:'Bangers',cursive;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:3px;margin-bottom:40px;text-align:center;}
