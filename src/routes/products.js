@@ -2,6 +2,9 @@ const r = require('express').Router();
 const db = require('../config/db');
 const { auth, admin } = require('../middleware/auth');
 
+// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
+const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
+
 const parseProduct = (x) => {
   try {
     x.images = JSON.parse(x.images || '[]');
