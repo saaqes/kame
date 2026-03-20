@@ -820,7 +820,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
       <h3>📍 Encuéntranos</h3>
       <div class="info-item"><span>🕐</span><div><strong>Horario</strong><p>Lun–Sáb: 8am – 8pm</p></div></div>
       <div class="info-item"><span>📱</span><div><strong>WhatsApp</strong><p>+57 300 123 4567</p></div></div>
-      <div class="info-item"><span>📧</span><div><strong>Email</strong><p>kame@empanadas.com</p></div></div>
+      <div class="info-item"><span>📧</span><div><strong>Email</strong><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="452e24282005202835242b242124366b262a28">[email&#160;protected]</a></p></div></div>
       <div class="dbz-quote"><p>"La perseverancia de un guerrero también se mide en cuántas empanadas puede comer"</p><small>— Maestro Roshi</small></div>
     </div>
   </div>
@@ -1077,13 +1077,13 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="footer-brand"><h3>Empanadas <span>Kame</span></h3><p>El sabor legendario del Templo Kame. Cada empanada es un Kame Hame Ha de sabor.</p></div>
     <div class="footer-col"><h4>Menú</h4><a onclick="showPage('products')">Todos los Productos</a><a onclick="showPage('combos')">Combos</a><a onclick="showPage('clients')">Clientes Felices</a><a onclick="showPage('contact')">Contacto</a></div>
     <div class="footer-col"><h4>Cuenta</h4><a onclick="showPage('login')">Iniciar Sesión</a><a onclick="showPage('register')">Registrarse</a><a onclick="showPage('profile')">Mi Perfil</a></div>
-    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 300 123 4567</p><p>📧 kame@empanadas.com</p><p>🕐 Lun–Sáb 8am–8pm</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 300 123 4567</p><p>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086369656d486d65786966696c697b266b6765">[email&#160;protected]</a></p><p>🕐 Lun–Sáb 8am–8pm</p></div>
   </div>
   <div class="power-bar"></div>
   <div class="footer-bottom"><p id="footer-year">© 2024 Empanadas Kame · El sabor que supera los límites ⚡</p></div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════
 //  STATE
 function getImg(p){var imgs=Array.isArray(p.images)?p.images:(function(){try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
@@ -2078,6 +2078,42 @@ async function selectDbzAvatar(url, name) {
     const modal = document.getElementById('avatar-picker-modal');
     if (modal) modal.remove();
   }
+}
+
+
+const ADM_TABS = [
+  {id:'dashboard',  l:'📊 Dashboard'},
+  {id:'ganancias',  l:'💰 Ganancias'},
+  {id:'orders',     l:'📦 Pedidos'},
+  {id:'products',   l:'🍽️ Productos'},
+  {id:'adiciones',  l:'🥤 Adiciones'},
+  {id:'combos',     l:'🎁 Combos'},
+  {id:'opinions',   l:'💬 Opiniones'},
+  {id:'carousel',   l:'🖼️ Carrusel'},
+  {id:'reels',      l:'🎬 Reels'},
+  {id:'dbzicons',   l:'🐉 Íconos DBZ'},
+  {id:'guerreros',  l:'⭐ Guerreros'},
+  {id:'users',      l:'👥 Usuarios'},
+  {id:'coupons',    l:'🎟️ Cupones'},
+  {id:'siteconfig', l:'⚙️ Config'},
+];
+
+function loadAdmin() {
+  if (!USER || USER.role !== 'admin') { showPage('home'); return; }
+  var nav = document.getElementById('adm-nav');
+  if (!nav) return;
+  nav.innerHTML = ADM_TABS.map(function(t) {
+    return '<button class="anav' + (adminTab === t.id ? ' active' : '') + '" onclick="admTab('' + t.id + '')">' + t.l + '</button>';
+  }).join('');
+  admRender();
+}
+
+function admTab(tab) {
+  adminTab = tab;
+  document.querySelectorAll('.anav').forEach(function(b, i) {
+    b.classList.toggle('active', ADM_TABS[i] && ADM_TABS[i].id === tab);
+  });
+  admRender();
 }
 
 async function admRender() {
@@ -3283,14 +3319,4 @@ document.getElementById('footer-year').textContent = `© ${new Date().getFullYea
 updateNavAuth();
 updateCartUI();
 // Apply saved config
-api('GET','/admin/site-config').then(cfg => {
-  if (!cfg) return;
-  const r = document.documentElement;
-  if (cfg.primary_color) r.style.setProperty('--p', cfg.primary_color);
-  if (cfg.secondary_color) r.style.setProperty('--s', cfg.secondary_color);
-  if (cfg.accent_color) r.style.setProperty('--a', cfg.accent_color);
-}).catch(()=>{});
-loadHome();
-</script>
-</body>
-</html>
+api('GET','/admin/site-conf
