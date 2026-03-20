@@ -1,23 +1,18 @@
 const r = require('express').Router();
 const db = require('../config/db');
 const { auth, admin } = require('../middleware/auth');
-// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
-const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
+
 // GET ALL
 r.get('/', async (req, res) => {
   try {
     const result = await db.query(
       'SELECT * FROM combos WHERE is_active = true ORDER BY is_featured DESC, id'
     );
-
     res.json(result.rows);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
-
-// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
-const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
 
 // CREATE
 r.post('/', auth, admin, async (req, res) => {
@@ -31,7 +26,6 @@ r.post('/', auth, admin, async (req, res) => {
       dragon_ball_ref,
       is_featured
     } = req.body;
-
     const result = await db.query(
       `INSERT INTO combos
       (name, description, price, original_price, image_url, dragon_ball_ref, is_featured)
@@ -47,9 +41,7 @@ r.post('/', auth, admin, async (req, res) => {
         is_featured ?? false
       ]
     );
-
     res.status(201).json({ id: result.rows[0].id });
-
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
@@ -67,7 +59,6 @@ r.put('/:id', auth, admin, async (req, res) => {
       is_featured,
       is_active
     } = req.body;
-
     await db.query(
       `UPDATE combos SET
         name = $1,
@@ -89,9 +80,7 @@ r.put('/:id', auth, admin, async (req, res) => {
         req.params.id
       ]
     );
-
     res.json({ ok: true });
-
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
@@ -104,9 +93,7 @@ r.delete('/:id', auth, admin, async (req, res) => {
       'UPDATE combos SET is_active = false WHERE id = $1',
       [req.params.id]
     );
-
     res.json({ ok: true });
-
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
