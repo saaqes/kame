@@ -42,7 +42,7 @@ r.post('/:id/proof', auth, (req,res,next)=>{req.query.folder='proofs';next();}, 
 });
 
 r.get('/',auth,admin,async(req,res)=>{
-  const[rows]=await db.query('SELECT o.*,u.full_name,u.email FROM orders o LEFT JOIN users u ON o.user_id=u.id ORDER BY o.created_at DESC LIMIT 100');
+  const rows = await db.query('SELECT o.*,u.full_name,u.email FROM orders o LEFT JOIN users u ON o.user_id=u.id ORDER BY o.created_at DESC LIMIT 100');
   res.json(rows);
 });
 
