@@ -2082,23 +2082,32 @@ async function selectDbzAvatar(url, name) {
 
 async function admRender() {
   const el = document.getElementById('adm-main');
-  el.innerHTML = `<div class="spinner" style="padding:60px"></div>`;
+  if (!el) return;
+  el.innerHTML = '<div class="spinner" style="padding:60px;text-align:center"></div>';
   try {
-    if (adminTab==='dashboard') await admDashboard(el);
-    else if (adminTab==='products') await admProducts(el);
-    else if (adminTab==='adiciones') await admAdiciones(el);
-    else if (adminTab==='combos') await admCombos(el);
-    else if (adminTab==='orders') await admOrders(el);
-    else if (adminTab==='opinions') await admOpinions(el);
-    else if (adminTab==='carousel') await admCarousel(el);
-    else if (adminTab==='dbzicons') await admDbzIcons(el);
-    else if (adminTab==='guerreros') await admGuerreros(el);
-    else if (adminTab==='users') await admUsers(el);
-    else if (adminTab==='coupons') await admCoupons(el);
-    else if (adminTab==='ganancias') await admGanancias(el);
-    else if (adminTab==='reels') await admReels(el);
+    if      (adminTab==='dashboard')  await admDashboard(el);
+    else if (adminTab==='products')   await admProducts(el);
+    else if (adminTab==='adiciones')  await admAdiciones(el);
+    else if (adminTab==='combos')     await admCombos(el);
+    else if (adminTab==='orders')     await admOrders(el);
+    else if (adminTab==='opinions')   await admOpinions(el);
+    else if (adminTab==='carousel')   await admCarousel(el);
+    else if (adminTab==='dbzicons')   await admDbzIcons(el);
+    else if (adminTab==='guerreros')  await admGuerreros(el);
+    else if (adminTab==='users')      await admUsers(el);
+    else if (adminTab==='coupons')    await admCoupons(el);
+    else if (adminTab==='ganancias')  await admGanancias(el);
+    else if (adminTab==='reels')      await admReels(el);
     else if (adminTab==='siteconfig') await admSiteConfig(el);
-  } catch(e) { el.innerHTML = `<p style="color:var(--err)">Error: ${e.message}</p>`; }
+  } catch(e) {
+    console.error('[Admin Error]', adminTab, e);
+    el.innerHTML = '<div style="padding:30px;text-align:center">'
+      + '<div style="font-size:2rem;margin-bottom:12px">⚠️</div>'
+      + '<div style="color:var(--err);font-weight:700;font-size:.95rem;margin-bottom:8px">Error cargando '+adminTab+'</div>'
+      + '<div style="color:var(--muted);font-size:.82rem;margin-bottom:16px;font-family:monospace;background:var(--dark3);padding:8px 12px;border-radius:8px">'+e.message+'</div>'
+      + '<button class="btn btn-o btn-sm" onclick="admRender()">🔄 Reintentar</button>'
+      + '</div>';
+  }
 }
 
 // ════════════════════════════════════════════════════════
