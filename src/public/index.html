@@ -2826,6 +2826,7 @@ async function admOrders(el) {
       // CHAT
       +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
         +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
+       +'<button class="btn btn-sm" onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
         +'<div id="adm-chat-'+o.id+'" style="display:none;margin-top:10px">'
           +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
           +'<div style="display:flex;gap:8px">'
