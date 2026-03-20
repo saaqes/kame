@@ -2,19 +2,18 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--p:#FF6B00;--s:#FFD700;--a:#CC0000;--dark:#0A0A0F;--dark2:#13131E;--dark3:#1C1C2E;--sur:#22223A;--txt:#F0E6D3;--muted:#9B8F7A;--ok:#00E676;--err:#FF1744;--glow:0 0 20px rgba(255,107,0,.6);--r:12px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:var(--dark);color:var(--txt);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+body{background:var(--dark);color:var(--txt);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;touch-action:manipulation;}
 ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px;}
 h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .dbz{font-family:'Bangers',cursive;letter-spacing:2px;}
@@ -498,7 +497,14 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
   .adm-layout{grid-template-columns:1fr;}
   .adm-side{position:fixed;bottom:0;left:0;right:0;height:auto;flex-direction:row;z-index:100;border-right:none;border-top:1px solid rgba(255,107,0,.2);box-shadow:0 -4px 20px rgba(0,0,0,.5);}
   .adm-brand{display:none;}
-  .adm-nav{flex-direction:row;overflow-x:auto;padding:5px;gap:0;-webkit-overflow-scrolling:touch;}
+  .adm-nav{flex-direction:row;overflow-x:auto;padding:5px;gap:0;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .adm-nav::-webkit-scrollbar{display:none;}
+  .anav{white-space:nowrap;padding:8px 12px;font-size:.82rem;border-radius:0;border-bottom:3px solid transparent;flex-shrink:0;}
+  .anav.active{border-bottom-color:var(--p);background:rgba(255,107,0,.1);}
+  .adm-main{padding:12px;}
+  .adm-title{font-size:1.4rem;}
+  .cfg-grid{grid-template-columns:1fr;}
+  .co-card{padding:12px;}
   .anav{flex-direction:column;gap:1px;padding:6px 4px;min-width:52px;font-size:.58rem;text-align:center;border-left:none!important;border-radius:6px;}
   .adm-main{padding:18px 12px 90px;max-height:none;overflow-y:visible;}
   .adm-title{font-size:1.5rem;margin-bottom:16px;}
@@ -604,6 +610,14 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
   .avatar-area{left:14px;bottom:-42px;}
   .prof-avatar{width:86px;height:86px;border-width:4px;outline-width:2px;}
   .avatar-edit-btn{width:28px;height:28px;font-size:.75rem;}
+  /* Admin grids en móvil */
+  .adm-wrap{flex-direction:column;}
+  .adm-side{width:100%;border-right:none;border-bottom:1px solid rgba(255,107,0,.15);}
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important;}
+  [style*="grid-template-columns:1fr 340px"]{grid-template-columns:1fr!important;}
+  [style*="grid-template-columns:1fr 360px"]{grid-template-columns:1fr!important;}
+  [style*="grid-template-columns:2fr 1fr 1fr auto"]{grid-template-columns:1fr 1fr auto!important;}
+  [style*="grid-template-columns:1fr 1fr auto"]{grid-template-columns:1fr 1fr!important;}
   .prof-meta{padding:56px 14px 14px;}
   .prof-name{font-size:1.3rem;}
   .prof-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -828,17 +842,13 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 <div id="page-forgot" style="display:none">
   <div class="auth-page">
     <div class="auth-card">
-      <div class="auth-logo"><h1>Empanadas <span>Kame</span></h1><p style="color:var(--muted);font-size:.85rem">Recuperar contraseña</p></div>
-      <div id="forgot-msg" class="alert-e" style="display:none"></div>
-      <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px;line-height:1.5">Escribe tu email y te enviaremos un código para restablecer tu contraseña.</p>
-      <div class="fc"><label>Email</label><input type="email" class="fi" id="f-email" placeholder="tu@email.com"/></div>
-      <button class="btn btn-p" style="width:100%;justify-content:center" id="forgot-btn" onclick="doForgot()">📧 Enviar Código</button>
-      <div id="forgot-code-section" style="display:none;margin-top:16px">
-        <div class="fc"><label>Código de 6 dígitos</label><input type="text" class="fi" id="f-code" placeholder="123456" maxlength="6"/></div>
-        <div class="fc"><label>Nueva contraseña</label><input type="password" class="fi" id="f-newpass" placeholder="Mínimo 6 caracteres"/></div>
-        <button class="btn btn-p" style="width:100%;justify-content:center" id="reset-btn" onclick="doReset()">🔑 Cambiar Contraseña</button>
-      </div>
-      <p class="auth-link"><a onclick="showPage('login')">← Volver al login</a></p>
+      <div class="auth-logo"><h1>Empanadas <span>Kame</span></h1><p style="color:var(--muted);font-size:.85rem">Cambiar contraseña</p></div>
+      <div id="forgot-msg" style="display:none;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px"></div>
+      <div class="fc"><label>Email *</label><input type="email" class="fi" id="f-email" placeholder="tu@email.com"/></div>
+      <div class="fc"><label>Nueva contraseña *</label><input type="password" class="fi" id="f-newpass" placeholder="Mínimo 6 caracteres"/></div>
+      <div class="fc" style="margin-bottom:20px"><label>Confirmar contraseña *</label><input type="password" class="fi" id="f-newpass2" placeholder="Repite la contraseña"/></div>
+      <button class="btn btn-p" style="width:100%;justify-content:center" id="forgot-btn" onclick="doForgot()">🔑 Cambiar Contraseña</button>
+      <p class="auth-link" style="margin-top:16px"><a onclick="showPage('login')">← Volver al login</a></p>
     </div>
   </div>
 </div>
@@ -960,7 +970,8 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="avatar-area">
       <img src="" alt="" class="prof-avatar" id="prof-avatar-img"
            onerror="this.src='https://ui-avatars.com/api/?name=K&background=FF6B00&color=fff&size=200'"/>
-      <label class="avatar-edit-btn" title="Cambiar foto">✏️<input type="file" accept="image/*" onchange="uploadAvatar(this)" style="display:none"/></label>
+      <label class="avatar-edit-btn" title="Subir foto propia">✏️<input type="file" accept="image/*" onchange="uploadAvatar(this)" style="display:none"/></label>
+      <button onclick="showAvatarPicker()" title="Elegir avatar DBZ" style="position:absolute;bottom:5px;right:-38px;background:var(--s);color:var(--dark);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;border:3px solid var(--dark2);z-index:11;font-weight:700">🐉</button>
     </div>
   </div>
   <div class="prof-meta">
@@ -1123,7 +1134,7 @@ function showPage(page) {
   if (page === 'combos')   loadCombos();
   if (page === 'clients')  loadClients();
   if (page === 'checkout') loadCheckout();
-  if (page === 'forgot')   { document.getElementById('forgot-msg').style.display='none'; document.getElementById('forgot-code-section').style.display='none'; }
+  if (page === 'forgot')   { document.getElementById('forgot-msg').style.display='none'; document.getElementById('f-email').value=''; document.getElementById('f-newpass').value=''; document.getElementById('f-newpass2').value=''; }
   if (page === 'profile')  loadProfile();
   if (page === 'admin')    loadAdmin();
 }
@@ -1258,6 +1269,19 @@ function renderCarousel() {
     </div>
   </div>`).join('');
   document.getElementById('cdots').innerHTML = carSlides.map((s,i) => `<button class="cdot${i===carIdx?' active':''}" onclick="carouselGo(${i})"></button>`).join('');
+}
+function carouselBtnClick(link) {
+  if (!link) { showPage('products'); return; }
+  if (link.startsWith('http')) { window.open(link,'_blank'); return; }
+  // Mapear nombres a páginas del SPA
+  var pageMap = {
+    '#products':'products','#productos':'products','products':'products',
+    '#combos':'combos','combos':'combos',
+    '#clientes':'clients','clientes':'clients',
+    '#contacto':'contact','contacto':'contact',
+    '#home':'home','home':'home',
+  };
+  showPage(pageMap[link] || link.replace('#','') || 'products');
 }
 function carouselNext() { carIdx = (carIdx+1) % carSlides.length; renderCarousel(); }
 function carouselPrev() { carIdx = (carIdx-1+carSlides.length) % carSlides.length; renderCarousel(); }
@@ -1594,85 +1618,44 @@ async function submitContact() {
 
 // ── RECUPERACIÓN DE CONTRASEÑA ───────────────────────────────────────────────
 async function doForgot() {
-  const btn = document.getElementById('forgot-btn');
-  const msg = document.getElementById('forgot-msg');
+  const btn  = document.getElementById('forgot-btn');
+  const msg  = document.getElementById('forgot-msg');
   const email = (document.getElementById('f-email').value||'').trim();
-  msg.style.display='none';
-  if (!email) { msg.textContent='Ingresa tu email'; msg.style.display=''; return; }
-  btn.disabled=true; btn.textContent='⏳ Enviando...';
-  try {
-    await api('POST','/auth/forgot-password',{email});
-    msg.style.cssText='display:block;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--ok);padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:.88rem';
-    msg.textContent='✅ Código enviado a tu email. Revisa tu bandeja.';
-    document.getElementById('forgot-code-section').style.display='';
-  } catch(e) {
-    msg.textContent = e.message||'Error al enviar el código';
-    msg.style.cssText='display:block;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:.88rem';
-  }
-  btn.disabled=false; btn.textContent='📧 Enviar Código';
-}
-async function doReset() {
-  const btn = document.getElementById('reset-btn');
-  const msg = document.getElementById('forgot-msg');
-  const email   = (document.getElementById('f-email').value||'').trim();
-  const code    = (document.getElementById('f-code').value||'').trim();
-  const newpass = document.getElementById('f-newpass').value;
-  if (!code || code.length < 6) { msg.textContent='Ingresa el código de 6 dígitos'; msg.style.display=''; return; }
-  if (!newpass || newpass.length < 6) { msg.textContent='La contraseña debe tener mínimo 6 caracteres'; msg.style.display=''; return; }
-  btn.disabled=true; btn.textContent='⏳ Cambiando...';
-  try {
-    await api('POST','/auth/reset-password',{email,code,newPassword:newpass});
-    alert('✅ Contraseña cambiada. Ya puedes iniciar sesión.');
-    showPage('login');
-  } catch(e) {
-    msg.textContent = e.message||'Código inválido o expirado';
-    msg.style.cssText='display:block;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err);padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:.88rem';
-    msg.style.display='';
-  }
-  btn.disabled=false; btn.textContent='🔑 Cambiar Contraseña';
-}
+  const pass1 = document.getElementById('f-newpass').value;
+  const pass2 = document.getElementById('f-newpass2').value;
 
-async function doLogin() {
-  const btn = document.getElementById('login-btn');
-  const err = document.getElementById('login-err');
-  err.style.display = 'none';
-  btn.disabled = true; btn.textContent = '⏳ Ingresando...';
+  // Limpiar mensaje
+  msg.style.display = 'none';
+
+  // Validaciones
+  if (!email) {
+    msg.textContent = '⚠️ Ingresa tu email';
+    msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err)';
+    return;
+  }
+  if (!pass1 || pass1.length < 6) {
+    msg.textContent = '⚠️ La contraseña debe tener mínimo 6 caracteres';
+    msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err)';
+    return;
+  }
+  if (pass1 !== pass2) {
+    msg.textContent = '⚠️ Las contraseñas no coinciden';
+    msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err)';
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = '⏳ Cambiando...';
   try {
-    const res = await api('POST','/auth/login',{ email: document.getElementById('l-email').value, password: document.getElementById('l-pass').value });
-    TOKEN = res.token; USER = res.user;
-    localStorage.setItem('kame_token', TOKEN);
-    localStorage.setItem('kame_user', JSON.stringify(USER));
-    updateNavAuth(); showPage('home');
-  } catch(e) { err.textContent = e.message; err.style.display = ''; }
-  btn.disabled = false; btn.textContent = '⚡ Iniciar Sesión';
-}
-async function doRegister() {
-  const btn = document.getElementById('reg-btn');
-  const err = document.getElementById('reg-err');
-  err.style.display = 'none';
-  const rName  = (document.getElementById('r-name').value||'').trim();
-  const rEmail = (document.getElementById('r-email').value||'').trim();
-  const rPhone = (document.getElementById('r-phone').value||'').trim();
-  const rAmb   = (document.getElementById('r-ambiente').value||'').trim();
-  const rPass  = document.getElementById('r-pass').value;
-  if (!rName)  { err.textContent='El nombre es obligatorio'; err.style.display=''; return; }
-  if (!rEmail) { err.textContent='El email es obligatorio'; err.style.display=''; return; }
-  if (!rPhone) { err.textContent='El teléfono es obligatorio'; err.style.display=''; return; }
-  if (!rAmb)   { err.textContent='El número de ambiente es obligatorio'; err.style.display=''; return; }
-  if (!rPass||rPass.length<6) { err.textContent='La contraseña debe tener mínimo 6 caracteres'; err.style.display=''; return; }
-  btn.disabled = true; btn.textContent = '⏳ Registrando...';
-  try {
-    const res = await api('POST','/auth/register',{
-      full_name: rName, email: rEmail, password: rPass,
-      phone: rPhone, ambiente_numero: rAmb, nombre_completo_real: rName,
-      sena_role: document.getElementById('r-sena-role')?.value||''
-    });
-    TOKEN = res.token; USER = res.user;
-    localStorage.setItem('kame_token', TOKEN);
-    localStorage.setItem('kame_user', JSON.stringify(USER));
-    updateNavAuth(); showPage('home');
-  } catch(e) { err.textContent = e.message; err.style.display = ''; }
-  btn.disabled = false; btn.textContent = '🔥 Crear Cuenta';
+    await api('POST', '/auth/reset-password-direct', { email, newPassword: pass1 });
+    msg.textContent = '✅ ¡Contraseña cambiada! Ya puedes iniciar sesión.';
+    msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--ok)';
+    btn.textContent = '✅ Listo';
+    setTimeout(function(){ showPage('login'); }, 1800);
+  } catch(e) {
+    msg.textContent = '⚠️ ' + (e.message || 'No se encontró ninguna cuenta con ese email');
+    msg.style.cssText = 'display:block;padding:10px 14px;border-radius:8px;font-size:.88rem;margin-bottom:14px;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.3);color:var(--err)';
+    btn.disabled = false; btn.textContent = '🔑 Cambiar Contraseña';
+  }
 }
 
 // ════════════════════════════════════════
@@ -1998,41 +1981,104 @@ async function saveProfile() {
   btn.disabled = false;
 }
 async function uploadAvatar(inp) {
-  const f = inp.files[0]; if (!f) return;
-  const fd = new FormData(); fd.append('avatar',f);
-  try { const r = await fetch('/api/me/avatar?folder=avatars',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd}); const d=await r.json(); document.getElementById('prof-avatar-img').src = d.avatar; USER.avatar=d.avatar; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); } catch(e) { alert(e.message); }
+  if (!inp.files[0]) return;
+  const lbl = inp.closest('label');
+  const origHtml = lbl ? lbl.innerHTML : '';
+  if (lbl) lbl.textContent = '⏳ Subiendo...';
+  const fd = new FormData();
+  fd.append('file', inp.files[0]);
+  try {
+    const res = await fetch('/api/me/avatar', {
+      method:'POST', headers:{'Authorization':'Bearer '+TOKEN}, body:fd
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.message||'Error subiendo');
+    document.getElementById('prof-avatar-img').src = d.url || d.avatar || d.url;
+    if (USER) { USER.avatar = d.url||d.avatar; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); }
+    if (lbl) { lbl.innerHTML = origHtml; }
+  } catch(e) { alert('Error: '+e.message); if(lbl) lbl.innerHTML = origHtml; }
 }
 async function uploadBanner(inp) {
-  const f = inp.files[0]; if (!f) return;
-  const fd = new FormData(); fd.append('banner',f);
-  try { const r = await fetch('/api/me/banner?folder=banners',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd}); const d=await r.json(); document.getElementById('prof-banner-img').style.backgroundImage=`url(${d.banner})`; } catch(e) { alert(e.message); }
+  if (!inp.files[0]) return;
+  const lbl = inp.closest('label');
+  const origHtml = lbl ? lbl.innerHTML : '';
+  if (lbl) lbl.textContent = '⏳ Subiendo...';
+  const fd = new FormData();
+  fd.append('file', inp.files[0]);
+  try {
+    const res = await fetch('/api/me/banner', {
+      method:'POST', headers:{'Authorization':'Bearer '+TOKEN}, body:fd
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.message||'Error subiendo');
+    const bi = document.getElementById('prof-banner-img');
+    if (bi) bi.style.backgroundImage = 'url('+( d.url||d.banner)+')';
+    if (lbl) lbl.innerHTML = origHtml;
+  } catch(e) { alert('Error: '+e.message); if(lbl) lbl.innerHTML = origHtml; }
+}
+function showAvatarPicker() {
+  const DBZ_AVATARS = [
+    {name:'Goku',url:'https://i.imgur.com/KAaVDZ3.png'},
+    {name:'Vegeta',url:'https://i.imgur.com/jZVjeDf.png'},
+    {name:'Gohan',url:'https://i.imgur.com/ZEfJ5f9.png'},
+    {name:'Piccolo',url:'https://i.imgur.com/RwvNk4u.png'},
+    {name:'Bulma',url:'https://i.imgur.com/oWnMHqQ.png'},
+    {name:'Krilin',url:'https://i.imgur.com/X7j2kQD.png'},
+    {name:'Trunks',url:'https://i.imgur.com/zRjAiEa.png'},
+    {name:'Goten',url:'https://i.imgur.com/8UuLj8T.png'},
+    {name:'Cell',url:'https://i.imgur.com/bKH9Fzv.png'},
+    {name:'Freezer',url:'https://i.imgur.com/yqW4eD3.png'},
+    {name:'Maestro Roshi',url:'https://i.imgur.com/k1VdmF7.png'},
+    {name:'Broly',url:'https://i.imgur.com/mRcLlKY.png'},
+  ];
+  const prev = document.getElementById('avatar-picker-modal');
+  if (prev) { prev.remove(); return; }
+  const ov = document.createElement('div');
+  ov.id = 'avatar-picker-modal';
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;animation:foi .25s ease';
+  ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
+  var gridHtml = DBZ_AVATARS.map(function(av){
+    return '<div onclick="selectDbzAvatar(\''+av.url+'\',\''+av.name+'\')" '
+      +'style="cursor:pointer;text-align:center;padding:8px;border-radius:10px;border:2px solid transparent;transition:.2s" '
+      +'onmouseover="this.style.borderColor=\'var(--p)\';this.style.background=\'rgba(255,107,0,.1)\'" '
+      +'onmouseout="this.style.borderColor=\'transparent\';this.style.background=\'none\'">'
+      +'<img src="'+av.url+'" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid var(--p);display:block;margin:0 auto" '
+      +'onerror="this.src=\'https://ui-avatars.com/api/?name='+encodeURIComponent(av.name)+'&background=FF6B00&color=fff&size=80\'"/>'
+      +'<div style="font-size:.72rem;margin-top:5px;font-weight:700;color:var(--txt)">'+av.name+'</div>'
+    +'</div>';
+  }).join('');
+  ov.innerHTML = '<div class="modal" style="max-width:520px;width:100%" onclick="event.stopPropagation()">'
+    +'<div class="mhdr"><h3>🐉 Elegir Avatar DBZ</h3><button class="xbtn" onclick="document.getElementById(\'avatar-picker-modal\').remove()">✕</button></div>'
+    +'<div class="mbody">'
+    +'<p style="color:var(--muted);font-size:.83rem;margin-bottom:14px">Elige tu personaje favorito o sube tu propia foto con el botón ✏️</p>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">'+gridHtml+'</div>'
+    +'</div>'
+    +'<div class="mftr"><button class="btn btn-o btn-sm" onclick="document.getElementById(\'avatar-picker-modal\').remove()">Cerrar</button></div>'
+    +'</div>';
+  document.body.appendChild(ov);
+}
+async function selectDbzAvatar(url, name) {
+  try {
+    await api('PUT','/me/profile',{ ...USER, avatar_url: url });
+    // Guardar avatar como URL directa (sin subir archivo)
+    const res = await fetch('/api/me/avatar-url',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+TOKEN,'Content-Type':'application/json'},
+      body: JSON.stringify({url})
+    });
+    const d = await res.json();
+    document.getElementById('prof-avatar-img').src = url;
+    if (USER) { USER.avatar = url; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); }
+    document.getElementById('avatar-picker-modal').remove();
+  } catch(e) {
+    // Fallback: actualizar solo localmente
+    document.getElementById('prof-avatar-img').src = url;
+    if (USER) { USER.avatar = url; localStorage.setItem('kame_user',JSON.stringify(USER)); updateNavAuth(); }
+    const modal = document.getElementById('avatar-picker-modal');
+    if (modal) modal.remove();
+  }
 }
 
-// ════════════════════════════════════════
-//  ADMIN
-// ════════════════════════════════════════
-const ADM_TABS = [
-  {id:'dashboard',l:'📊 Dashboard'},
-  {id:'ganancias',l:'💰 Ganancias'},
-  {id:'reels',l:'🎬 Reels'},
-  {id:'products',l:'🍽️ Productos'},
-  {id:'adiciones',l:'🥤 Adiciones'},
-  {id:'combos',l:'🎁 Combos'},
-  {id:'orders',l:'📦 Pedidos'},
-  {id:'opinions',l:'💬 Opiniones'},
-  {id:'carousel',l:'🖼️ Carrusel'},
-  {id:'dbzicons',l:'🐉 Íconos DBZ'},
-  {id:'guerreros',l:'⭐ Guerreros'},
-  {id:'users',l:'👥 Usuarios'},
-  {id:'coupons',l:'🎟️ Cupones'},
-  {id:'siteconfig',l:'⚙️ Config'}
-];
-function loadAdmin() {
-  if (!USER || USER.role !== 'admin') { showPage('home'); return; }
-  document.getElementById('adm-nav').innerHTML = ADM_TABS.map(t => `<button class="anav${adminTab===t.id?' active':''}" onclick="admTab('${t.id}')">${t.l}</button>`).join('');
-  admRender();
-}
-function admTab(tab) { adminTab = tab; document.querySelectorAll('.anav').forEach(b=>b.classList.toggle('active',b.textContent.includes(ADM_TABS.find(t=>t.id===tab)?.l.split(' ').pop()||'xx'))); document.querySelectorAll('.anav').forEach((b,i)=>b.classList.toggle('active',ADM_TABS[i]?.id===tab)); admRender(); }
 async function admRender() {
   const el = document.getElementById('adm-main');
   el.innerHTML = `<div class="spinner" style="padding:60px"></div>`;
@@ -2647,9 +2693,10 @@ async function admOrders(el) {
           +'<button class="btn btn-p btn-sm adm-btn-save-status" data-oid="'+o.id+'" style="white-space:nowrap;height:36px">💾 Guardar</button>'
         +'</div>'
       +'</div>'
-      // CHAT
-      +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
+      // ACCIONES + CHAT
+      +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px;display:flex;flex-wrap:wrap;gap:7px">'
         +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
+        +'<button class="btn btn-sm" onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(100,100,100,.12);border:1px solid rgba(255,255,255,.12);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
         +'<div id="adm-chat-'+o.id+'" style="display:none;margin-top:10px">'
           +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
           +'<div style="display:flex;gap:8px">'
