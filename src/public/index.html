@@ -832,7 +832,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
       <h3>📍 Encuéntranos</h3>
       <div class="info-item"><span>🕐</span><div><strong>Horario</strong><p>Lunes y jueves: 1:30pm – 5:00pm</p></div></div>
       <div class="info-item"><span>📱</span><div><strong>WhatsApp</strong><p>+57 316 621 9962</p></div></div>
-      <div class="info-item"><span>📧</span><div><strong>Email</strong><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="275446564254464354485442494667404a464e4b0944484a">[email&#160;protected]</a></p></div></div>
+      <div class="info-item"><span>📧</span><div><strong>Email</strong><p>saqesadsosena@gmail.com</p></div></div>
       <div class="dbz-quote"><p>"La perseverancia de un guerrero también se mide en cuántas empanadas puede comer"</p><small>— Maestro Roshi</small></div>
     </div>
   </div>
@@ -1093,13 +1093,13 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="footer-brand"><h3>Empanadas <span>Kame</span></h3><p>El sabor legendario del Templo Kame. Cada empanada es un Kame Hame Ha de sabor.</p></div>
     <div class="footer-col"><h4>Menú</h4><a onclick="showPage('products')">Todos los Productos</a><a onclick="showPage('combos')">Combos</a><a onclick="showPage('clients')">Clientes Felices</a><a onclick="showPage('contact')">Contacto</a></div>
     <div class="footer-col"><h4>Cuenta</h4><a onclick="showPage('login')">Iniciar Sesión</a><a onclick="showPage('register')">Registrarse</a><a onclick="showPage('profile')">Mi Perfil</a></div>
-    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 621 9962</p><p>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="562537273325373225392533383716313b373f3a7835393b">[email&#160;protected]</a></p><p>🕐 Lun y Jue: 1:30pm – 5:00pm</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 621 9962</p><p>📧 saqesadsosena@gmail.com</p><p>🕐 Lun y Jue: 1:30pm – 5:00pm</p></div>
   </div>
   <div class="power-bar"></div>
   <div class="footer-bottom"><p id="footer-year">© 2024 Empanadas Kame · El sabor que supera los límites ⚡</p></div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ════════════════════════════════════════
 //  STATE
 function getImg(p){var imgs=Array.isArray(p.images)?p.images:(function(){try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
@@ -1346,39 +1346,6 @@ async function loadHome() {
       const el = document.getElementById('deco-esferas');
       if (el) el.innerHTML = `<img src="${cfg.dbz_esfera}" style="max-width:220px;max-height:60px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,215,0,.6))"/>`;
     }
-
-    // ── KICK STREAM CARD ──────────────────────────────────────────
-    const kickCard = document.getElementById('kick-stream-card');
-    if (kickCard) {
-      const kickEnabled = cfg.kick_enabled === 'true' || cfg.kick_enabled === true;
-      if (kickEnabled) {
-        kickCard.style.display = 'flex';
-        const kickAvatar = document.getElementById('kick-avatar-img');
-        const kickUser   = document.getElementById('kick-username-display');
-        const kickLink   = document.getElementById('kick-link-btn');
-        const kickDot    = document.getElementById('kick-status-dot');
-        if (kickAvatar) kickAvatar.src = cfg.kick_avatar || 'https://ui-avatars.com/api/?name=K&background=53D067&color=fff&size=200';
-        if (kickUser)   kickUser.textContent = cfg.kick_username || 'Kame';
-        if (kickLink)   kickLink.href = cfg.kick_url || 'https://kick.com';
-        const isLive = cfg.kick_live === 'true' || cfg.kick_live === true;
-        if (kickDot) {
-          kickDot.style.background  = isLive ? '#4CAF50' : '#555';
-          kickDot.style.boxShadow   = isLive ? '0 0 0 3px rgba(76,175,80,.35)' : 'none';
-          kickDot.style.animation   = isLive ? 'kick-pulse 1.8s ease-in-out infinite' : 'kick-pulse-off 2.5s ease-in-out infinite';
-        }
-        var liveBadge = document.getElementById('kick-live-badge');
-        if (isLive) {
-          if (!liveBadge) {
-            liveBadge = document.createElement('div');
-            liveBadge.id = 'kick-live-badge';
-            liveBadge.style.cssText = "display:inline-flex;align-items:center;gap:5px;background:rgba(255,23,68,.18);border:1px solid rgba(255,23,68,.4);color:#ff4444;font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:2px;padding:3px 10px;border-radius:20px;margin-top:2px";
-            liveBadge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#ff4444;animation:kick-pulse 1s ease-in-out infinite;display:inline-block"></span> EN VIVO';
-            kickCard.insertBefore(liveBadge, kickCard.firstChild);
-          }
-        } else { if (liveBadge) liveBadge.remove(); }
-      } else { kickCard.style.display = 'none'; }
-    }
-    // ── /KICK STREAM CARD ─────────────────────────────────────────
 
     document.getElementById('home-products').innerHTML = prods.length
       ? prods.map(productCard).join('')
@@ -2884,11 +2851,8 @@ async function admOrders(el) {
       +'</div>'
       // CHAT
       +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
-        +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">'
         +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
-        +'<button onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
-        +'<button onclick="admDeleteOrderDirect('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.3);color:var(--err);border-radius:8px;cursor:pointer">🗑️ Eliminar</button>'
-        +'</div>'
+       +'<button class="btn btn-sm" onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
         +'<div id="adm-chat-'+o.id+'" style="display:none;margin-top:10px">'
           +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
           +'<div style="display:flex;gap:8px">'
@@ -2929,7 +2893,6 @@ async function admOrders(el) {
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
     +(pendPay?'<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:7px 13px;font-size:.83rem;color:var(--p);font-weight:700">⚠️ '+pendPay+' por verificar</div>':'')
     +'<button class="btn btn-sm" id="btn-ver-archivados" onclick="admVerArchivados()" style="padding:6px 13px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:var(--muted);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🗄️ Ver Archivados</button>'
-    +'<button onclick="admOrders(document.getElementById('adm-main'))" style="padding:6px 13px;border:1px solid rgba(255,107,0,.3);background:rgba(255,107,0,.08);color:var(--p);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🔄 Actualizar</button>'
     +'</div>'
     +'</div>'
     +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px" id="ord-tabs">'+tabsHtml+'</div>'
@@ -2946,19 +2909,6 @@ async function admDeleteOrder(id) {
   if(!confirm('⚠️ ¿ELIMINAR PERMANENTEMENTE este pedido? No se puede deshacer.')) return;
   try { await api('DELETE','/orders/'+id); admTab('orders'); }
   catch(e) { alert(e.message); }
-}
-async function admDeleteOrderDirect(id) {
-  if(!confirm('⚠️ ¿Eliminar permanentemente este pedido? Esta acción no se puede deshacer.')) return;
-  try {
-    await api('DELETE','/orders/'+id);
-    // Remover la card del DOM sin recargar
-    var card = document.querySelector('[data-oid-direct="'+id+'"]') ||
-               document.querySelector('.co-card button[onclick*="admDeleteOrderDirect('+id+')"]')?.closest('.co-card');
-    if (card) {
-      card.style.transition='opacity .3s'; card.style.opacity='0';
-      setTimeout(function(){ card.remove(); }, 300);
-    } else { admTab('orders'); }
-  } catch(e) { alert('Error: '+e.message); }
 }
 async function admRestoreOrder(id) {
   try { await api('PUT','/orders/'+id+'/status',{status:'pending',payment_status:'pending'}); admTab('orders'); }
@@ -3251,67 +3201,10 @@ async function admSaveSlide(id) {
 async function admUsers(el) {
   el.innerHTML = '<div class="spinner" style="padding:40px"></div>';
   const users = await api('GET','/admin/users');
-  // Cargar todos los pedidos para cruzar con usuarios
-  var allOrders = [];
-  try { allOrders = await api('GET','/orders'); } catch(e) { allOrders = []; }
-
-  // Ordenar usuarios: primero por fecha de registro (más reciente primero)
-  var sortedUsers = users.slice().sort(function(a,b){ return new Date(b.created_at)-new Date(a.created_at); });
-
-  // Agrupar por fecha de registro (día)
-  var byDate = {};
-  sortedUsers.forEach(function(u){
-    var d = new Date(u.created_at).toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    if(!byDate[d]) byDate[d]=[];
-    byDate[d].push(u);
-  });
-
-  var STATUS_CLR_U = {pending:'#FFD740',payment_review:'#FF6B00',confirmed:'#00E676',preparing:'#FF8C00',delivered:'#00E676',cancelled:'#FF1744',archived:'#555'};
-  var STATUS_LBL_U = {pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado',archived:'🗄️ Archivado'};
 
   function userCard(u) {
     var av = u.avatar||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.full_name||'U')+'&background=FF6B00&color=fff&size=80');
     var isAdmin = u.role==='admin';
-
-    // Pedidos de este usuario
-    var uOrders = allOrders.filter(function(o){
-      return o.user_id===u.id || o.customer_name===u.full_name || o.customer_phone===(u.celular||u.phone);
-    });
-    var uTotal = uOrders.reduce(function(s,o){ return s+(+o.total||0); }, 0);
-
-    var ordersHtml = '';
-    if (uOrders.length) {
-      ordersHtml = '<div style="margin-top:10px;border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
-        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
-          +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">📦 Pedidos ('+uOrders.length+')</div>'
-          +'<div style="font-size:.82rem;font-weight:700;color:var(--s)">'+fmt(uTotal)+'</div>'
-        +'</div>'
-        +'<div id="uord-list-'+u.id+'" style="display:none;flex-direction:column;gap:5px">'
-        +uOrders.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).map(function(o){
-          var sc = STATUS_CLR_U[o.status]||'#aaa';
-          var itemsStr = (o.items||[]).map(function(it){
-            return (it.product_name||it.combo_name||'?')+' x'+it.quantity;
-          }).join(', ')||'—';
-          return '<div style="background:var(--dark3);border-radius:8px;padding:8px 11px;border-left:3px solid '+sc+'">'
-            +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;margin-bottom:4px">'
-              +'<span style="font-family:'Bangers',cursive;font-size:.9rem;color:var(--s);letter-spacing:1px">'+(o.order_number||'')+'</span>'
-              +'<span style="border:1px solid '+sc+';color:'+sc+';padding:2px 7px;border-radius:20px;font-size:.68rem;font-weight:700">'+(STATUS_LBL_U[o.status]||o.status)+'</span>'
-            +'</div>'
-            +'<div style="font-size:.75rem;color:var(--muted);margin-bottom:3px">🛒 '+itemsStr+'</div>'
-            +'<div style="display:flex;align-items:center;justify-content:space-between">'
-              +'<span style="font-size:.7rem;color:var(--muted)">'+new Date(o.created_at).toLocaleDateString('es-CO')+'</span>'
-              +'<span style="font-size:.82rem;font-weight:700;color:var(--s)">'+fmt(o.total)+'</span>'
-            +'</div>'
-          +'</div>';
-        }).join('')
-        +'</div>'
-        +'<button onclick="var l=document.getElementById('uord-list-'+u.id+'');var open=l.style.display==='flex';l.style.display=open?'none':'flex';this.textContent=open?'📋 Ver '+uOrders.length+' pedidos':'▲ Ocultar'" '
-        +'style="margin-top:7px;background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.2);color:var(--p);padding:5px 11px;border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700">📋 Ver '+uOrders.length+' pedidos</button>'
-      +'</div>';
-    } else {
-      ordersHtml = '<div style="margin-top:10px;border-top:1px solid rgba(255,107,0,.1);padding-top:8px;font-size:.75rem;color:var(--muted)">📭 Sin pedidos registrados</div>';
-    }
-
     var entrega = (u.ambiente_numero||u.nombre_completo_real||u.celular||u.phone)
       ? '<div style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.15);border-radius:8px;padding:9px 12px;margin-top:8px">'
           +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">📋 Datos de entrega</div>'
@@ -3328,18 +3221,20 @@ async function admUsers(el) {
         +(isAdmin?'<span style="position:absolute;bottom:-3px;right:-3px;background:var(--s);border:2px solid var(--dark2);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.6rem">⚙️</span>':'')
       +'</div>'
       +'<div>'
+        // nombre + badges + estado
         +'<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px">'
           +'<strong style="font-size:1rem">'+u.full_name+'</strong>'
           +(u.username?'<span style="color:var(--muted);font-size:.75rem">@'+u.username+'</span>':'')
           +'<span style="background:'+(isAdmin?'rgba(255,215,0,.15)':'rgba(255,107,0,.1)')+';color:'+(isAdmin?'var(--s)':'var(--p)')+';padding:2px 8px;border-radius:20px;font-weight:700;font-size:.7rem">'+(isAdmin?'⚙️ Admin':'👤 Cliente')+'</span>'
           +'<span style="color:'+(u.is_active?'var(--ok)':'var(--err)')+';font-size:.7rem;margin-left:auto">'+(u.is_active?'● Activo':'● Inactivo')+'</span>'
         +'</div>'
+        // info básica
         +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:8px">'
           +'<div class="ir"><span>Email</span><strong style="font-size:.78rem">'+u.email+'</strong></div>'
           +'<div class="ir"><span>Registrado</span><strong style="font-size:.78rem">'+new Date(u.created_at).toLocaleDateString('es-CO')+'</strong></div>'
         +'</div>'
         +entrega
-        +ordersHtml
+        // botones de acción
         +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,107,0,.1)">'
           +'<button class="btn btn-sm" onclick="admViewUserProfile('+u.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);color:var(--p);border-radius:8px;cursor:pointer">👁️ Ver Perfil</button>'
           +'<button class="btn btn-sm adm-user-role" data-uid="'+u.id+'" data-role="'+u.role+'" data-name="'+u.full_name.replace(/"/g,'&quot;')+'" style="padding:5px 11px;font-size:.78rem;background:'+(isAdmin?'rgba(255,23,68,.08)':'rgba(255,107,0,.1)')+';border:1px solid '+(isAdmin?'rgba(255,23,68,.35)':'rgba(255,107,0,.35)')+';color:'+(isAdmin?'var(--err)':'var(--p)')+';border-radius:8px;cursor:pointer">'
@@ -3353,45 +3248,10 @@ async function admUsers(el) {
     +'</div>';
   }
 
-  // Estadísticas rápidas
-  var totalUsers = users.length;
-  var activeUsers = users.filter(function(u){return u.is_active;}).length;
-  var hoy = new Date().toISOString().slice(0,10);
-  var newToday = users.filter(function(u){return u.created_at&&u.created_at.slice(0,10)===hoy;}).length;
-
-  var statsHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:22px">'
-    +'<div class="stat"><span class="stat-ico">👥</span><div><span class="stat-num">'+totalUsers+'</span><span class="stat-lbl">Total</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">✅</span><div><span class="stat-num">'+activeUsers+'</span><span class="stat-lbl">Activos</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">🆕</span><div><span class="stat-num">'+newToday+'</span><span class="stat-lbl">Hoy</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">📦</span><div><span class="stat-num">'+allOrders.filter(function(o){return o.status!=='archived';}).length+'</span><span class="stat-lbl">Pedidos Activos</span></div></div>'
-    +'</div>';
-
-  // Construir HTML agrupado por fecha
-  var groupedHtml = Object.keys(byDate).map(function(fecha){
-    var dayUsers = byDate[fecha];
-    var dayOrders = allOrders.filter(function(o){
-      var od = new Date(o.created_at).toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-      return od===fecha;
-    });
-    return '<div style="margin-bottom:24px">'
-      +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid rgba(255,107,0,.2)">'
-        +'<div style="background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.3);border-radius:8px;padding:6px 14px">'
-          +'<div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--p)">'+fecha+'</div>'
-        +'</div>'
-        +'<div style="display:flex;gap:8px">'
-          +'<span style="background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);color:var(--ok);padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700">👤 '+dayUsers.length+' usuario'+(dayUsers.length!==1?'s':'')+'</span>'
-          +(dayOrders.length?'<span style="background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);color:var(--p);padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700">📦 '+dayOrders.length+' pedido'+(dayOrders.length!==1?'s':'')+'</span>':'')
-        +'</div>'
-      +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:10px">'
-      +dayUsers.map(userCard).join('')
-      +'</div>'
-    +'</div>';
-  }).join('');
-
   el.innerHTML = '<h2 class="adm-title">👥 Usuarios</h2>'
-    +statsHtml
-    +(Object.keys(byDate).length ? groupedHtml : '<p style="color:var(--muted)">Sin usuarios</p>');
+    +'<div style="display:flex;flex-direction:column;gap:12px">'
+    +(users.length ? users.map(userCard).join('') : '<p style="color:var(--muted)">Sin usuarios</p>')
+    +'</div>';
 }
 async function admViewUserProfile(uid) {
   try {
@@ -3503,33 +3363,6 @@ async function admSiteConfig(el) {
       <div class="fc"><label>Nombre</label><input type="text" class="fi" id="cfg-nname" value="${cfg.nequi_name||''}"/></div>
       <div class="fc"><label>Teléfono</label><input type="text" class="fi" id="cfg-nphone" value="${cfg.nequi_phone||''}"/></div>
     </div>
-    <div class="co-card" style="border-left:3px solid #53D067">
-      <h3 style="font-weight:700;color:#53D067;margin-bottom:4px;display:flex;align-items:center;gap:8px">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#53D067"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>Kick Streaming
-      </h3>
-      <p style="font-size:.75rem;color:var(--muted);margin-bottom:14px;line-height:1.4">Muestra tu canal en la sección decorativa bajo el carrusel.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(83,208,103,.07);border:1px solid rgba(83,208,103,.2);padding:8px 14px;border-radius:10px;flex:1;min-width:120px">
-          <input type="checkbox" id="cfg-kick-enabled" ${cfg.kick_enabled==='true'||cfg.kick_enabled===true?'checked':''} style="accent-color:#53D067;width:16px;height:16px"/>
-          <span style="font-size:.88rem;font-weight:700">Mostrar card</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,23,68,.07);border:1px solid rgba(255,23,68,.2);padding:8px 14px;border-radius:10px;flex:1;min-width:120px">
-          <input type="checkbox" id="cfg-kick-live" ${cfg.kick_live==='true'||cfg.kick_live===true?'checked':''} style="accent-color:#ff4444;width:16px;height:16px"/>
-          <span style="font-size:.88rem;font-weight:700;color:#ff6666">🔴 EN VIVO</span>
-        </label>
-      </div>
-      <div class="fc"><label style="color:#53D067">👤 Usuario de Kick</label><input type="text" class="fi" id="cfg-kick-user" value="${cfg.kick_username||''}" placeholder="tu_usuario_kick" style="border-color:rgba(83,208,103,.3)"/></div>
-      <div class="fc"><label style="color:#53D067">🔗 URL del canal</label><input type="text" class="fi" id="cfg-kick-url" value="${cfg.kick_url||''}" placeholder="https://kick.com/tu_usuario" style="border-color:rgba(83,208,103,.3)"/></div>
-      <div class="fc">
-        <label style="color:#53D067">🖼️ Foto de perfil</label>
-        <input type="text" class="fi" id="cfg-kick-avatar" value="${cfg.kick_avatar||''}" placeholder="https://... o sube tu foto" style="border-color:rgba(83,208,103,.3)"/>
-        <label class="up-sm" style="margin-top:8px;border-color:rgba(83,208,103,.3);color:#53D067">
-          <input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>📎 Subir foto de perfil
-        </label>
-        ${cfg.kick_avatar?`<img src="${cfg.kick_avatar}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #53D067;margin-top:10px;display:block"/>`:
-        `<div style="width:56px;height:56px;border-radius:50%;border:2px dashed rgba(83,208,103,.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-top:10px">👤</div>`}
-      </div>
-    </div>
 
   </div>
   <div style="text-align:right;margin-top:22px"><button class="btn btn-p btn-lg" id="cfg-save-btn" onclick="admSaveConfig()">💾 Guardar Todo</button></div>`;
@@ -3541,18 +3374,13 @@ async function admSaveConfig() {
   const btn = document.getElementById('cfg-save-btn');
   btn.disabled = true; btn.textContent = '⏳ Guardando...';
   const cfg = {
-    site_name:       document.getElementById('cfg-name').value,
-    site_logo:       document.getElementById('cfg-logo').value,
-    primary_color:   document.getElementById('cfg-pct').value,
+    site_name: document.getElementById('cfg-name').value,
+    site_logo: document.getElementById('cfg-logo').value,
+    primary_color: document.getElementById('cfg-pct').value,
     secondary_color: document.getElementById('cfg-sct').value,
-    accent_color:    document.getElementById('cfg-act').value,
-    nequi_name:      document.getElementById('cfg-nname').value,
-    nequi_phone:     document.getElementById('cfg-nphone').value,
-    kick_enabled:    String(document.getElementById('cfg-kick-enabled')?.checked||false),
-    kick_live:       String(document.getElementById('cfg-kick-live')?.checked||false),
-    kick_username:   document.getElementById('cfg-kick-user')?.value||'',
-    kick_url:        document.getElementById('cfg-kick-url')?.value||'',
-    kick_avatar:     document.getElementById('cfg-kick-avatar')?.value||''
+    accent_color: document.getElementById('cfg-act').value,
+    nequi_name: document.getElementById('cfg-nname').value,
+    nequi_phone: document.getElementById('cfg-nphone').value
   };
   await api('PUT','/admin/site-config',cfg);
   const r = document.documentElement;
@@ -3561,22 +3389,6 @@ async function admSaveConfig() {
   r.style.setProperty('--a', cfg.accent_color);
   btn.disabled = false; btn.textContent = '✓ ¡Guardado!';
   setTimeout(() => { btn.textContent = '💾 Guardar Todo'; }, 2000);
-}
-async function admUploadKickAvatar(inp) {
-  const f = inp.files[0]; if (!f) return;
-  const lbl = inp.closest('label');
-  if (lbl) { lbl.style.opacity='.5'; lbl.textContent='⏳ Subiendo...'; }
-  const fd = new FormData(); fd.append('file', f);
-  try {
-    const r = await fetch('/api/upload?folder=general',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
-    const d = await r.json();
-    const urlInp = document.getElementById('cfg-kick-avatar');
-    if (urlInp) urlInp.value = d.url;
-    if (lbl) { lbl.style.opacity='1'; lbl.innerHTML='<input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>✅ Foto subida'; }
-  } catch(e) {
-    alert('Error: '+e.message);
-    if (lbl) { lbl.style.opacity='1'; lbl.innerHTML='<input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>📎 Subir foto de perfil'; }
-  }
 }
 
 // ════════════════════════════════════════
@@ -3617,4 +3429,14 @@ document.getElementById('footer-year').textContent = `© ${new Date().getFullYea
 updateNavAuth();
 updateCartUI();
 // Apply saved config
-api('GET','/admin/
+api('GET','/admin/site-config').then(cfg => {
+  if (!cfg) return;
+  const r = document.documentElement;
+  if (cfg.primary_color) r.style.setProperty('--p', cfg.primary_color);
+  if (cfg.secondary_color) r.style.setProperty('--s', cfg.secondary_color);
+  if (cfg.accent_color) r.style.setProperty('--a', cfg.accent_color);
+}).catch(()=>{});
+loadHome();
+</script>
+</body>
+</html>
