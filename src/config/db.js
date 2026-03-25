@@ -1,8 +1,9 @@
-const { Pool } = require('pg');
+import pkg from 'pg';
+const { Pool } = pkg;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL + '&sslmode=verify-full',
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-module.exports = pool;
+export default db;
