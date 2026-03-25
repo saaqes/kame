@@ -17,8 +17,11 @@ app.use('/api/combos',   require('./routes/combos'));
 app.use('/api/orders',   require('./routes/orders'));
 app.use('/api/carousel', require('./routes/carousel'));
 app.use('/api',          require('./routes/misc'));
-app.use('/api/inventory', require('./routes/inventory'));
-app.use('/api/sales', require('./routes/sales'));
+import inventoryRoutes from './routes/inventory.js';
+import salesRoutes from './routes/sales.js';
+
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/sales', salesRoutes);
 
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 app.get('*', (req, res) => {
