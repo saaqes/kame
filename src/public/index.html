@@ -2664,7 +2664,14 @@ function admProductForm(p, defaultCat=1) {
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
         <div class="fc"><label>Stock</label><input type="number" class="fi" id="pf-stock" value="${p?.stock||999}" min="0"/></div>
         <div class="fc" style="grid-column:1/-1"><label>Descripción</label><textarea class="fi" id="pf-desc" rows="3" placeholder="Describe el producto...">${esc(p?.description)}</textarea></div>
-        <div class="fc" style="grid-column:1/-1"><label>Ref. Dragon Ball Z</label><input type="text" class="fi" id="pf-dbz" value="${esc(p?.dragon_ball_ref)}" placeholder="Ej: Poder de Goku"/></div>
+        <div class="fc" style="grid-column:1/-1">
+        <label>Tipo de producto</label>
+        <select class="fi" id="pf-tipo">
+          <option value="empanada">🥟 Empanada</option>
+          <option value="gaseosa">🥤 Gaseosa</option>
+          <option value="salsa">🌶️ Salsa</option>
+        </select>
+      </div>
         <div class="fc" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:24px;padding:4px 0">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-weight:700;color:var(--muted)">
             <input type="checkbox" id="pf-feat" ${p?.is_featured?'checked':''} style="accent-color:var(--p);width:18px;height:18px"/>⭐ Destacado
@@ -2741,7 +2748,7 @@ async function admSaveProduct(id) {
     stock: +document.getElementById('pf-stock').value,
     is_featured: document.getElementById('pf-feat').checked,
     is_active: document.getElementById('pf-active').checked,
-    dragon_ball_ref: document.getElementById('pf-dbz').value
+    dragon_ball_ref: document.getElementById('pf-tipo').value
   };
   btn.disabled = true; btn.textContent = '⏳ Guardando...';
   try {
