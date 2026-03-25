@@ -229,5 +229,19 @@ async function setupDB() {
     }
   } catch(e) { console.error('Admin error:', e.message); }
 
+  // Tipos de empanadas
+try {
+  const t = await db.query('SELECT COUNT(*) FROM empanada_types');
+  if (parseInt(t.rows[0].count) === 0) {
+    await db.query(`
+      INSERT INTO empanada_types (name, price) VALUES
+      ('carne', 2000),
+      ('pollo', 2000),
+      ('mixta', 3000)
+    `);
+    console.log('✅ Tipos de empanadas creados');
+  }
+} catch(e) {}
+
   console.log('✅ DB lista');
 }
