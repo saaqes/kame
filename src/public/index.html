@@ -134,6 +134,10 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .xbtn:hover{background:var(--a);}
 
 /* PRODUCT MODAL */
+   <div>
+  <div class="opt-lbl">Adiciones</div>
+  <div id="modal-adiciones"></div>
+</div>
 .pm-grid{display:grid;grid-template-columns:1fr 1fr;min-height:480px;}
 .pm-imgs{background:var(--dark3);padding:24px;display:flex;flex-direction:column;gap:14px;border-radius:14px 0 0 14px;}
 .pm-mainimg{border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--dark2);}
@@ -1100,6 +1104,38 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 </footer>
 
 <script>
+   let adicionesSeleccionadas = {};
+let cantidadProducto = 1;
+let productoActual = null;
+   function totalAdiciones() {
+  return Object.values(adicionesSeleccionadas).reduce((a, b) => a + b, 0);
+}
+
+function cambiarCantAdicion(id, delta) {
+  if (!adicionesSeleccionadas[id]) {
+    adicionesSeleccionadas[id] = 0;
+  }
+
+  adicionesSeleccionadas[id] += delta;
+
+  if (adicionesSeleccionadas[id] < 0) {
+    adicionesSeleccionadas[id] = 0;
+  }
+
+  if (totalAdiciones() > cantidadProducto) {
+    adicionesSeleccionadas[id] -= delta;
+    return;
+  }
+
+  document.getElementById(`cant-${id}`).innerText = adicionesSeleccionadas[id];
+}
+
+function cambiarCantidad(delta) {
+  cantidadProducto += delta;
+  if (cantidadProducto < 1) cantidadProducto = 1;
+
+  document.getElementById('cantidad-num').innerText = cantidadProducto;
+}
 // ════════════════════════════════════════
 //  STATE
 function getImg(p){var imgs=Array.isArray(p.images)?p.images:(function(){try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
