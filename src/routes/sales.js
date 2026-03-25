@@ -1,5 +1,5 @@
+import db from '../config/db.js';
 import express from 'express';
-const db = require('../config/db');
 
 const router = express.Router();
 
@@ -13,13 +13,11 @@ router.post('/', async (req, res) => {
 
   const price = t.rows[0].price;
 
-  // guardar venta
   await db.query(`
     INSERT INTO sales (type_id, quantity, total)
     VALUES ($1, $2, $3)
   `, [type_id, quantity, price * quantity]);
 
-  // descontar stock
   await db.query(`
     UPDATE inventory
     SET quantity = quantity - $1
