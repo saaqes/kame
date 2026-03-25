@@ -18,10 +18,13 @@ app.use('/api/orders',   require('./routes/orders'));
 app.use('/api/carousel', require('./routes/carousel'));
 app.use('/api',          require('./routes/misc'));
 import inventoryRoutes from './routes/inventory.js';
-import salesRoutes from './routes/sales.js';
+const inventory = inventoryRoutes.default || inventoryRoutes;
 
-app.use('/api/inventory', inventoryRoutes);
-app.use('/api/sales', salesRoutes);
+app.use('/api/inventory', inventory);
+import salesRoutes from './routes/sales.js';
+const sales = salesRoutes.default || salesRoutes;
+
+app.use('/api/sales', sales);
 
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 app.get('*', (req, res) => {
