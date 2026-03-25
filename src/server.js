@@ -54,3 +54,54 @@ app.listen(PORT, async () => {
   console.log(`🔥 Servidor en puerto ${PORT}`);
   await setupDB();
 });
+import db from './config/db.js';
+
+async function setupDB() {
+  const sql = [
+
+    // 👇 NUEVAS TABLAS INVENTARIO
+    `CREATE TABLE IF NOT EXISTS empanada_types (
+      id SERIAL PRIMARY KEY,
+      name VARCHAR(50) NOT NULL,
+      price INTEGER NOT NULL
+    )`,
+
+    `CREATE TABLE IF NOT EXISTS inventory (
+      id SERIAL PRIMARY KEY,
+      type_id INT UNIQUE REFERENCES empanada_types(id),
+      quantity INT NOT NULL DEFAULT 0,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`,
+
+    `CREATE TABLE IF NOT EXISTS sales (
+      id SERIAL PRIMARY KEY,
+      type_id INT REFERENCES empanada_types(id),
+      quantity INT NOT NULL,
+      total INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`
+
+  ];
+
+  for (const q of sql) {
+    try { await db.query(q); } catch(e) {
+      console.error('Error creando tabla:', e.message);
+    }
+  }
+
+  // insertar tipos por defecto
+  try {
+    const t = await db.query('SELECT COUNT(*) FROM empanada_types');
+    if (parseInt(t.rows[0].count) === 0) {
+      await db.query(`
+        INSERT INTO empanada_types (name, price) VALUES
+        ('carne', 2000),
+        ('pollo', 2000),
+        ('mixta', 3000)
+      `);
+      console.log('✅ Tipos de empanadas creados');
+    }
+  } catch(e) {}
+
+  console.log('✅ Inventario listo');
+}
