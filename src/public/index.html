@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<link rel="icon" type="image/png" href="https://www.icons101.com/icon_png/size_512/id_69139/Ball_1_Star.png">
+<link rel="icon" type="image/png" href="https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -134,6 +134,10 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .xbtn:hover{background:var(--a);}
 
 /* PRODUCT MODAL */
+   <div>
+  <div class="opt-lbl">Adiciones</div>
+  <div id="modal-adiciones"></div>
+</div>
 .pm-grid{display:grid;grid-template-columns:1fr 1fr;min-height:480px;}
 .pm-imgs{background:var(--dark3);padding:24px;display:flex;flex-direction:column;gap:14px;border-radius:14px 0 0 14px;}
 .pm-mainimg{border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--dark2);}
@@ -147,14 +151,9 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .pm-desc{color:var(--muted);line-height:1.6;font-size:.92rem;}
 .opt-lbl{font-weight:700;font-weight:700;color:var(--s);font-size:.88rem;letter-spacing:1px;}
 .drink-opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-.dopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 9px 8px 9px;border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;transition:.2s;font-size:.82rem;text-align:center;position:relative;user-select:none;}
+.dopt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 9px 9px 9px;border:1px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;transition:.2s;font-size:.82rem;text-align:center;position:relative;}
 .dopt:hover{border-color:rgba(255,107,0,.4);background:rgba(255,107,0,.05);}
-.dopt.sel{border-color:var(--p);background:rgba(255,107,0,.1);box-shadow:0 0 0 1px var(--p);}
-.dopt-top{display:flex;align-items:center;justify-content:space-between;width:100%;gap:6px;padding-bottom:2px;}
-.dopt-stepper{display:flex;align-items:center;gap:7px;justify-content:center;padding-top:5px;border-top:1px solid rgba(255,107,0,.15);}
-.dopt-stepper button{width:26px;height:26px;border-radius:50%;background:rgba(255,107,0,.18);border:1px solid rgba(255,107,0,.35);color:var(--txt);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
-.dopt-stepper button:hover{background:var(--p);}
-.dopt-stepper .dqty{font-family:'Bangers',cursive;font-size:1.25rem;color:var(--s);min-width:22px;text-align:center;}
+.dopt.sel{border-color:var(--p);background:rgba(255,107,0,.12);box-shadow:0 0 0 1px var(--p);}
 .qty-row{display:flex;align-items:center;gap:14px;}
 .qbtn{width:36px;height:36px;border-radius:50%;background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.25);color:var(--txt);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}.qbtn:hover{background:var(--p);}
 .qnum{font-family:'Bangers',cursive;font-size:1.8rem;color:var(--s);min-width:30px;text-align:center;}
@@ -837,7 +836,7 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
       <h3>📍 Encuéntranos</h3>
       <div class="info-item"><span>🕐</span><div><strong>Horario</strong><p>Lunes y jueves: 1:30pm – 5:00pm</p></div></div>
       <div class="info-item"><span>📱</span><div><strong>WhatsApp</strong><p>+57 316 621 9962</p></div></div>
-      <div class="info-item"><span>📧</span><div><strong>Email</strong><p><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="275446564254464354485442494667404a464e4b0944484a">[email&#160;protected]</a></p></div></div>
+      <div class="info-item"><span>📧</span><div><strong>Email</strong><p>saqesadsosena@gmail.com</p></div></div>
       <div class="dbz-quote"><p>"La perseverancia de un guerrero también se mide en cuántas empanadas puede comer"</p><small>— Maestro Roshi</small></div>
     </div>
   </div>
@@ -1098,13 +1097,45 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
     <div class="footer-brand"><h3>Empanadas <span>Kame</span></h3><p>El sabor legendario del Templo Kame. Cada empanada es un Kame Hame Ha de sabor.</p></div>
     <div class="footer-col"><h4>Menú</h4><a onclick="showPage('products')">Todos los Productos</a><a onclick="showPage('combos')">Combos</a><a onclick="showPage('clients')">Clientes Felices</a><a onclick="showPage('contact')">Contacto</a></div>
     <div class="footer-col"><h4>Cuenta</h4><a onclick="showPage('login')">Iniciar Sesión</a><a onclick="showPage('register')">Registrarse</a><a onclick="showPage('profile')">Mi Perfil</a></div>
-    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 621 9962</p><p>📧 <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="562537273325373225392533383716313b373f3a7835393b">[email&#160;protected]</a></p><p>🕐 Lun y Jue: 1:30pm – 5:00pm</p></div>
+    <div class="footer-col"><h4>Contacto</h4><p>📱 +57 316 621 9962</p><p>📧 saqesadsosena@gmail.com</p><p>🕐 Lun y Jue: 1:30pm – 5:00pm</p></div>
   </div>
   <div class="power-bar"></div>
   <div class="footer-bottom"><p id="footer-year">© 2024 Empanadas Kame · El sabor que supera los límites ⚡</p></div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+   let adicionesSeleccionadas = {};
+let cantidadProducto = 1;
+let productoActual = null;
+   function totalAdiciones() {
+  return Object.values(adicionesSeleccionadas).reduce((a, b) => a + b, 0);
+}
+
+function cambiarCantAdicion(id, delta) {
+  if (!adicionesSeleccionadas[id]) {
+    adicionesSeleccionadas[id] = 0;
+  }
+
+  adicionesSeleccionadas[id] += delta;
+
+  if (adicionesSeleccionadas[id] < 0) {
+    adicionesSeleccionadas[id] = 0;
+  }
+
+  if (totalAdiciones() > cantidadProducto) {
+    adicionesSeleccionadas[id] -= delta;
+    return;
+  }
+
+  document.getElementById(`cant-${id}`).innerText = adicionesSeleccionadas[id];
+}
+
+function cambiarCantidad(delta) {
+  cantidadProducto += delta;
+  if (cantidadProducto < 1) cantidadProducto = 1;
+
+  document.getElementById('cantidad-num').innerText = cantidadProducto;
+}
 // ════════════════════════════════════════
 //  STATE
 function getImg(p){var imgs=Array.isArray(p.images)?p.images:(function(){try{return JSON.parse(p.images||'[]');}catch(e){return[];}})();return imgs[0]||'';}
@@ -1114,7 +1145,7 @@ let TOKEN = localStorage.getItem('kame_token');
 let USER  = JSON.parse(localStorage.getItem('kame_user') || 'null');
 let CART  = JSON.parse(localStorage.getItem('kame_cart') || '[]');
 let allProducts = [], currentCat = 'all';
-let pmProduct = null, pmQtyVal = 1, pmDrinks = {}; // {id: qty}
+let pmProduct = null, pmQtyVal = 1, pmDrinks = [];
 let coStep = 1, coMethod = 'cash', coOrderId = 0, coOrderNum = '', coLastTotal = 0;
 let profileTab = 'orders';
 let adminTab = 'dashboard';
@@ -1122,14 +1153,8 @@ let DRINKS = []; // se carga dinámicamente desde /api/products?category=2
 async function loadDrinks() {
   if (DRINKS.length) return;
   try {
-    const [adds, gasas] = await Promise.all([
-      api('GET','/products?category=2'),
-      api('GET','/products?category=3').catch(()=>[])
-    ]);
-    // Combinar adiciones y gaseosas, con separador visual usando category
-    var list2 = adds.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:+a.price,cat:2,group:a.dragon_ball_ref||'Adiciones'}));
-    var list3 = gasas.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:+a.price,cat:3,group:a.dragon_ball_ref||'Gaseosas'}));
-    DRINKS = [...list2, ...list3];
+    const adds = await api('GET','/products?category=2');
+    DRINKS = adds.filter(a=>a.is_active).map(a=>({id:String(a.id),label:a.name,price:+a.price}));
   } catch(e) { DRINKS = []; }
 }
 const METHODS = [{id:'cash',icon:'💵',label:'Efectivo',desc:'Paga al recibir'},{id:'nequi',icon:'📱',label:'Nequi',desc:'Transfiere por Nequi'},];
@@ -1358,39 +1383,6 @@ async function loadHome() {
       if (el) el.innerHTML = `<img src="${cfg.dbz_esfera}" style="max-width:220px;max-height:60px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,215,0,.6))"/>`;
     }
 
-    // ── KICK STREAM CARD ──────────────────────────────────────────
-    const kickCard = document.getElementById('kick-stream-card');
-    if (kickCard) {
-      const kickEnabled = cfg.kick_enabled === 'true' || cfg.kick_enabled === true;
-      if (kickEnabled) {
-        kickCard.style.display = 'flex';
-        const kickAvatar = document.getElementById('kick-avatar-img');
-        const kickUser   = document.getElementById('kick-username-display');
-        const kickLink   = document.getElementById('kick-link-btn');
-        const kickDot    = document.getElementById('kick-status-dot');
-        if (kickAvatar) kickAvatar.src = cfg.kick_avatar || 'https://ui-avatars.com/api/?name=K&background=53D067&color=fff&size=200';
-        if (kickUser)   kickUser.textContent = cfg.kick_username || 'Kame';
-        if (kickLink)   kickLink.href = cfg.kick_url || 'https://kick.com';
-        const isLive = cfg.kick_live === 'true' || cfg.kick_live === true;
-        if (kickDot) {
-          kickDot.style.background  = isLive ? '#4CAF50' : '#555';
-          kickDot.style.boxShadow   = isLive ? '0 0 0 3px rgba(76,175,80,.35)' : 'none';
-          kickDot.style.animation   = isLive ? 'kick-pulse 1.8s ease-in-out infinite' : 'kick-pulse-off 2.5s ease-in-out infinite';
-        }
-        var liveBadge = document.getElementById('kick-live-badge');
-        if (isLive) {
-          if (!liveBadge) {
-            liveBadge = document.createElement('div');
-            liveBadge.id = 'kick-live-badge';
-            liveBadge.style.cssText = "display:inline-flex;align-items:center;gap:5px;background:rgba(255,23,68,.18);border:1px solid rgba(255,23,68,.4);color:#ff4444;font-family:'Bangers',cursive;font-size:.8rem;letter-spacing:2px;padding:3px 10px;border-radius:20px;margin-top:2px";
-            liveBadge.innerHTML = '<span style="width:7px;height:7px;border-radius:50%;background:#ff4444;animation:kick-pulse 1s ease-in-out infinite;display:inline-block"></span> EN VIVO';
-            kickCard.insertBefore(liveBadge, kickCard.firstChild);
-          }
-        } else { if (liveBadge) liveBadge.remove(); }
-      } else { kickCard.style.display = 'none'; }
-    }
-    // ── /KICK STREAM CARD ─────────────────────────────────────────
-
     document.getElementById('home-products').innerHTML = prods.length
       ? prods.map(productCard).join('')
       : '<p style="color:var(--muted)">Sin productos destacados</p>';
@@ -1565,7 +1557,7 @@ async function loadClients() {
 //  PRODUCT MODAL
 // ════════════════════════════════════════
 async function openPM(id) {
-  pmQtyVal = 1; pmDrinks = {};
+  pmQtyVal = 1; pmDrinks = [];
   try {
     await loadDrinks();
     pmProduct = await api('GET','/products/'+id);
@@ -1582,33 +1574,12 @@ async function openPM(id) {
     const drinksSection = document.getElementById('pm-drinks-section');
     if (pmProduct.category_id == 1 && DRINKS.length) {
       drinksSection.style.display = '';
-      // Agrupar por categoría: Adiciones (cat 2) y Gaseosas (cat 3)
-      var drinkGroups = {};
-      DRINKS.forEach(function(d){
-        var g = d.cat===3 ? '🥤 Gaseosas' : '🍟 Adiciones';
-        if(!drinkGroups[g]) drinkGroups[g]=[];
-        drinkGroups[g].push(d);
-      });
-      var drinkHtml = '';
-      Object.keys(drinkGroups).forEach(function(gname){
-        drinkHtml += '<div style="grid-column:1/-1;font-size:.7rem;font-weight:700;color:var(--p);letter-spacing:1px;text-transform:uppercase;margin-top:6px;padding-bottom:4px;border-bottom:1px solid rgba(255,107,0,.12)">'+gname+'</div>';
-        drinkHtml += drinkGroups[gname].map(function(d){
-          return '<div class="dopt" id="dopt-'+d.id+'" style="user-select:none">'
-            // Fila: nombre + precio, clickeable para toggle
-            +'<div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:6px;margin-bottom:4px;cursor:pointer" onclick="pmToggleDrink(''+d.id+'')">'
-              +'<span style="font-size:.82rem;font-weight:700;text-align:left">'+d.label+'</span>'
-              +'<small style="color:var(--s);white-space:nowrap">+'+fmt(d.price)+'/u</small>'
-            +'</div>'
-            // Stepper: solo visible cuando está seleccionado
-            +'<div id="dopt-qty-row-'+d.id+'" style="display:none;align-items:center;justify-content:center;gap:8px;padding-top:4px;border-top:1px solid rgba(255,107,0,.12)">'
-              +'<button type="button" onclick="event.stopPropagation();pmDrinkQty(''+d.id+'',-1)" style="width:26px;height:26px;border-radius:50%;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.3);color:var(--txt);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>'
-              +'<span id="dopt-qty-'+d.id+'" style="font-family:'Bangers',cursive;font-size:1.2rem;color:var(--s);min-width:22px;text-align:center">1</span>'
-              +'<button type="button" onclick="event.stopPropagation();pmDrinkQty(''+d.id+'',1)" style="width:26px;height:26px;border-radius:50%;background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.3);color:var(--txt);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>'
-            +'</div>'
-          +'</div>';
-        }).join('');
-      });
-      document.getElementById('pm-drinks').innerHTML = drinkHtml;
+      document.getElementById('pm-drinks').innerHTML =
+        DRINKS.map(d => `<div class="dopt" id="dopt-${d.id}" onclick="pmToggleDrink('${d.id}',this)" style="position:relative;user-select:none">
+          <div style="position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:4px;border:2px solid rgba(255,107,0,.4);background:transparent;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:.2s" id="dopt-chk-${d.id}"></div>
+          <span>${d.label}</span>
+          <small style="color:var(--s)">+${fmt(d.price)}</small>
+        </div>`).join('');
     } else {
       drinksSection.style.display = 'none';
     }
@@ -1685,64 +1656,38 @@ async function submitPMReview(productId) {
 }
 function closePM() { document.getElementById('pm-overlay').style.display = 'none'; }
 function pmSelImg(el, src) { document.getElementById('pm-img').src = src; document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
-function pmToggleDrink(id) {
+function pmToggleDrink(id, el) {
   id = String(id);
-  var card    = document.getElementById('dopt-'+id);
-  var qtyRow  = document.getElementById('dopt-qty-row-'+id);
-  var qtyEl   = document.getElementById('dopt-qty-'+id);
-  if (pmDrinks[id]) {
-    // Deseleccionar
-    delete pmDrinks[id];
-    if (card)   { card.classList.remove('sel'); }
-    if (qtyRow) { qtyRow.style.display = 'none'; }
-    if (qtyEl)  { qtyEl.textContent = '1'; }
+  var idx = pmDrinks.indexOf(id);
+  var chk = document.getElementById('dopt-chk-'+id);
+  if (idx >= 0) {
+    pmDrinks.splice(idx, 1);
+    el.classList.remove('sel');
+    if (chk) { chk.textContent = ''; chk.style.background = 'transparent'; chk.style.borderColor = 'rgba(255,107,0,.4)'; }
   } else {
-    // Seleccionar con cantidad 1
-    pmDrinks[id] = 1;
-    if (card)   { card.classList.add('sel'); }
-    if (qtyRow) { qtyRow.style.display = 'flex'; }
-    if (qtyEl)  { qtyEl.textContent = '1'; }
+    pmDrinks.push(id);
+    el.classList.add('sel');
+    if (chk) { chk.textContent = '✓'; chk.style.background = 'var(--p)'; chk.style.borderColor = 'var(--p)'; chk.style.color = '#fff'; }
   }
-  updatePMPrices();
-}
-function pmDrinkQty(id, delta) {
-  id = String(id);
-  if (!pmDrinks[id]) { pmDrinks[id] = 1; }
-  var newQty = (pmDrinks[id] || 1) + delta;
-  if (newQty <= 0) {
-    // Llega a 0 → deseleccionar
-    pmToggleDrink(id);
-    return;
-  }
-  pmDrinks[id] = newQty;
-  var qtyEl = document.getElementById('dopt-qty-'+id);
-  if (qtyEl) qtyEl.textContent = newQty;
   updatePMPrices();
 }
 function pmQty(d) { pmQtyVal = Math.max(1, pmQtyVal + d); document.getElementById('pm-qty').textContent = pmQtyVal; updatePMPrices(); }
 function updatePMPrices() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  // pmDrinks es {id: qty} — calcular total adiciones
-  var extrasP = 0;
-  var extraLines = [];
-  Object.keys(pmDrinks).forEach(function(id) {
-    var qty = pmDrinks[id] || 1;
+  const extrasP = pmDrinks.reduce(function(s, id) {
     var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
-    if (d && qty > 0) {
-      extrasP += +d.price * qty;
-      extraLines.push(d.label + (qty > 1 ? ' x'+qty : '') + ': +' + fmt(+d.price * qty));
-    }
-  });
+    return s + (d ? +d.price : 0);
+  }, 0);
   const total = (base + extrasP) * pmQtyVal;
   document.getElementById('pm-price').textContent = fmt(base);
   const po = document.getElementById('pm-price-old');
   if (pmProduct.discount_percent>0) { po.textContent = fmt(pmProduct.price); po.style.display = ''; } else { po.style.display = 'none'; }
-  // Desglose de extras
+  // Mostrar desglose de extras si hay seleccionadas
   var extrasEl = document.getElementById('pm-extras-sum');
   if (extrasEl) {
-    if (extraLines.length) {
-      extrasEl.innerHTML = extraLines.map(function(l){return '<span style="display:block">'+l+'</span>';}).join('') + '<span style="display:block;border-top:1px solid rgba(255,107,0,.2);margin-top:3px;padding-top:3px;color:var(--p)">Total adiciones: +'+fmt(extrasP)+'</span>';
+    if (extrasP > 0) {
+      extrasEl.textContent = '+ ' + fmt(extrasP) + ' en adiciones';
       extrasEl.style.display = '';
     } else {
       extrasEl.style.display = 'none';
@@ -1754,18 +1699,15 @@ function pmAddToCart() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
   const imgs = Array.isArray(pmProduct.images) ? pmProduct.images : (()=>{try{return JSON.parse(pmProduct.images||'[]');}catch{return[];}})();
-  // Calcular precio total con adiciones y sus cantidades
-  var extrasP = 0;
-  var drinkParts = [];
-  Object.keys(pmDrinks).forEach(function(id) {
-    var qty = pmDrinks[id] || 1;
+  // Calcular precio total con todas las adiciones
+  var extrasP = pmDrinks.reduce(function(s, id) {
     var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
-    if (d && qty > 0) {
-      extrasP += +d.price * qty;
-      drinkParts.push(d.label + (qty > 1 ? ' x'+qty : ''));
-    }
-  });
-  var drinkLabels = drinkParts.join(', ');
+    return s + (d ? +d.price : 0);
+  }, 0);
+  var drinkLabels = pmDrinks.map(function(id) {
+    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
+    return d ? d.label : '';
+  }).filter(Boolean).join(', ');
   addToCart({
     pid: pmProduct.id, cid: null,
     name: pmProduct.name,
@@ -2657,85 +2599,42 @@ async function admProducts(el) {
 }
 
 async function admAdiciones(el) {
-  el.innerHTML = '<div class="spinner" style="padding:40px"></div>';
-  const [adds, gasas] = await Promise.all([
-    api('GET','/products?category=2'),
-    api('GET','/products?category=3').catch(()=>[])
-  ]);
-
-  // Construir tarjeta visual para cada adición/gaseosa
-  function itemCard(p, catId) {
-    var color = catId===3 ? 'rgba(83,135,255,.5)' : 'var(--ok)';
-    var colorOff = 'var(--err)';
-    return '<div class="co-card" style="display:flex;gap:12px;align-items:center;border-left:3px solid '+(p.is_active?color:colorOff)+';padding:12px;transition:.2s">'
-      +'<img src="'+getImg(p)+'" style="width:52px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0;background:var(--dark3)" onerror="this.style.display='none'"/>'
-      +'<div style="flex:1;min-width:0">'
-        +'<div style="font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.name+'</div>'
-        +'<div style="font-weight:700;color:var(--s)">'+fmt(p.price)+' c/u</div>'
-        +(p.dragon_ball_ref?'<div style="font-size:.7rem;color:var(--muted)">📂 '+p.dragon_ball_ref+'</div>':'')
-        +'<div style="font-size:.7rem;color:'+(p.is_active?color:colorOff)+'">'+( p.is_active?'✅ Visible':'⛔ Oculta')+'</div>'
-      +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:5px">'
-        +'<button class="aico" onclick="admToggleAdicion('+p.id+','+!p.is_active+')" title="'+(p.is_active?'Desactivar':'Activar')+'">'+(p.is_active?'⛔':'✅')+'</button>'
-        +'<button class="aico" onclick="admEditProduct('+p.id+')">✏️</button>'
-      +'</div>'
-    +'</div>';
-  }
-
-  // Agrupar adiciones (cat 2) por dragon_ball_ref
-  var tipos2 = {};
-  adds.forEach(function(p){
+  const prods = await api('GET','/products?category=2');
+  // Agrupar por tipo_adicion (dragon_ball_ref lo usamos como tipo)
+  var tipos = {};
+  prods.forEach(function(p){
     var t = p.dragon_ball_ref || 'General';
-    if(!tipos2[t]) tipos2[t]=[];
-    tipos2[t].push(p);
+    if(!tipos[t]) tipos[t]=[];
+    tipos[t].push(p);
   });
+  var tiposHtml = Object.keys(tipos).map(function(tipo){
+    return '<div style="margin-bottom:20px">'
+      +'<div style="font-weight:700;color:var(--s);font-size:.85rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(255,107,0,.15)">📂 '+tipo+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">'
+      +tipos[tipo].map(function(p){
+        return '<div class="co-card" style="display:flex;gap:12px;align-items:center;border-left:3px solid '+(p.is_active?'var(--ok)':'var(--err)')+';padding:12px">'
+          +'<img src="'+getImg(p)+'" style="width:54px;height:54px;object-fit:cover;border-radius:8px;flex-shrink:0" onerror="this.style.display=\'none\'"/>'
+          +'<div style="flex:1;min-width:0">'
+            +'<div style="font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+p.name+'</div>'
+            +'<div style="font-weight:700;color:var(--s)">'+fmt(p.price)+'</div>'
+            +'<div style="font-size:.72rem;color:'+(p.is_active?'var(--ok)':'var(--err)')+'">'+( p.is_active?'✅ Visible':'⛔ Oculta')+'</div>'
+          +'</div>'
+          +'<div style="display:flex;flex-direction:column;gap:5px">'
+            +'<button class="aico" onclick="admToggleAdicion('+p.id+','+!p.is_active+')" title="'+(p.is_active?'Desactivar':'Activar')+'">'+(p.is_active?'⛔':'✅')+'</button>'
+            +'<button class="aico" onclick="admEditProduct('+p.id+')">✏️</button>'
+          +'</div>'
+        +'</div>';
+      }).join('')
+      +'</div></div>';
+  }).join('');
 
-  // Agrupar gaseosas (cat 3) por dragon_ball_ref
-  var tipos3 = {};
-  gasas.forEach(function(p){
-    var t = p.dragon_ball_ref || 'General';
-    if(!tipos3[t]) tipos3[t]=[];
-    tipos3[t].push(p);
-  });
-
-  function renderGroup(tipos, catId, emptyMsg) {
-    if (!Object.keys(tipos).length) return '<p style="color:var(--muted);font-size:.82rem;padding:12px 0">'+emptyMsg+'</p>';
-    return Object.keys(tipos).map(function(tipo){
-      return '<div style="margin-bottom:16px">'
-        +'<div style="font-weight:700;color:var(--s);font-size:.82rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid rgba(255,107,0,.12)">📂 '+tipo+'</div>'
-        +'<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px">'
-        +tipos[tipo].map(function(p){ return itemCard(p, catId); }).join('')
-        +'</div></div>';
-    }).join('');
-  }
-
-  el.innerHTML = '<h2 class="adm-title">🥤 Adiciones y Gaseosas</h2>'
-
-    // ─ Sección: Adiciones (cat 2) ─────────────────────────────────────────
-    +'<div style="background:var(--sur);border:1px solid rgba(0,230,118,.15);border-radius:14px;padding:20px;margin-bottom:24px">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px">'
-        +'<div>'
-          +'<h3 style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:var(--ok)">🥤 Adiciones</h3>'
-          +'<p style="font-size:.78rem;color:var(--muted);margin-top:2px">Opciones que el cliente puede agregar a una empanada (salsas, extras, etc). El campo <strong style="color:var(--s)">Ref. DBZ</strong> es la categoría (ej: Salsas, Postres).</p>'
-        +'</div>'
-        +'<button class="btn btn-p btn-sm" onclick="admNewProduct(2)">+ Nueva Adición</button>'
-      +'</div>'
-      +'<div id="adiciones-list">'+renderGroup(tipos2, 2, 'Sin adiciones. Agrega la primera con el botón.')+'</div>'
-    +'</div>'
-
-    // ─ Sección: Gaseosas (cat 3) ──────────────────────────────────────────
-    +'<div style="background:var(--sur);border:1px solid rgba(83,135,255,.2);border-radius:14px;padding:20px">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px">'
-        +'<div>'
-          +'<h3 style="font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:2px;color:#5387ff">🥤 Gaseosas</h3>'
-          +'<p style="font-size:.78rem;color:var(--muted);margin-top:2px">Bebidas y gaseosas que el cliente puede pedir junto con su empanada. El campo <strong style="color:var(--s)">Ref. DBZ</strong> es la categoría (ej: Postobón, Jugos, Agua). Aparecen junto a las adiciones en el modal de compra.</p>'
-        +'</div>'
-        +'<button class="btn btn-sm" onclick="admNewProduct(3)" style="padding:7px 15px;border:1px solid rgba(83,135,255,.4);background:rgba(83,135,255,.1);color:#5387ff;border-radius:8px;cursor:pointer;font-weight:700;font-size:.85rem">+ Nueva Gaseosa</button>'
-      +'</div>'
-      +'<div id="gaseosas-list">'+renderGroup(tipos3, 3, 'Sin gaseosas. Agrega la primera con el botón.')+'</div>'
-    +'</div>';
+  el.innerHTML = '<div class="sub-hdr"><h2 class="adm-title">🥤 Adiciones</h2>'
+    +'<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">'
+    +'<p style="color:var(--muted);font-size:.82rem">Las adiciones se muestran como opcionales al comprar una empanada. El campo <strong style="color:var(--s)">Ref. DBZ</strong> sirve como categoría (ej: Gaseosas, Salsas, Postres)</p>'
+    +'<button class="btn btn-p btn-sm" onclick="admNewProduct(2)">+ Nueva Adición</button>'
+    +'</div></div>'
+    +(tiposHtml||'<p style="color:var(--muted);padding:20px">Sin adiciones. Crea la primera con el botón de arriba.</p>');
 }
-
 
 async function admToggleAdicion(id, active) {
   const p = await api('GET','/products/'+id);
@@ -2757,16 +2656,22 @@ function admProductForm(p, defaultCat=1) {
     <div class="mbody">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
         <div class="fc" style="grid-column:1/-1"><label>Nombre *</label><input type="text" class="fi" id="pf-name" value="${esc(p?.name)}" placeholder="Ej: Empanada de Carne"/></div>
-        <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat" onchange="admPFCatChange(this)">
+        <div class="fc"><label>Categoría</label><select class="fi" id="pf-cat">
           <option value="1"${(p?.category_id||defaultCat)==1?' selected':''}>🥟 Empanadas</option>
           <option value="2"${(p?.category_id||defaultCat)==2?' selected':''}>🥤 Adiciones</option>
-          <option value="3"${(p?.category_id||defaultCat)==3?' selected':''}>🥤 Gaseosas</option>
         </select></div>
         <div class="fc"><label>Precio (COP) *</label><input type="number" class="fi" id="pf-price" value="${p?.price||0}" min="0"/></div>
         <div class="fc"><label>Descuento %</label><input type="number" class="fi" id="pf-disc" value="${p?.discount_percent||0}" min="0" max="100"/></div>
         <div class="fc"><label>Stock</label><input type="number" class="fi" id="pf-stock" value="${p?.stock||999}" min="0"/></div>
         <div class="fc" style="grid-column:1/-1"><label>Descripción</label><textarea class="fi" id="pf-desc" rows="3" placeholder="Describe el producto...">${esc(p?.description)}</textarea></div>
-        <div class="fc" style="grid-column:1/-1"><label>Ref. Dragon Ball Z</label><input type="text" class="fi" id="pf-dbz" value="${esc(p?.dragon_ball_ref)}" placeholder="Ej: Poder de Goku"/></div>
+        <div class="fc" style="grid-column:1/-1">
+        <label>Tipo de producto</label>
+        <select class="fi" id="pf-tipo">
+          <option value="empanada">🥟 Empanada</option>
+          <option value="gaseosa">🥤 Gaseosa</option>
+          <option value="salsa">🌶️ Salsa</option>
+        </select>
+      </div>
         <div class="fc" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:24px;padding:4px 0">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:700;font-weight:700;color:var(--muted)">
             <input type="checkbox" id="pf-feat" ${p?.is_featured?'checked':''} style="accent-color:var(--p);width:18px;height:18px"/>⭐ Destacado
@@ -2799,21 +2704,6 @@ function admProductForm(p, defaultCat=1) {
       <button class="btn btn-p btn-sm" id="pf-save-btn" onclick="admSaveProduct(${p?.id||'null'})">💾 Guardar Producto</button>
     </div>
   </div></div>`);
-}
-function admPFCatChange(sel) {
-  var v = +sel.value;
-  var dbzInp = document.getElementById('pf-dbz');
-  var dbzLabel = dbzInp ? dbzInp.closest('.fc')?.querySelector('label') : null;
-  if (v === 3) {
-    if (dbzLabel) dbzLabel.textContent = 'Tipo / Marca (ej: Postobón, Jugo, Agua)';
-    if (dbzInp)  dbzInp.placeholder = 'Ej: Postobón, Jugo Hit, Agua';
-  } else if (v === 2) {
-    if (dbzLabel) dbzLabel.textContent = 'Categoría de Adición (ej: Salsas, Postres)';
-    if (dbzInp)  dbzInp.placeholder = 'Ej: Salsas, Postres, Bebidas';
-  } else {
-    if (dbzLabel) dbzLabel.textContent = 'Ref. Dragon Ball Z';
-    if (dbzInp)  dbzInp.placeholder = 'Ej: Poder de Goku';
-  }
 }
 function admAddImgUrl() {
   const inp = document.getElementById('pf-imgurl');
@@ -2858,14 +2748,14 @@ async function admSaveProduct(id) {
     stock: +document.getElementById('pf-stock').value,
     is_featured: document.getElementById('pf-feat').checked,
     is_active: document.getElementById('pf-active').checked,
-    dragon_ball_ref: document.getElementById('pf-dbz').value
+    dragon_ball_ref: document.getElementById('pf-tipo').value
   };
   btn.disabled = true; btn.textContent = '⏳ Guardando...';
   try {
     await api(id?'PUT':'POST', id?'/products/'+id:'/products', data);
     document.getElementById('pf-overlay').remove();
     allProducts = [];
-    admTab(data.category_id === 2 || data.category_id === 3 ? 'adiciones' : 'products');
+    admTab(data.category_id === 2 ? 'adiciones' : 'products');
   } catch(e) {
     alert('Error guardando: ' + e.message);
     btn.disabled = false; btn.textContent = '💾 Guardar Producto';
@@ -2876,7 +2766,7 @@ async function admDelProduct(id) {
   try {
     const p = await api('GET','/products/'+id).catch(()=>null);
     await api('DELETE','/products/'+id);
-    admTab(p && (p.category_id === 2 || p.category_id === 3) ? 'adiciones' : 'products');
+    admTab(p && p.category_id === 2 ? 'adiciones' : 'products');
   } catch(e) { alert(e.message); }
 }
 async function admCombos(el) {
@@ -3004,11 +2894,8 @@ async function admOrders(el) {
       +'</div>'
       // CHAT
       +'<div style="border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
-        +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px">'
         +'<button class="btn btn-o btn-sm adm-btn-chat" data-oid="'+o.id+'">💬 Mensaje</button>'
-        +'<button onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
-        +'<button onclick="admDeleteOrderDirect('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.3);color:var(--err);border-radius:8px;cursor:pointer">🗑️ Eliminar</button>'
-        +'</div>'
+       +'<button class="btn btn-sm" onclick="admArchiveOrder('+o.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);color:var(--muted);border-radius:8px;cursor:pointer">🗄️ Archivar</button>'
         +'<div id="adm-chat-'+o.id+'" style="display:none;margin-top:10px">'
           +'<div id="adm-msgs-'+o.id+'" style="background:var(--dark3);border-radius:10px;padding:12px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:8px"><p style="color:var(--muted);font-size:.8rem;text-align:center">Cargando...</p></div>'
           +'<div style="display:flex;gap:8px">'
@@ -3049,7 +2936,6 @@ async function admOrders(el) {
     +'<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">'
     +(pendPay?'<div style="background:rgba(255,107,0,.15);border:1px solid rgba(255,107,0,.4);border-radius:10px;padding:7px 13px;font-size:.83rem;color:var(--p);font-weight:700">⚠️ '+pendPay+' por verificar</div>':'')
     +'<button class="btn btn-sm" id="btn-ver-archivados" onclick="admVerArchivados()" style="padding:6px 13px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:var(--muted);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🗄️ Ver Archivados</button>'
-    +'<button onclick="admOrders(document.getElementById('adm-main'))" style="padding:6px 13px;border:1px solid rgba(255,107,0,.3);background:rgba(255,107,0,.08);color:var(--p);border-radius:22px;cursor:pointer;font-size:.8rem;font-weight:700">🔄 Actualizar</button>'
     +'</div>'
     +'</div>'
     +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px" id="ord-tabs">'+tabsHtml+'</div>'
@@ -3066,19 +2952,6 @@ async function admDeleteOrder(id) {
   if(!confirm('⚠️ ¿ELIMINAR PERMANENTEMENTE este pedido? No se puede deshacer.')) return;
   try { await api('DELETE','/orders/'+id); admTab('orders'); }
   catch(e) { alert(e.message); }
-}
-async function admDeleteOrderDirect(id) {
-  if(!confirm('⚠️ ¿Eliminar permanentemente este pedido? Esta acción no se puede deshacer.')) return;
-  try {
-    await api('DELETE','/orders/'+id);
-    // Remover la card del DOM sin recargar
-    var card = document.querySelector('[data-oid-direct="'+id+'"]') ||
-               document.querySelector('.co-card button[onclick*="admDeleteOrderDirect('+id+')"]')?.closest('.co-card');
-    if (card) {
-      card.style.transition='opacity .3s'; card.style.opacity='0';
-      setTimeout(function(){ card.remove(); }, 300);
-    } else { admTab('orders'); }
-  } catch(e) { alert('Error: '+e.message); }
 }
 async function admRestoreOrder(id) {
   try { await api('PUT','/orders/'+id+'/status',{status:'pending',payment_status:'pending'}); admTab('orders'); }
@@ -3371,67 +3244,10 @@ async function admSaveSlide(id) {
 async function admUsers(el) {
   el.innerHTML = '<div class="spinner" style="padding:40px"></div>';
   const users = await api('GET','/admin/users');
-  // Cargar todos los pedidos para cruzar con usuarios
-  var allOrders = [];
-  try { allOrders = await api('GET','/orders'); } catch(e) { allOrders = []; }
-
-  // Ordenar usuarios: primero por fecha de registro (más reciente primero)
-  var sortedUsers = users.slice().sort(function(a,b){ return new Date(b.created_at)-new Date(a.created_at); });
-
-  // Agrupar por fecha de registro (día)
-  var byDate = {};
-  sortedUsers.forEach(function(u){
-    var d = new Date(u.created_at).toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-    if(!byDate[d]) byDate[d]=[];
-    byDate[d].push(u);
-  });
-
-  var STATUS_CLR_U = {pending:'#FFD740',payment_review:'#FF6B00',confirmed:'#00E676',preparing:'#FF8C00',delivered:'#00E676',cancelled:'#FF1744',archived:'#555'};
-  var STATUS_LBL_U = {pending:'⏳ Pendiente',payment_review:'🔍 Ver. Pago',confirmed:'✅ Confirmado',preparing:'👨‍🍳 Preparando',delivered:'📦 Entregado',cancelled:'❌ Cancelado',archived:'🗄️ Archivado'};
 
   function userCard(u) {
     var av = u.avatar||('https://ui-avatars.com/api/?name='+encodeURIComponent(u.full_name||'U')+'&background=FF6B00&color=fff&size=80');
     var isAdmin = u.role==='admin';
-
-    // Pedidos de este usuario
-    var uOrders = allOrders.filter(function(o){
-      return o.user_id===u.id || o.customer_name===u.full_name || o.customer_phone===(u.celular||u.phone);
-    });
-    var uTotal = uOrders.reduce(function(s,o){ return s+(+o.total||0); }, 0);
-
-    var ordersHtml = '';
-    if (uOrders.length) {
-      ordersHtml = '<div style="margin-top:10px;border-top:1px solid rgba(255,107,0,.1);padding-top:10px">'
-        +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">'
-          +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase">📦 Pedidos ('+uOrders.length+')</div>'
-          +'<div style="font-size:.82rem;font-weight:700;color:var(--s)">'+fmt(uTotal)+'</div>'
-        +'</div>'
-        +'<div id="uord-list-'+u.id+'" style="display:none;flex-direction:column;gap:5px">'
-        +uOrders.slice().sort(function(a,b){return new Date(b.created_at)-new Date(a.created_at);}).map(function(o){
-          var sc = STATUS_CLR_U[o.status]||'#aaa';
-          var itemsStr = (o.items||[]).map(function(it){
-            return (it.product_name||it.combo_name||'?')+' x'+it.quantity;
-          }).join(', ')||'—';
-          return '<div style="background:var(--dark3);border-radius:8px;padding:8px 11px;border-left:3px solid '+sc+'">'
-            +'<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;margin-bottom:4px">'
-              +'<span style="font-family:'Bangers',cursive;font-size:.9rem;color:var(--s);letter-spacing:1px">'+(o.order_number||'')+'</span>'
-              +'<span style="border:1px solid '+sc+';color:'+sc+';padding:2px 7px;border-radius:20px;font-size:.68rem;font-weight:700">'+(STATUS_LBL_U[o.status]||o.status)+'</span>'
-            +'</div>'
-            +'<div style="font-size:.75rem;color:var(--muted);margin-bottom:3px">🛒 '+itemsStr+'</div>'
-            +'<div style="display:flex;align-items:center;justify-content:space-between">'
-              +'<span style="font-size:.7rem;color:var(--muted)">'+new Date(o.created_at).toLocaleDateString('es-CO')+'</span>'
-              +'<span style="font-size:.82rem;font-weight:700;color:var(--s)">'+fmt(o.total)+'</span>'
-            +'</div>'
-          +'</div>';
-        }).join('')
-        +'</div>'
-        +'<button onclick="var l=document.getElementById('uord-list-'+u.id+'');var open=l.style.display==='flex';l.style.display=open?'none':'flex';this.textContent=open?'📋 Ver '+uOrders.length+' pedidos':'▲ Ocultar'" '
-        +'style="margin-top:7px;background:rgba(255,107,0,.08);border:1px solid rgba(255,107,0,.2);color:var(--p);padding:5px 11px;border-radius:8px;cursor:pointer;font-size:.78rem;font-weight:700">📋 Ver '+uOrders.length+' pedidos</button>'
-      +'</div>';
-    } else {
-      ordersHtml = '<div style="margin-top:10px;border-top:1px solid rgba(255,107,0,.1);padding-top:8px;font-size:.75rem;color:var(--muted)">📭 Sin pedidos registrados</div>';
-    }
-
     var entrega = (u.ambiente_numero||u.nombre_completo_real||u.celular||u.phone)
       ? '<div style="background:rgba(255,107,0,.07);border:1px solid rgba(255,107,0,.15);border-radius:8px;padding:9px 12px;margin-top:8px">'
           +'<div style="font-size:.65rem;color:var(--p);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">📋 Datos de entrega</div>'
@@ -3448,18 +3264,20 @@ async function admUsers(el) {
         +(isAdmin?'<span style="position:absolute;bottom:-3px;right:-3px;background:var(--s);border:2px solid var(--dark2);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.6rem">⚙️</span>':'')
       +'</div>'
       +'<div>'
+        // nombre + badges + estado
         +'<div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:8px">'
           +'<strong style="font-size:1rem">'+u.full_name+'</strong>'
           +(u.username?'<span style="color:var(--muted);font-size:.75rem">@'+u.username+'</span>':'')
           +'<span style="background:'+(isAdmin?'rgba(255,215,0,.15)':'rgba(255,107,0,.1)')+';color:'+(isAdmin?'var(--s)':'var(--p)')+';padding:2px 8px;border-radius:20px;font-weight:700;font-size:.7rem">'+(isAdmin?'⚙️ Admin':'👤 Cliente')+'</span>'
           +'<span style="color:'+(u.is_active?'var(--ok)':'var(--err)')+';font-size:.7rem;margin-left:auto">'+(u.is_active?'● Activo':'● Inactivo')+'</span>'
         +'</div>'
+        // info básica
         +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:8px">'
           +'<div class="ir"><span>Email</span><strong style="font-size:.78rem">'+u.email+'</strong></div>'
           +'<div class="ir"><span>Registrado</span><strong style="font-size:.78rem">'+new Date(u.created_at).toLocaleDateString('es-CO')+'</strong></div>'
         +'</div>'
         +entrega
-        +ordersHtml
+        // botones de acción
         +'<div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,107,0,.1)">'
           +'<button class="btn btn-sm" onclick="admViewUserProfile('+u.id+')" style="padding:5px 11px;font-size:.78rem;background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.3);color:var(--p);border-radius:8px;cursor:pointer">👁️ Ver Perfil</button>'
           +'<button class="btn btn-sm adm-user-role" data-uid="'+u.id+'" data-role="'+u.role+'" data-name="'+u.full_name.replace(/"/g,'&quot;')+'" style="padding:5px 11px;font-size:.78rem;background:'+(isAdmin?'rgba(255,23,68,.08)':'rgba(255,107,0,.1)')+';border:1px solid '+(isAdmin?'rgba(255,23,68,.35)':'rgba(255,107,0,.35)')+';color:'+(isAdmin?'var(--err)':'var(--p)')+';border-radius:8px;cursor:pointer">'
@@ -3473,45 +3291,10 @@ async function admUsers(el) {
     +'</div>';
   }
 
-  // Estadísticas rápidas
-  var totalUsers = users.length;
-  var activeUsers = users.filter(function(u){return u.is_active;}).length;
-  var hoy = new Date().toISOString().slice(0,10);
-  var newToday = users.filter(function(u){return u.created_at&&u.created_at.slice(0,10)===hoy;}).length;
-
-  var statsHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:22px">'
-    +'<div class="stat"><span class="stat-ico">👥</span><div><span class="stat-num">'+totalUsers+'</span><span class="stat-lbl">Total</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">✅</span><div><span class="stat-num">'+activeUsers+'</span><span class="stat-lbl">Activos</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">🆕</span><div><span class="stat-num">'+newToday+'</span><span class="stat-lbl">Hoy</span></div></div>'
-    +'<div class="stat"><span class="stat-ico">📦</span><div><span class="stat-num">'+allOrders.filter(function(o){return o.status!=='archived';}).length+'</span><span class="stat-lbl">Pedidos Activos</span></div></div>'
-    +'</div>';
-
-  // Construir HTML agrupado por fecha
-  var groupedHtml = Object.keys(byDate).map(function(fecha){
-    var dayUsers = byDate[fecha];
-    var dayOrders = allOrders.filter(function(o){
-      var od = new Date(o.created_at).toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-      return od===fecha;
-    });
-    return '<div style="margin-bottom:24px">'
-      +'<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid rgba(255,107,0,.2)">'
-        +'<div style="background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.3);border-radius:8px;padding:6px 14px">'
-          +'<div style="font-family:'Bangers',cursive;font-size:1rem;letter-spacing:2px;color:var(--p)">'+fecha+'</div>'
-        +'</div>'
-        +'<div style="display:flex;gap:8px">'
-          +'<span style="background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.2);color:var(--ok);padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700">👤 '+dayUsers.length+' usuario'+(dayUsers.length!==1?'s':'')+'</span>'
-          +(dayOrders.length?'<span style="background:rgba(255,107,0,.1);border:1px solid rgba(255,107,0,.2);color:var(--p);padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700">📦 '+dayOrders.length+' pedido'+(dayOrders.length!==1?'s':'')+'</span>':'')
-        +'</div>'
-      +'</div>'
-      +'<div style="display:flex;flex-direction:column;gap:10px">'
-      +dayUsers.map(userCard).join('')
-      +'</div>'
-    +'</div>';
-  }).join('');
-
   el.innerHTML = '<h2 class="adm-title">👥 Usuarios</h2>'
-    +statsHtml
-    +(Object.keys(byDate).length ? groupedHtml : '<p style="color:var(--muted)">Sin usuarios</p>');
+    +'<div style="display:flex;flex-direction:column;gap:12px">'
+    +(users.length ? users.map(userCard).join('') : '<p style="color:var(--muted)">Sin usuarios</p>')
+    +'</div>';
 }
 async function admViewUserProfile(uid) {
   try {
@@ -3623,33 +3406,6 @@ async function admSiteConfig(el) {
       <div class="fc"><label>Nombre</label><input type="text" class="fi" id="cfg-nname" value="${cfg.nequi_name||''}"/></div>
       <div class="fc"><label>Teléfono</label><input type="text" class="fi" id="cfg-nphone" value="${cfg.nequi_phone||''}"/></div>
     </div>
-    <div class="co-card" style="border-left:3px solid #53D067">
-      <h3 style="font-weight:700;color:#53D067;margin-bottom:4px;display:flex;align-items:center;gap:8px">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#53D067"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>Kick Streaming
-      </h3>
-      <p style="font-size:.75rem;color:var(--muted);margin-bottom:14px;line-height:1.4">Muestra tu canal en la sección decorativa bajo el carrusel.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px">
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(83,208,103,.07);border:1px solid rgba(83,208,103,.2);padding:8px 14px;border-radius:10px;flex:1;min-width:120px">
-          <input type="checkbox" id="cfg-kick-enabled" ${cfg.kick_enabled==='true'||cfg.kick_enabled===true?'checked':''} style="accent-color:#53D067;width:16px;height:16px"/>
-          <span style="font-size:.88rem;font-weight:700">Mostrar card</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,23,68,.07);border:1px solid rgba(255,23,68,.2);padding:8px 14px;border-radius:10px;flex:1;min-width:120px">
-          <input type="checkbox" id="cfg-kick-live" ${cfg.kick_live==='true'||cfg.kick_live===true?'checked':''} style="accent-color:#ff4444;width:16px;height:16px"/>
-          <span style="font-size:.88rem;font-weight:700;color:#ff6666">🔴 EN VIVO</span>
-        </label>
-      </div>
-      <div class="fc"><label style="color:#53D067">👤 Usuario de Kick</label><input type="text" class="fi" id="cfg-kick-user" value="${cfg.kick_username||''}" placeholder="tu_usuario_kick" style="border-color:rgba(83,208,103,.3)"/></div>
-      <div class="fc"><label style="color:#53D067">🔗 URL del canal</label><input type="text" class="fi" id="cfg-kick-url" value="${cfg.kick_url||''}" placeholder="https://kick.com/tu_usuario" style="border-color:rgba(83,208,103,.3)"/></div>
-      <div class="fc">
-        <label style="color:#53D067">🖼️ Foto de perfil</label>
-        <input type="text" class="fi" id="cfg-kick-avatar" value="${cfg.kick_avatar||''}" placeholder="https://... o sube tu foto" style="border-color:rgba(83,208,103,.3)"/>
-        <label class="up-sm" style="margin-top:8px;border-color:rgba(83,208,103,.3);color:#53D067">
-          <input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>📎 Subir foto de perfil
-        </label>
-        ${cfg.kick_avatar?`<img src="${cfg.kick_avatar}" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #53D067;margin-top:10px;display:block"/>`:
-        `<div style="width:56px;height:56px;border-radius:50%;border:2px dashed rgba(83,208,103,.3);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-top:10px">👤</div>`}
-      </div>
-    </div>
 
   </div>
   <div style="text-align:right;margin-top:22px"><button class="btn btn-p btn-lg" id="cfg-save-btn" onclick="admSaveConfig()">💾 Guardar Todo</button></div>`;
@@ -3661,18 +3417,13 @@ async function admSaveConfig() {
   const btn = document.getElementById('cfg-save-btn');
   btn.disabled = true; btn.textContent = '⏳ Guardando...';
   const cfg = {
-    site_name:       document.getElementById('cfg-name').value,
-    site_logo:       document.getElementById('cfg-logo').value,
-    primary_color:   document.getElementById('cfg-pct').value,
+    site_name: document.getElementById('cfg-name').value,
+    site_logo: document.getElementById('cfg-logo').value,
+    primary_color: document.getElementById('cfg-pct').value,
     secondary_color: document.getElementById('cfg-sct').value,
-    accent_color:    document.getElementById('cfg-act').value,
-    nequi_name:      document.getElementById('cfg-nname').value,
-    nequi_phone:     document.getElementById('cfg-nphone').value,
-    kick_enabled:    String(document.getElementById('cfg-kick-enabled')?.checked||false),
-    kick_live:       String(document.getElementById('cfg-kick-live')?.checked||false),
-    kick_username:   document.getElementById('cfg-kick-user')?.value||'',
-    kick_url:        document.getElementById('cfg-kick-url')?.value||'',
-    kick_avatar:     document.getElementById('cfg-kick-avatar')?.value||''
+    accent_color: document.getElementById('cfg-act').value,
+    nequi_name: document.getElementById('cfg-nname').value,
+    nequi_phone: document.getElementById('cfg-nphone').value
   };
   await api('PUT','/admin/site-config',cfg);
   const r = document.documentElement;
@@ -3681,22 +3432,6 @@ async function admSaveConfig() {
   r.style.setProperty('--a', cfg.accent_color);
   btn.disabled = false; btn.textContent = '✓ ¡Guardado!';
   setTimeout(() => { btn.textContent = '💾 Guardar Todo'; }, 2000);
-}
-async function admUploadKickAvatar(inp) {
-  const f = inp.files[0]; if (!f) return;
-  const lbl = inp.closest('label');
-  if (lbl) { lbl.style.opacity='.5'; lbl.textContent='⏳ Subiendo...'; }
-  const fd = new FormData(); fd.append('file', f);
-  try {
-    const r = await fetch('/api/upload?folder=general',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
-    const d = await r.json();
-    const urlInp = document.getElementById('cfg-kick-avatar');
-    if (urlInp) urlInp.value = d.url;
-    if (lbl) { lbl.style.opacity='1'; lbl.innerHTML='<input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>✅ Foto subida'; }
-  } catch(e) {
-    alert('Error: '+e.message);
-    if (lbl) { lbl.style.opacity='1'; lbl.innerHTML='<input type="file" accept="image/*" onchange="admUploadKickAvatar(this)" style="display:none"/>📎 Subir foto de perfil'; }
-  }
 }
 
 // ════════════════════════════════════════
@@ -3737,4 +3472,14 @@ document.getElementById('footer-year').textContent = `© ${new Date().getFullYea
 updateNavAuth();
 updateCartUI();
 // Apply saved config
-api('GET','/admin/
+api('GET','/admin/site-config').then(cfg => {
+  if (!cfg) return;
+  const r = document.documentElement;
+  if (cfg.primary_color) r.style.setProperty('--p', cfg.primary_color);
+  if (cfg.secondary_color) r.style.setProperty('--s', cfg.secondary_color);
+  if (cfg.accent_color) r.style.setProperty('--a', cfg.accent_color);
+}).catch(()=>{});
+loadHome();
+</script>
+</body>
+</html>
