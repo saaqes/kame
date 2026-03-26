@@ -1,6 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import cloudinaryPkg from 'cloudinary';
 import stream from 'stream';
+import fs from 'fs';
+import path from 'path';
 
 const { v2: cloudinary } = cloudinaryPkg;
 
@@ -18,17 +20,17 @@ const FOLDERS = {
 
 function isConfigured() {
   return !!(
-    process.env.dnfbwex5e &&
-    process.env.288619156484297 &&
-    process.env.je4tJ0YWTzv1MnvwmbegxDzEriw
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
   );
 }
 
 if (isConfigured()) {
   cloudinary.config({
-    cloud_name: process.env.dnfbwex5e,
-    api_key: process.env.288619156484297,
-    api_secret: process.env.je4tJ0YWTzv1MnvwmbegxDzEriw,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
   });
 }
 
