@@ -1,9 +1,8 @@
-import db from '../config/db.js';
 import express from 'express';
+import db from '../config/db.js'; // 👈 ESTA LÍNEA ES LA CLAVE
 
 const router = express.Router();
 
-// GET INVENTARIO
 router.get('/', async (req, res) => {
   const r = await db.query(`
     SELECT i.id, t.name, t.price, i.quantity
@@ -13,7 +12,6 @@ router.get('/', async (req, res) => {
   res.json(r.rows);
 });
 
-// AGREGAR STOCK
 router.post('/', async (req, res) => {
   const { type_id, quantity } = req.body;
 
