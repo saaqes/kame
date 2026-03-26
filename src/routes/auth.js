@@ -1,7 +1,7 @@
 const r      = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt    = require('jsonwebtoken');
-const db     = require('../config/db');
+import db from '../config/db.js';
 const { auth } = require('../middleware/auth');
 const upload   = require('../middleware/upload');
 
