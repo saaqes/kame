@@ -1,8 +1,10 @@
-const r = require('express').Router();
-const db = require('../config/db');
-const { auth, admin } = require('../middleware/auth');
+import express from 'express';
+import db from '../config/db.js';
+import { auth, admin } from '../middleware/auth.js';
 
-// GET ALL
+const r = express.Router();
+
+// ── GET ALL ─────────────────────────────
 r.get('/', async (req, res) => {
   try {
     const result = await db.query(
@@ -14,7 +16,7 @@ r.get('/', async (req, res) => {
   }
 });
 
-// CREATE
+// ── CREATE ─────────────────────────────
 r.post('/', auth, admin, async (req, res) => {
   try {
     const {
@@ -26,6 +28,7 @@ r.post('/', auth, admin, async (req, res) => {
       dragon_ball_ref,
       is_featured
     } = req.body;
+
     const result = await db.query(
       `INSERT INTO combos
       (name, description, price, original_price, image_url, dragon_ball_ref, is_featured)
@@ -41,13 +44,15 @@ r.post('/', auth, admin, async (req, res) => {
         is_featured ?? false
       ]
     );
+
     res.status(201).json({ id: result.rows[0].id });
+
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
 
-// UPDATE
+// ── UPDATE ─────────────────────────────
 r.put('/:id', auth, admin, async (req, res) => {
   try {
     const {
@@ -59,6 +64,7 @@ r.put('/:id', auth, admin, async (req, res) => {
       is_featured,
       is_active
     } = req.body;
+
     await db.query(
       `UPDATE combos SET
         name = $1,
@@ -80,23 +86,28 @@ r.put('/:id', auth, admin, async (req, res) => {
         req.params.id
       ]
     );
+
     res.json({ ok: true });
+
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
 
-// DELETE (soft delete)
+// ── DELETE (soft) ───────────────────────
 r.delete('/:id', auth, admin, async (req, res) => {
   try {
     await db.query(
       'UPDATE combos SET is_active = false WHERE id = $1',
       [req.params.id]
     );
+
     res.json({ ok: true });
+
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
 
-module.exports = r;
+// 🔥 CLAVE
+export default r;
