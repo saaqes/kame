@@ -6,7 +6,7 @@ import { uploadImage } from '../config/cloudinary.js';
 // almacenamiento en memoria
 const storage = multer.memoryStorage();
 
-// 🔥 ACEPTA CUALQUIER CAMPO (SOLUCIÓN DEFINITIVA)
+// acepta cualquier campo
 const uploader = multer({
   storage,
   limits: { fileSize: 15 * 1024 * 1024 }
@@ -21,9 +21,7 @@ export default function upload() {
           return next();
         }
 
-        // toma el primer archivo (no importa el nombre)
         const file = req.files[0];
-
         const folder = req.query.folder || req.driveFolder || 'general';
 
         try {
@@ -34,12 +32,11 @@ export default function upload() {
           );
 
           req.file = { savedUrl: url };
-
           next();
+
         } catch (e) {
           console.error('Cloudinary error:', e.message);
 
-          // fallback local
           const ext = path.extname(file.originalname);
           const fname = Date.now() + ext;
 
