@@ -1,8 +1,10 @@
-const r = require('express').Router();
-const db = require('../config/db');
-const { auth, admin } = require('../middleware/auth');
+import express from 'express';
+import db from '../config/db.js';
+import { auth, admin } from '../middleware/auth.js';
 
-// Convierte cualquier valor truthy/falsy a boolean real para PostgreSQL
+const r = express.Router();
+
+// helper
 const toBool = v => v === true || v === 'true' || v === 1 || v === '1';
 
 const parseProduct = (x) => {
@@ -14,7 +16,8 @@ const parseProduct = (x) => {
   return x;
 };
 
-// GET ALL
+
+// ── GET ALL ─────────────────────────────
 r.get('/', async (req, res) => {
   try {
     const { category, featured } = req.query;
@@ -49,7 +52,8 @@ r.get('/', async (req, res) => {
   }
 });
 
-// GET ONE
+
+// ── GET ONE ─────────────────────────────
 r.get('/:id', async (req, res) => {
   try {
     const result = await db.query(
@@ -84,7 +88,8 @@ r.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE
+
+// ── CREATE ─────────────────────────────
 r.post('/', auth, admin, async (req, res) => {
   try {
     const {
@@ -124,7 +129,8 @@ r.post('/', auth, admin, async (req, res) => {
   }
 });
 
-// UPDATE
+
+// ── UPDATE ─────────────────────────────
 r.put('/:id', auth, admin, async (req, res) => {
   try {
     const {
@@ -172,7 +178,8 @@ r.put('/:id', auth, admin, async (req, res) => {
   }
 });
 
-// DELETE (soft delete)
+
+// ── DELETE (soft) ───────────────────────
 r.delete('/:id', auth, admin, async (req, res) => {
   try {
     await db.query(
@@ -187,4 +194,6 @@ r.delete('/:id', auth, admin, async (req, res) => {
   }
 });
 
-module.exports = r;
+
+// 🔥 EXPORT FINAL (LA CLAVE)
+export default r;
