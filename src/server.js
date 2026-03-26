@@ -104,5 +104,7 @@ async function setupDB() {
   } catch(e) {}
 
   console.log('✅ Inventario listo');
-  console.log(db);
+  import db from './config/db.js';
+
+console.log(typeof db.query);
 }
