@@ -108,7 +108,7 @@ r.get('/me/profile', auth, async (req, res) => {
 r.post('/me/avatar',
   auth,
   (req, res, next) => { req.driveFolder = 'avatars'; next(); },
-  ...upload('file'),
+  ...upload(),
   async (req, res) => {
     try {
       if (!req.file?.savedUrl) {
