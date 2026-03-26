@@ -4,9 +4,10 @@ import fs from 'fs';
 import { uploadImage } from '../config/cloudinary.js';
 import { v4 as uuid } from 'uuid';
 
-// memoria
+// almacenamiento en memoria
 const memStorage = multer.memoryStorage();
-const multerMem  = multer({
+
+const multerMem = multer({
   storage: memStorage,
   limits: { fileSize: 15 * 1024 * 1024 }
 });
@@ -14,6 +15,7 @@ const multerMem  = multer({
 function upload(fieldName) {
   return [
     multerMem.single(fieldName),
+
     async (req, res, next) => {
       if (!req.file) return next();
 
@@ -33,9 +35,10 @@ function upload(fieldName) {
         console.error('Upload error:', e.message);
 
         // fallback local
-        const ext   = path.extname(req.file.originalname);
+        const ext = path.extname(req.file.originalname);
         const fname = uuid() + ext;
-        const dir   = path.join(process.cwd(), 'src/uploads', folder);
+
+        const dir = path.join(process.cwd(), 'src/uploads', folder);
 
         fs.mkdirSync(dir, { recursive: true });
         fs.writeFileSync(path.join(dir, fname), req.file.buffer);
@@ -47,5 +50,5 @@ function upload(fieldName) {
   ];
 }
 
-// 🔥 EXPORT CORRECTO
+// 🔥 ESTA LÍNEA ES LA CLAVE
 export default upload;
