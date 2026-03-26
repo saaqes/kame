@@ -210,7 +210,7 @@ r.put('/:id/status', auth, admin, async (req, res) => {
 r.post('/:id/proof',
   auth,
   (req, res, next) => { req.query.folder = 'proofs'; next(); },
-  ...upload('proof'),
+  ...upload(),
   async (req, res) => {
     try {
       if (!req.file) {
