@@ -104,4 +104,5 @@ async function setupDB() {
   } catch(e) {}
 
   console.log('✅ Inventario listo');
+  console.log(db);
 }
