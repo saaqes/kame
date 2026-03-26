@@ -1,9 +1,10 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 
-const db = new Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-export default db;
+// 👇 ESTE ES EL FIX REAL
+export default pool;
