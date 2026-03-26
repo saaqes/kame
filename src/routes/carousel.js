@@ -1,8 +1,10 @@
-const r = require('express').Router();
-const db = require('../config/db');
-const { auth, admin } = require('../middleware/auth');
+import express from 'express';
+import db from '../config/db.js';
+import { auth, admin } from '../middleware/auth.js';
 
-// GET ALL
+const r = express.Router();
+
+// ── GET ALL ─────────────────────────────
 r.get('/', async (req, res) => {
   try {
     const result = await db.query(
@@ -15,7 +17,7 @@ r.get('/', async (req, res) => {
   }
 });
 
-// CREATE
+// ── CREATE ─────────────────────────────
 r.post('/', auth, admin, async (req, res) => {
   try {
     const { image_url, title, subtitle, button_text, button_link, order_index } = req.body;
@@ -35,7 +37,7 @@ r.post('/', auth, admin, async (req, res) => {
   }
 });
 
-// UPDATE
+// ── UPDATE ─────────────────────────────
 r.put('/:id', auth, admin, async (req, res) => {
   try {
     const {
@@ -77,7 +79,7 @@ r.put('/:id', auth, admin, async (req, res) => {
   }
 });
 
-// DELETE
+// ── DELETE ─────────────────────────────
 r.delete('/:id', auth, admin, async (req, res) => {
   try {
     await db.query(
@@ -92,4 +94,5 @@ r.delete('/:id', auth, admin, async (req, res) => {
   }
 });
 
-module.exports = r;
+// 🔥 EXPORT CORRECTO
+export default r;
