@@ -1,0 +1,35 @@
+{
+  "name": "Empanadas Kame 🔥",
+  "short_name": "Kame",
+  "description": "El sabor legendario del Templo Kame",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0F",
+  "theme_color": "#FF6B00",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["food", "shopping"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Ver Productos",
+      "short_name": "Productos",
+      "description": "Ver todos los productos",
+      "url": "/?page=products",
+      "icons": [{"src": "https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png", "sizes": "96x96"}]
+    }
+  ]
+}
