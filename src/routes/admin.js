@@ -317,4 +317,75 @@ r.delete('/ganancias/:id', async (req, res) => {
 });
 
 
+// ══════════════════════════════════════
+//  NEWS (NOTICIAS)
+// ══════════════════════════════════════
+r.get('/news', async (req, res) => {
+  try {
+    const onlyActive = req.query.active === '1';
+    const result = await db.query(
+      `SELECT * FROM news ${onlyActive ? 'WHERE is_active=true' : ''} ORDER BY order_index, id DESC`
+    );
+    res.json(result.rows);
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+r.post('/news', admin, async (req, res) => {
+  try {
+    const { title, description, image_url, button_text, button_link, link_url, category, size, is_active, order_index } = req.body;
+    const result = await db.query(
+      `INSERT INTO news (title, description, image_url, button_text, button_link, link_url, category, size, is_active, order_index)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING id`,
+      [title||null, description||null, image_url||null, button_text||null, button_link||null,
+       link_url||null, category||null, size||'medium', is_active??true, order_index||0]
+    );
+    res.status(201).json({ id: result.rows[0].id });
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+r.put('/news/:id', admin, async (req, res) => {
+  try {
+    const { title, description, image_url, button_text, button_link, link_url, category, size, is_active, order_index } = req.body;
+    await db.query(
+      `UPDATE news SET title=$1, description=$2, image_url=$3, button_text=$4, button_link=$5,
+       link_url=$6, category=$7, size=$8, is_active=$9, order_index=$10 WHERE id=$11`,
+      [title||null, description||null, image_url||null, button_text||null, button_link||null,
+       link_url||null, category||null, size||'medium', is_active??true, order_index||0, req.params.id]
+    );
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+r.delete('/news/:id', admin, async (req, res) => {
+  try {
+    await db.query(`DELETE FROM news WHERE id=$1`, [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ message: e.message }); }
+});
+
+// ══════════════════════════════════════
+//  KICK PROXY — evitar CORS
+// ══════════════════════════════════════
+r.get('/kick-status', async (req, res) => {
+  try {
+    const { username } = req.query;
+    if (!username) return res.json({ live: false, avatar: null });
+    const resp = await fetch(`https://kick.com/api/v2/channels/${encodeURIComponent(username)}`, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' }
+    });
+    if (!resp.ok) return res.json({ live: false, avatar: null });
+    const data = await resp.json();
+    res.json({
+      live: !!data.livestream,
+      avatar: data.user?.profile_pic || null,
+      title: data.livestream?.session_title || null,
+      viewers: data.livestream?.viewer_count || 0
+    });
+  } catch (e) {
+    res.json({ live: false, avatar: null });
+  }
+});
+
+
 export default r;
+
