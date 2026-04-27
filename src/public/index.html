@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#0A0A0F">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kame">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png">
 <link rel="icon" type="image/png" href="https://www.nicepng.com/png/full/201-2014028_esfera-del-dragon-de-4-estrella-render-hd.png">
 <title>Empanadas Kame 🔥</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -397,6 +401,18 @@ h1,h2,h3{font-family:'Bangers',cursive;letter-spacing:2px;}
 .btn-ki .ki-ring{position:absolute;inset:0;border-radius:30px;border:2px solid rgba(255,255,255,.5);animation:ki-expand .6s ease-out infinite;}
 @keyframes ki-expand{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.4);opacity:0}}
 
+@media(max-width:768px){
+  #news-grid { grid-template-columns: repeat(6,1fr) !important; }
+  #news-grid > div[style*="span 8"],
+  #news-grid > div[style*="span 12"] { grid-column: span 6 !important; }
+  #news-grid > div[style*="span 3"]  { grid-column: span 3 !important; }
+  #news-grid > div[style*="span 6"]  { grid-column: span 6 !important; }
+}
+@media(max-width:480px){
+  #news-grid { grid-template-columns: 1fr !important; }
+  #news-grid > div { grid-column: span 1 !important; }
+}
+
 /* FOOTER */
 footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
 .footer-top{max-width:1280px;margin:0 auto;padding:52px 24px 36px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;}
@@ -730,24 +746,34 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
         </div>
       </div>
       <!-- KICK STREAM CARD -->
-      <div id="kick-stream-card" style="display:none;align-items:center;gap:18px;background:rgba(83,208,103,.08);border:1px solid rgba(83,208,103,.25);border-radius:16px;padding:18px 22px;min-width:240px;max-width:290px;flex-direction:column;text-align:center;position:relative;transition:.3s">
-        <!-- Foto de perfil con indicador de estado -->
-        <div style="position:relative;display:inline-block">
-          <img id="kick-avatar-img" src="" alt="Streamer" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid rgba(83,208,103,.5);display:block"/>
-          <!-- Indicador ON/OFF -->
-          <span id="kick-status-dot" style="position:absolute;bottom:3px;right:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--dark2);background:#4CAF50;box-shadow:0 0 0 3px rgba(76,175,80,.35);animation:kick-pulse 1.8s ease-in-out infinite"></span>
+      <div id="kick-stream-card" style="display:none;flex-direction:column;border-radius:20px;overflow:hidden;min-width:220px;max-width:265px;background:var(--dark2);border:1px solid rgba(83,208,103,.3);box-shadow:0 0 20px rgba(83,208,103,.12);transition:.3s;flex-shrink:0">
+        <!-- Banner Kick -->
+        <div id="kick-banner" style="height:72px;background:linear-gradient(135deg,#0d2e0d,#1a5c1a,#53D067 140%);position:relative;display:flex;align-items:center;justify-content:center">
+          <svg width="52" height="32" viewBox="0 0 80 50" fill="rgba(255,255,255,.25)"><path d="M8 4h14v26l14-13h14l-14 13 14 13H36L22 30v17H8V4zm46 0h14v63h-14V4z"/></svg>
+          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.5))"></div>
         </div>
-        <!-- Nombre de usuario -->
-        <div style="display:flex;align-items:center;gap:7px;justify-content:center">
-          <!-- Logo Kick -->
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#53D067" style="flex-shrink:0"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
-          <span id="kick-username-display" style="font-family:'Bangers',cursive;font-size:1.15rem;letter-spacing:2px;color:#53D067"></span>
+        <!-- Avatar overlapping banner -->
+        <div style="position:relative;margin-top:-32px;z-index:2;display:flex;justify-content:center">
+          <div style="position:relative;display:inline-block">
+            <img id="kick-avatar-img" src="" alt="Streamer" onerror="this.src='https://ui-avatars.com/api/?name=K&background=53D067&color=fff&size=100'" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--dark2);outline:2px solid #53D067;display:block"/>
+            <span id="kick-status-dot" style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;border:2px solid var(--dark2);background:#555;box-shadow:0 0 0 2px rgba(80,80,80,.35);transition:.5s"></span>
+          </div>
         </div>
-        <!-- Texto invitación -->
-        <div style="font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;color:var(--txt);line-height:1.3">VEN Y MIRA<br/>NUESTRA TRANSMISIÓN</div>
-        <!-- Botón link Kick -->
-        <a id="kick-link-btn" href="#" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#53D067,#2da84a);color:#fff;font-family:'Bangers',cursive;font-size:.95rem;letter-spacing:2px;padding:9px 18px;border-radius:30px;text-decoration:none;transition:.2s;box-shadow:0 0 14px rgba(83,208,103,.35)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 24px rgba(83,208,103,.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 0 14px rgba(83,208,103,.35)'">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
+        <!-- Username + logo -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px 2px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#53D067"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
+          <span id="kick-username-display" style="font-family:'Bangers',cursive;font-size:1.05rem;letter-spacing:2px;color:#53D067"></span>
+        </div>
+        <!-- Live status badge -->
+        <div style="text-align:center;padding:3px 12px 10px">
+          <span id="kick-status-badge" style="display:inline-flex;align-items:center;gap:5px;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(80,80,80,.2);color:#888">
+            <span id="kick-dot-pulse" style="width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0;display:inline-block"></span>
+            <span id="kick-status-text">—</span>
+          </span>
+        </div>
+        <!-- Watch button -->
+        <a id="kick-link-btn" href="#" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,#53D067,#2da84a);color:#fff;font-family:'Bangers',cursive;font-size:.9rem;letter-spacing:2px;padding:9px 14px;margin:0 12px 14px;border-radius:30px;text-decoration:none;transition:.2s;box-shadow:0 0 10px rgba(83,208,103,.3)" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 20px rgba(83,208,103,.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 0 10px rgba(83,208,103,.3)'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M2 2h4v8l4-4h4l-4 4 4 4h-4l-4-4v4H2V2zm14 0h4v20h-4V2z"/></svg>
           VER EN KICK
         </a>
       </div>
@@ -779,7 +805,15 @@ footer{background:var(--dark2);border-top:1px solid rgba(255,107,0,.12);}
       <div style="text-align:center;margin-top:40px"><button class="btn btn-o btn-dbz" onclick="showPage('clients')">Ver Todos los Testimonios ⚡</button></div>
     </div>
   </div>
-</div>
+
+  <!-- NEWS SECTION -->
+  <div id="section-news" class="bg-dark" style="display:none">
+    <div class="section-inner">
+      <h2 class="sec-title" id="news-section-title">📰 <span>Noticias</span></h2>
+      <div id="news-grid" style="display:grid;grid-template-columns:repeat(12,1fr);gap:18px;align-items:start"></div>
+    </div>
+  </div>
+</div><!-- /page-home -->
 
 <div id="page-products" style="display:none">
   <div class="ph"><div class="ph-inner"><h1 class="ph-title">🍽️ Todos los <span>Productos</span></h1><p>El menú completo del Templo Kame</p></div></div>
@@ -1146,7 +1180,7 @@ let TOKEN = localStorage.getItem('kame_token');
 let USER  = JSON.parse(localStorage.getItem('kame_user') || 'null');
 let CART  = JSON.parse(localStorage.getItem('kame_cart') || '[]');
 let allProducts = [], currentCat = 'all';
-let pmProduct = null, pmQtyVal = 1, pmDrinks = [];
+let pmProduct = null, pmQtyVal = 1, pmAdiciones = {};
 let coStep = 1, coMethod = 'cash', coOrderId = 0, coOrderNum = '', coLastTotal = 0;
 let profileTab = 'orders';
 let adminTab = 'dashboard';
@@ -1259,7 +1293,7 @@ function logout() { TOKEN = null; USER = null; localStorage.removeItem('kame_tok
 //  CART
 // ════════════════════════════════════════
 function saveCart() { localStorage.setItem('kame_cart', JSON.stringify(CART)); updateCartUI(); }
-function cartTotal() { return CART.reduce((s,i) => s + i.price * i.qty, 0); }
+function cartTotal() { return CART.reduce((s,i) => s + i.price * i.qty + (i.extrasTotal||0), 0); }
 function cartCount() { return CART.reduce((s,i) => s + i.qty, 0); }
 function toggleCart() { const c = document.getElementById('cart'); const b = document.getElementById('cart-backdrop'); if (c.classList.contains('open')) { c.classList.remove('open'); b.style.display='none'; } else { c.classList.add('open'); b.style.display='block'; } }
 function closeCart() { document.getElementById('cart').classList.remove('open'); document.getElementById('cart-backdrop').style.display='none'; }
@@ -1288,7 +1322,7 @@ function updateCartUI() {
             <span>${it.qty}</span>
             <button onclick="updateCartQty(${i},1)">+</button>
           </div>
-          <span class="ci-p">${fmt(it.price * it.qty)}</span>
+          <span class="ci-p">${fmt(it.price * it.qty + (it.extrasTotal||0))}</span>
         </div>
       </div>
       <button class="ci-rm" onclick="removeFromCart(${i})">✕</button>
@@ -1335,8 +1369,9 @@ function fp(p) { return p.price * (1 - (p.discount_percent||0)/100); }
 function productCard(p) {
   const imgs = Array.isArray(p.images) ? p.images : JSON.parse(p.images||'[]');
   const img = imgs[0] || 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400';
+  const disc = Math.round(p.discount_percent||0);
   return `<div class="card pc" onclick="openPM(${p.id})">
-    ${p.discount_percent>0 ? `<div class="pc-dtag">-${p.discount_percent}%</div>` : ''}
+    ${disc>=1 ? `<div class="pc-dtag">-${disc}%</div>` : ''}
     ${p.dragon_ball_ref ? `<div class="pc-dbtag">⚡ ${p.dragon_ball_ref}</div>` : ''}
     <div class="pc-imgw"><img src="${img}" alt="${p.name}" loading="lazy"/><div class="pc-imgov"></div></div>
     <div class="pc-body">
@@ -1346,7 +1381,7 @@ function productCard(p) {
       <div class="pc-footer">
         <div style="display:flex;align-items:baseline;gap:7px">
           <span class="price">${fmt(fp(p))}</span>
-          ${p.discount_percent>0 ? `<span class="price-old">${fmt(p.price)}</span>` : ''}
+          ${disc>=1 ? `<span class="price-old">${fmt(p.price)}</span>` : ''}
         </div>
         <button class="add-btn" onclick="event.stopPropagation();openPM(${p.id})">+</button>
       </div>
@@ -1476,6 +1511,78 @@ async function loadHome() {
       <div class="hc-info"><strong>${c.client_name}</strong><small>${c.product_bought}</small>
         <div class="stars">${'★'.repeat(c.rating||5)}</div></div>
     </div>`).join('');
+
+    // Kick card
+    if (cfg.kick_username) {
+      const kCard = document.getElementById('kick-stream-card');
+      const kUser = document.getElementById('kick-username-display');
+      const kLink = document.getElementById('kick-link-btn');
+      if (kCard && kUser && kLink) {
+        kUser.textContent = cfg.kick_username;
+        kLink.href = 'https://kick.com/' + cfg.kick_username;
+        if (cfg.kick_avatar) document.getElementById('kick-avatar-img').src = cfg.kick_avatar;
+        kCard.style.display = 'flex';
+        kickPollStatus(cfg.kick_username);
+        clearInterval(window._kickTimer);
+        window._kickTimer = setInterval(()=>kickPollStatus(cfg.kick_username), 60000);
+      }
+    }
+
+    // News section
+    loadNewsSection();
+
+  } catch(e) { console.error(e); }
+}
+
+async function kickPollStatus(username) {
+  try {
+    const data = await api('GET','/admin/kick-status?username='+encodeURIComponent(username));
+    const dot = document.getElementById('kick-status-dot');
+    const badge = document.getElementById('kick-status-badge');
+    const dotPulse = document.getElementById('kick-dot-pulse');
+    const statusText = document.getElementById('kick-status-text');
+    if (data.live) {
+      if (dot) { dot.style.background='#4CAF50'; dot.style.boxShadow='0 0 0 2px rgba(76,175,80,.4)'; dot.style.animation='kick-pulse 1.8s ease-in-out infinite'; }
+      if (badge) { badge.style.background='rgba(76,175,80,.15)'; badge.style.color='#4CAF50'; }
+      if (dotPulse) { dotPulse.style.background='#4CAF50'; dotPulse.style.boxShadow='0 0 6px #4CAF50'; dotPulse.style.animation='kick-pulse 1.8s ease-in-out infinite'; }
+      if (statusText) statusText.textContent = data.viewers ? '🔴 LIVE · ' + data.viewers + ' viewers' : '🔴 EN VIVO';
+      if (data.avatar) {
+        const av = document.getElementById('kick-avatar-img');
+        if (av) av.src = data.avatar;
+      }
+    } else {
+      if (dot) { dot.style.background='#555'; dot.style.boxShadow=''; dot.style.animation='none'; }
+      if (badge) { badge.style.background='rgba(80,80,80,.2)'; badge.style.color='#888'; }
+      if (dotPulse) { dotPulse.style.background='#555'; dotPulse.style.boxShadow=''; dotPulse.style.animation='none'; }
+      if (statusText) statusText.textContent = 'OFFLINE';
+    }
+  } catch(e) {}
+}
+
+async function loadNewsSection() {
+  try {
+    const news = await api('GET','/admin/news?active=1');
+    if (!news || !news.length) return;
+    const sec = document.getElementById('section-news');
+    const grid = document.getElementById('news-grid');
+    if (!sec || !grid) return;
+    sec.style.display = '';
+    grid.innerHTML = news.map(n => {
+      const cols = n.size==='full' ? 12 : n.size==='large' ? 8 : n.size==='small' ? 3 : 6;
+      const imgH = n.size==='full' ? '320px' : n.size==='large' ? '260px' : n.size==='small' ? '130px' : '200px';
+      const cardEl = (n.link_url ? `<a href="${n.link_url}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block">` : `<div>`)
+        + `<div class="card" style="cursor:${n.link_url?'pointer':'default'};overflow:hidden;">`
+        + (n.image_url ? `<div style="height:${imgH};overflow:hidden;"><img src="${n.image_url}" alt="${n.title||''}" style="width:100%;height:100%;object-fit:cover;transition:.4s;display:block" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''"/></div>` : '')
+        + (n.title || n.description || n.button_text ? `<div style="padding:${n.size==='small'?'10px 12px':'16px 18px'}">` : '')
+        + (n.category ? `<span style="font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p)">${n.category}</span>` : '')
+        + (n.title ? `<h3 style="font-family:'Bangers',cursive;font-size:${n.size==='small'?'1rem':'1.25rem'};letter-spacing:1px;margin:${n.category?'4px':'0'} 0 6px">${n.title}</h3>` : '')
+        + (n.description ? `<p style="color:var(--muted);font-size:.83rem;line-height:1.5;margin-bottom:${n.button_text?'12px':'0'}">${n.description}</p>` : '')
+        + (n.button_text ? `<a href="${n.button_link||n.link_url||'#'}" target="${n.button_link?'_blank':'_self'}" rel="noopener" class="btn btn-p btn-sm" style="margin-top:4px">${n.button_text}</a>` : '')
+        + (n.title || n.description || n.button_text ? `</div>` : '')
+        + `</div>`
+        + (n.link_url ? `</a>` : `</div>`);
+      return `<div style="grid-column:span ${cols};min-width:0">${cardEl}</div>`;
+    }).join('');
   } catch(e) { console.error(e); }
 }
 
@@ -1558,7 +1665,7 @@ async function loadClients() {
 //  PRODUCT MODAL
 // ════════════════════════════════════════
 async function openPM(id) {
-  pmQtyVal = 1; pmDrinks = [];
+  pmQtyVal = 1; pmAdiciones = {};
   try {
     await loadDrinks();
     pmProduct = await api('GET','/products/'+id);
@@ -1576,10 +1683,16 @@ async function openPM(id) {
     if (pmProduct.category_id == 1 && DRINKS.length) {
       drinksSection.style.display = '';
       document.getElementById('pm-drinks').innerHTML =
-        DRINKS.map(d => `<div class="dopt" id="dopt-${d.id}" onclick="pmToggleDrink('${d.id}',this)" style="position:relative;user-select:none">
-          <div style="position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:4px;border:2px solid rgba(255,107,0,.4);background:transparent;display:flex;align-items:center;justify-content:center;font-size:.65rem;transition:.2s" id="dopt-chk-${d.id}"></div>
-          <span>${d.label}</span>
-          <small style="color:var(--s)">+${fmt(d.price)}</small>
+        DRINKS.map(d => `<div class="dopt" id="dopt-${d.id}" style="flex-direction:row;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;cursor:default">
+          <div style="display:flex;flex-direction:column;gap:2px;flex:1">
+            <span style="font-size:.83rem">${d.label}</span>
+            <small style="color:var(--s)">+${fmt(d.price)}/u</small>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+            <button class="qbtn" style="width:26px;height:26px;font-size:.9rem" onclick="pmAdicQty('${d.id}',-1)">−</button>
+            <span id="adic-qty-${d.id}" style="font-family:'Bangers',cursive;font-size:1.1rem;color:var(--s);min-width:18px;text-align:center">0</span>
+            <button class="qbtn" style="width:26px;height:26px;font-size:.9rem" onclick="pmAdicQty('${d.id}',1)">+</button>
+          </div>
         </div>`).join('');
     } else {
       drinksSection.style.display = 'none';
@@ -1657,42 +1770,35 @@ async function submitPMReview(productId) {
 }
 function closePM() { document.getElementById('pm-overlay').style.display = 'none'; }
 function pmSelImg(el, src) { document.getElementById('pm-img').src = src; document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
-function pmToggleDrink(id, el) {
+function pmQty(d) { pmQtyVal = Math.max(1, pmQtyVal + d); document.getElementById('pm-qty').textContent = pmQtyVal; updatePMPrices(); }
+function pmAdicQty(id, delta) {
   id = String(id);
-  var idx = pmDrinks.indexOf(id);
-  var chk = document.getElementById('dopt-chk-'+id);
-  if (idx >= 0) {
-    pmDrinks.splice(idx, 1);
-    el.classList.remove('sel');
-    if (chk) { chk.textContent = ''; chk.style.background = 'transparent'; chk.style.borderColor = 'rgba(255,107,0,.4)'; }
-  } else {
-    pmDrinks.push(id);
-    el.classList.add('sel');
-    if (chk) { chk.textContent = '✓'; chk.style.background = 'var(--p)'; chk.style.borderColor = 'var(--p)'; chk.style.color = '#fff'; }
-  }
+  pmAdiciones[id] = Math.max(0, (pmAdiciones[id]||0) + delta);
+  const el = document.getElementById('adic-qty-'+id);
+  if (el) el.textContent = pmAdiciones[id];
+  const dopt = document.getElementById('dopt-'+id);
+  if (dopt) dopt.style.borderColor = pmAdiciones[id]>0 ? 'var(--p)' : '';
   updatePMPrices();
 }
-function pmQty(d) { pmQtyVal = Math.max(1, pmQtyVal + d); document.getElementById('pm-qty').textContent = pmQtyVal; updatePMPrices(); }
+function calcExtrasP() {
+  return Object.entries(pmAdiciones).reduce(function(s, entry) {
+    var id = entry[0], qty = entry[1];
+    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
+    return s + (d ? +d.price * qty : 0);
+  }, 0);
+}
 function updatePMPrices() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
-  const extrasP = pmDrinks.reduce(function(s, id) {
-    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
-    return s + (d ? +d.price : 0);
-  }, 0);
-  const total = (base + extrasP) * pmQtyVal;
+  const extrasP = calcExtrasP();
+  const total = base * pmQtyVal + extrasP;
   document.getElementById('pm-price').textContent = fmt(base);
   const po = document.getElementById('pm-price-old');
-  if (pmProduct.discount_percent>0) { po.textContent = fmt(pmProduct.price); po.style.display = ''; } else { po.style.display = 'none'; }
-  // Mostrar desglose de extras si hay seleccionadas
+  if (Math.round(pmProduct.discount_percent||0)>=1) { po.textContent = fmt(pmProduct.price); po.style.display = ''; } else { po.style.display = 'none'; }
   var extrasEl = document.getElementById('pm-extras-sum');
   if (extrasEl) {
-    if (extrasP > 0) {
-      extrasEl.textContent = '+ ' + fmt(extrasP) + ' en adiciones';
-      extrasEl.style.display = '';
-    } else {
-      extrasEl.style.display = 'none';
-    }
+    if (extrasP > 0) { extrasEl.textContent = '+ ' + fmt(extrasP) + ' en adiciones'; extrasEl.style.display = ''; }
+    else { extrasEl.style.display = 'none'; }
   }
   document.getElementById('pm-total').textContent = fmt(total);
 }
@@ -1700,23 +1806,12 @@ function pmAddToCart() {
   if (!pmProduct) return;
   const base = fp(pmProduct);
   const imgs = Array.isArray(pmProduct.images) ? pmProduct.images : (()=>{try{return JSON.parse(pmProduct.images||'[]');}catch{return[];}})();
-  // Calcular precio total con todas las adiciones
-  var extrasP = pmDrinks.reduce(function(s, id) {
-    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
-    return s + (d ? +d.price : 0);
-  }, 0);
-  var drinkLabels = pmDrinks.map(function(id) {
-    var d = DRINKS.find(function(d){ return String(d.id)===String(id); });
-    return d ? d.label : '';
+  const extrasP = calcExtrasP();
+  var drinkLabels = Object.entries(pmAdiciones).filter(e=>e[1]>0).map(function(entry) {
+    var d = DRINKS.find(function(d){ return String(d.id)===String(entry[0]); });
+    return d ? d.label+(entry[1]>1?' x'+entry[1]:'') : '';
   }).filter(Boolean).join(', ');
-  addToCart({
-    pid: pmProduct.id, cid: null,
-    name: pmProduct.name,
-    img: imgs[0]||'',
-    price: base + extrasP,
-    qty: pmQtyVal,
-    drink: drinkLabels
-  });
+  addToCart({ pid: pmProduct.id, cid: null, name: pmProduct.name, img: imgs[0]||'', price: base, qty: pmQtyVal, drink: drinkLabels, extrasTotal: extrasP });
   const btn = document.getElementById('pm-add-btn');
   btn.textContent = '✓ ¡Agregado!';
   btn.style.background = 'var(--ok)';
@@ -2250,6 +2345,7 @@ const ADM_TABS = [
   {id:'dashboard',l:'📊 Dashboard'},
   {id:'ganancias',l:'💰 Ganancias'},
   {id:'reels',l:'🎬 Reels'},
+  {id:'news',l:'📰 Noticias'},
   {id:'products',l:'🍽️ Productos'},
   {id:'adiciones',l:'🥤 Adiciones'},
   {id:'combos',l:'🎁 Combos'},
@@ -2285,6 +2381,7 @@ async function admRender() {
     else if (adminTab==='coupons') await admCoupons(el);
     else if (adminTab==='ganancias') await admGanancias(el);
     else if (adminTab==='reels') await admReels(el);
+    else if (adminTab==='news') await admNews(el);
     else if (adminTab==='siteconfig') await admSiteConfig(el);
   } catch(e) { el.innerHTML = `<p style="color:var(--err)">Error: ${e.message}</p>`; }
 }
@@ -3387,6 +3484,137 @@ async function admSaveCoupon() {
   const data={code:document.getElementById('nc-code').value.toUpperCase(),description:document.getElementById('nc-desc').value,discount_type:document.getElementById('nc-type').value,discount_value:+document.getElementById('nc-val').value,min_purchase:+document.getElementById('nc-min').value||0};
   await api('POST','/admin/coupons',data); admTab('coupons');
 }
+// ════════════════════════════════════════
+//  ADMIN NOTICIAS
+// ════════════════════════════════════════
+let _newsEditId = null;
+async function admNews(el) {
+  const items = await api('GET','/admin/news');
+  const sizeLabel = {full:'🔲 Full', large:'⬛ Grande', medium:'◼ Mediano', small:'▪ Pequeño'};
+  el.innerHTML = `<h2 class="adm-title">📰 Noticias</h2>
+  <div class="sub-hdr"><span style="color:var(--muted);font-size:.85rem">${items.length} publicaciones</span><button class="btn btn-p btn-sm" onclick="openNewsForm()">+ Nueva Noticia</button></div>
+  <div id="news-form-wrap" style="display:none;background:var(--dark3);border:1px solid rgba(255,107,0,.2);border-radius:14px;padding:22px;margin-bottom:22px">
+    <h3 style="font-family:'Bangers',cursive;font-size:1.3rem;margin-bottom:16px" id="news-form-title">➕ Nueva Noticia</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="fc"><label>Título</label><input type="text" class="fi" id="nf-title" placeholder="Título de la noticia (opcional)"/></div>
+      <div class="fc"><label>Categoría / Etiqueta</label><input type="text" class="fi" id="nf-cat" placeholder="ej: NUEVO, OFERTA, EVENTO"/></div>
+      <div class="fc" style="grid-column:1/-1"><label>Descripción</label><textarea class="fi" id="nf-desc" rows="2" placeholder="Descripción breve (opcional)"></textarea></div>
+      <div class="fc" style="grid-column:1/-1"><label>Imagen (URL o sube)</label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" class="fi" id="nf-img" placeholder="https://..." style="flex:1"/>
+          <label class="up-sm" style="white-space:nowrap;cursor:pointer">📎 Subir<input type="file" accept="image/*" style="display:none" onchange="uploadNewsImg(this)"/></label>
+        </div>
+        <div id="nf-img-preview" style="margin-top:8px;display:none"><img src="" id="nf-img-thumb" style="height:80px;object-fit:cover;border-radius:7px;border:1px solid rgba(255,107,0,.2)"/></div>
+      </div>
+      <div class="fc"><label>Tamaño de Card</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="nf-size-btns">
+          ${['full','large','medium','small'].map(s=>`<button class="btn btn-o btn-sm${s==='medium'?' nf-size-active':''}" style="justify-content:center${s==='medium'?';border-color:var(--p);background:rgba(255,107,0,.1)':''}" onclick="selectNewsSize('${s}',this)">${sizeLabel[s]}</button>`).join('')}
+        </div>
+        <input type="hidden" id="nf-size" value="medium"/>
+      </div>
+      <div class="fc"><label>Activo</label>
+        <select class="fi" id="nf-active"><option value="1">✅ Sí</option><option value="0">🚫 No</option></select>
+      </div>
+      <div class="fc"><label>Texto del Botón <span style="color:var(--muted);font-size:.75rem">(opcional)</span></label><input type="text" class="fi" id="nf-btn-text" placeholder="ej: Leer más, Ver oferta"/></div>
+      <div class="fc"><label>Link del Botón</label><input type="text" class="fi" id="nf-btn-link" placeholder="https://..."/></div>
+      <div class="fc" style="grid-column:1/-1"><label>Link de la Card completa <span style="color:var(--muted);font-size:.75rem">(al hacer clic en la card)</span></label><input type="text" class="fi" id="nf-link" placeholder="https://... o vacío"/></div>
+      <div class="fc"><label>Orden</label><input type="number" class="fi" id="nf-order" value="0" min="0"/></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
+      <button class="btn btn-o btn-sm" onclick="closeNewsForm()">Cancelar</button>
+      <button class="btn btn-p" onclick="saveNewsItem()">💾 Guardar</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+    ${items.length ? items.map(n=>`<div style="background:var(--sur);border:1px solid rgba(255,107,0,.12);border-radius:13px;overflow:hidden;position:relative">
+      ${n.image_url?`<div style="height:130px;overflow:hidden"><img src="${n.image_url}" style="width:100%;height:100%;object-fit:cover"/></div>`:'<div style="height:50px;background:var(--dark3);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem">Sin imagen</div>'}
+      <div style="padding:12px">
+        ${n.category?`<span style="font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--p)">${n.category}</span><br/>`:''}
+        <strong style="font-size:.9rem">${n.title||'Sin título'}</strong>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-size:.68rem;background:var(--dark3);padding:2px 7px;border-radius:10px;color:var(--muted)">${sizeLabel[n.size]||n.size}</span>
+          <span style="font-size:.68rem;color:${n.is_active?'var(--ok)':'var(--err)'}">${n.is_active?'✅ Activo':'🚫 Oculto'}</span>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="aico" onclick="editNewsItem(${n.id})">✏️ Editar</button>
+          <button class="aico" onclick="if(confirm('¿Eliminar?')) api('DELETE','/admin/news/${n.id}').then(()=>admTab('news'))" style="color:var(--err)">🗑️</button>
+        </div>
+      </div>
+    </div>`).join('') : '<p style="color:var(--muted);grid-column:1/-1;padding:40px;text-align:center">Sin noticias. ¡Crea la primera!</p>'}
+  </div>`;
+  // cache items for editing
+  window._newsItems = items;
+}
+function selectNewsSize(size, btn) {
+  document.getElementById('nf-size').value = size;
+  document.querySelectorAll('#nf-size-btns button').forEach(b=>{
+    b.classList.remove('nf-size-active');
+    b.style.borderColor=''; b.style.background='';
+  });
+  btn.classList.add('nf-size-active');
+  btn.style.borderColor='var(--p)'; btn.style.background='rgba(255,107,0,.1)';
+}
+function openNewsForm(item) {
+  _newsEditId = item ? item.id : null;
+  document.getElementById('news-form-title').textContent = item ? '✏️ Editar Noticia' : '➕ Nueva Noticia';
+  document.getElementById('nf-title').value = item?.title||'';
+  document.getElementById('nf-cat').value = item?.category||'';
+  document.getElementById('nf-desc').value = item?.description||'';
+  document.getElementById('nf-img').value = item?.image_url||'';
+  document.getElementById('nf-btn-text').value = item?.button_text||'';
+  document.getElementById('nf-btn-link').value = item?.button_link||'';
+  document.getElementById('nf-link').value = item?.link_url||'';
+  document.getElementById('nf-order').value = item?.order_index||0;
+  document.getElementById('nf-active').value = item?.is_active===false?'0':'1';
+  const sz = item?.size||'medium';
+  document.getElementById('nf-size').value = sz;
+  document.querySelectorAll('#nf-size-btns button').forEach((b,i)=>{
+    const s = ['full','large','medium','small'][i];
+    b.style.borderColor = s===sz?'var(--p)':''; b.style.background = s===sz?'rgba(255,107,0,.1)':'';
+  });
+  if (item?.image_url) {
+    document.getElementById('nf-img-thumb').src = item.image_url;
+    document.getElementById('nf-img-preview').style.display='';
+  } else {
+    document.getElementById('nf-img-preview').style.display='none';
+  }
+  document.getElementById('news-form-wrap').style.display='';
+  document.getElementById('news-form-wrap').scrollIntoView({behavior:'smooth'});
+}
+function closeNewsForm() { document.getElementById('news-form-wrap').style.display='none'; _newsEditId=null; }
+function editNewsItem(id) { const it = window._newsItems?.find(n=>n.id===id); if(it) openNewsForm(it); }
+async function uploadNewsImg(inp) {
+  const f = inp.files[0]; if(!f) return;
+  const fd = new FormData(); fd.append('file',f);
+  try {
+    const r = await fetch('/api/upload?folder=news',{method:'POST',headers:{'Authorization':'Bearer '+TOKEN},body:fd});
+    const d = await r.json();
+    if (d.url) {
+      document.getElementById('nf-img').value = d.url;
+      document.getElementById('nf-img-thumb').src = d.url;
+      document.getElementById('nf-img-preview').style.display='';
+    }
+  } catch(e) { alert('Error subiendo imagen'); }
+}
+async function saveNewsItem() {
+  const data = {
+    title: document.getElementById('nf-title').value||null,
+    category: document.getElementById('nf-cat').value||null,
+    description: document.getElementById('nf-desc').value||null,
+    image_url: document.getElementById('nf-img').value||null,
+    button_text: document.getElementById('nf-btn-text').value||null,
+    button_link: document.getElementById('nf-btn-link').value||null,
+    link_url: document.getElementById('nf-link').value||null,
+    size: document.getElementById('nf-size').value||'medium',
+    is_active: document.getElementById('nf-active').value==='1',
+    order_index: +document.getElementById('nf-order').value||0
+  };
+  if (_newsEditId) await api('PUT','/admin/news/'+_newsEditId, data);
+  else await api('POST','/admin/news', data);
+  closeNewsForm();
+  admTab('news');
+}
+
 async function admSiteConfig(el) {
   const cfg = await api('GET','/admin/site-config');
   el.innerHTML = `<h2 class="adm-title">⚙️ Configuración</h2>
@@ -3407,6 +3635,12 @@ async function admSiteConfig(el) {
       <div class="fc"><label>Nombre</label><input type="text" class="fi" id="cfg-nname" value="${cfg.nequi_name||''}"/></div>
       <div class="fc"><label>Teléfono</label><input type="text" class="fi" id="cfg-nphone" value="${cfg.nequi_phone||''}"/></div>
     </div>
+    <div class="co-card">
+      <h3 style="font-weight:700;font-weight:700;color:var(--s);margin-bottom:18px">🎮 Kick Stream</h3>
+      <div class="fc"><label>Usuario de Kick</label><input type="text" class="fi" id="cfg-kick-user" value="${cfg.kick_username||''}" placeholder="ej: tu_usuario_kick"/></div>
+      <div class="fc"><label>Foto de perfil (URL) <small style="color:var(--muted)">Se actualiza automática si vacío</small></label><input type="text" class="fi" id="cfg-kick-avatar" value="${cfg.kick_avatar||''}" placeholder="https://..."/></div>
+      <p style="font-size:.75rem;color:var(--muted);margin-top:6px">La card de Kick aparece en la página principal cuando el usuario está configurado. El estado live/offline se actualiza cada 60s en tiempo real.</p>
+    </div>
 
   </div>
   <div style="text-align:right;margin-top:22px"><button class="btn btn-p btn-lg" id="cfg-save-btn" onclick="admSaveConfig()">💾 Guardar Todo</button></div>`;
@@ -3424,7 +3658,9 @@ async function admSaveConfig() {
     secondary_color: document.getElementById('cfg-sct').value,
     accent_color: document.getElementById('cfg-act').value,
     nequi_name: document.getElementById('cfg-nname').value,
-    nequi_phone: document.getElementById('cfg-nphone').value
+    nequi_phone: document.getElementById('cfg-nphone').value,
+    kick_username: document.getElementById('cfg-kick-user').value,
+    kick_avatar: document.getElementById('cfg-kick-avatar').value
   };
   await api('PUT','/admin/site-config',cfg);
   const r = document.documentElement;
@@ -3481,6 +3717,42 @@ api('GET','/admin/site-config').then(cfg => {
   if (cfg.accent_color) r.style.setProperty('--a', cfg.accent_color);
 }).catch(()=>{});
 loadHome();
+
+// ════════════════════════════════════════
+//  PWA — Service Worker + Install Prompt
+// ════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  });
+}
+let _pwaInstallEvt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _pwaInstallEvt = e;
+  // Mostrar banner de instalación
+  const banner = document.createElement('div');
+  banner.id = 'pwa-banner';
+  banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:2000;background:var(--dark2);border:1px solid rgba(83,208,103,.4);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,.5);max-width:340px;width:90%';
+  banner.innerHTML = `<span style="font-size:1.8rem">📱</span><div style="flex:1"><strong style="font-size:.92rem">¡Instala Empanadas Kame!</strong><p style="font-size:.78rem;color:var(--muted);margin-top:2px">Acceso directo desde tu pantalla</p></div><button onclick="installPWA()" class="btn btn-p btn-sm" style="white-space:nowrap">Instalar</button><button onclick="document.getElementById('pwa-banner').remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px">✕</button>`;
+  document.body.appendChild(banner);
+});
+async function installPWA() {
+  if (!_pwaInstallEvt) return;
+  _pwaInstallEvt.prompt();
+  const { outcome } = await _pwaInstallEvt.userChoice;
+  _pwaInstallEvt = null;
+  const banner = document.getElementById('pwa-banner');
+  if (banner) banner.remove();
+}
+// Solicitar permiso para notificaciones push
+async function requestNotifPermission() {
+  if (!('Notification' in window)) return;
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    new Notification('¡Kame activado! 🔥', { body: 'Recibirás notificaciones de Empanadas Kame', icon: '/icons/icon-192.png' });
+  }
+}
 </script>
 </body>
 </html>
