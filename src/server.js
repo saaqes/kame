@@ -246,6 +246,22 @@ async function setupDB() {
       created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
     )`,
 
+    // ── NOTICIAS ──────────────────────────────────────
+    `CREATE TABLE IF NOT EXISTS news (
+      id          SERIAL PRIMARY KEY,
+      title       VARCHAR(200),
+      description TEXT,
+      image_url   TEXT,
+      button_text VARCHAR(100),
+      button_link TEXT,
+      link_url    TEXT,
+      category    VARCHAR(80),
+      size        VARCHAR(20) NOT NULL DEFAULT 'medium',
+      is_active   BOOLEAN     NOT NULL DEFAULT true,
+      order_index INT         NOT NULL DEFAULT 0,
+      created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
+    )`,
+
     // ── GANANCIAS ─────────────────────────────────────
     `CREATE TABLE IF NOT EXISTS ganancias (
       id          SERIAL PRIMARY KEY,
@@ -336,6 +352,8 @@ async function seedDefaults() {
       ['accent_color',     '#CC0000'],
       ['nequi_phone',      ''],
       ['nequi_name',       ''],
+      ['kick_username',    ''],
+      ['kick_avatar',      ''],
     ];
     for (const [key, val] of defaults) {
       await db.query(
